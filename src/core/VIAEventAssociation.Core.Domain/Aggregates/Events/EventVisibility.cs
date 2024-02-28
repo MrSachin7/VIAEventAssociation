@@ -6,8 +6,8 @@ namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 internal class EventVisibility : Enumeration {
 
 
-    internal static EventVisibility InVisible = new EventVisibility(0, "InVisible");
-    internal static EventVisibility Visible = new EventVisibility(1, "Visible");
+    internal static readonly EventVisibility Private = new EventVisibility(0, "Private");
+    internal static readonly EventVisibility Public = new EventVisibility(1, "Public");
 
 
     private EventVisibility(){}

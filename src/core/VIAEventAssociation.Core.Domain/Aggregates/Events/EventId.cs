@@ -4,20 +4,16 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
 // Todo : Ask troels.. Is id an value object ??
-internal class EventId : ValueObject {
+public class EventId : ValueObject {
     internal Guid Value { get; private init; }
 
-    private EventId() {
-    }
 
     private EventId(Guid value) {
         Value = value;
     }
 
     internal static EventId New() {
-        return new EventId() {
-            Value = Guid.NewGuid()
-        };
+        return new EventId(Guid.NewGuid());
     }
 
     // Todo : Ask troels is this considered a business logic ?? Or should i throw an exception in this case

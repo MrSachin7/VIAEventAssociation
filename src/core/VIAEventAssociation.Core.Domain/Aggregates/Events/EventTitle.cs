@@ -3,7 +3,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
-internal class EventTitle : ValueObject{
+public class EventTitle : ValueObject{
     internal string Value { get; private init; }
 
     private EventTitle(string title) => Value = title;
@@ -12,6 +12,11 @@ internal class EventTitle : ValueObject{
         return Result<EventTitle>.AsBuilder(ErrorCode.BadRequest, new EventTitle(title))
             .AssertWithError(() => TitleBetween3And75Inclusive(title), ErrorMessage.TitleMustBeBetween3And75Chars)
             .Build();
+    }
+
+    internal static EventTitle Default() {
+        const string defaultTitle = "Working Title";
+        return new EventTitle(defaultTitle);
     }
 
     private static bool TitleBetween3And75Inclusive(string title) {

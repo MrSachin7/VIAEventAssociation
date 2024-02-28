@@ -10,15 +10,13 @@ public class Result {
 
     public static Result Success() => new Result();
 
-    public static Result Failure(Error error) => new Result() {
-        Error = error
-    };
+    public static implicit operator Result(Error error)
+        => new Result {Error = error};
 
     public static Result.Builder AsBuilder(ErrorCode errorCodeIfFails) => new Builder(errorCodeIfFails);
 
     // Implicit converter
-    public static implicit operator Result(Error error)
-        => new Result {Error = error};
+
 
     public class Builder {
         protected readonly ErrorCode ErrorCodeIfFailure;
@@ -50,7 +48,7 @@ public class Result {
                 return Result.Success();
             }
 
-            return Result.Failure(new Error(ErrorCodeIfFailure, ErrorMessages));
+            return new Error(ErrorCodeIfFailure, ErrorMessages);
         }
     }
 }
@@ -88,6 +86,7 @@ public class Result<T> : Result {
         }
     }
 
+    
  
 
     public new class Builder: Result.Builder {

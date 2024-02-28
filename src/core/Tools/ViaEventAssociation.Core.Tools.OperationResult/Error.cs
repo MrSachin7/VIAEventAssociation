@@ -4,7 +4,7 @@ namespace ViaEventAssociation.Core.Tools.OperationResult;
 public class Error {
 
     public ErrorCode ErrorCode { get; set; }
-    internal List<ErrorMessage> Messages { get; init; }
+    public List<ErrorMessage> Messages { get; init; }
 
     public static Error BadRequest(ErrorMessage message) {
         return new Error(ErrorCode.BadRequest, message);
@@ -30,7 +30,7 @@ public class Error {
     internal Error(ErrorCode errorCode, List<ErrorMessage> messages) {
         ErrorCode = errorCode;
 
-        // TODO: is the exception okay at this point because a developer is not supposed to do this.
+        // TODO: Ask troels if the exception okay at this point because a developer is not supposed to do this.
         if (messages.Count == 0) {
             throw new Exception("At least one error message is required to create an error");
         }

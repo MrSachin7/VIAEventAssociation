@@ -42,11 +42,9 @@ public abstract class Enumeration : IComparable
         }
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        var otherValue = obj as Enumeration;
-
-        if (otherValue == null)
+        if (obj is not Enumeration otherValue)
         {
             return false;
         }
@@ -60,37 +58,6 @@ public abstract class Enumeration : IComparable
     public override int GetHashCode()
     {
         return Value.GetHashCode();
-    }
-
-    internal static int AbsoluteDifference(Enumeration firstValue, Enumeration secondValue)
-    {
-        var absoluteDifference = Math.Abs(firstValue.Value - secondValue.Value);
-        return absoluteDifference;
-    }
-
-    internal static T FromValue<T>(int value) where T : Enumeration, new()
-    {
-        var matchingItem = parse<T, int>(value, "value", item => item.Value == value);
-        return matchingItem;
-    }
-
-    internal static T FromDisplayName<T>(string displayName) where T : Enumeration, new()
-    {
-        var matchingItem = parse<T, string>(displayName, "display name", item => item.DisplayName == displayName);
-        return matchingItem;
-    }
-
-    internal static T parse<T, K>(K value, string description, Func<T, bool> predicate) where T : Enumeration, new()
-    {
-        var matchingItem = GetAll<T>().FirstOrDefault(predicate);
-
-        if (matchingItem == null)
-        {
-            var message = string.Format("'{0}' is not a valid {1} in {2}", value, description, typeof(T));
-            throw new ApplicationException(message);
-        }
-
-        return matchingItem;
     }
 
     public int CompareTo(object other)

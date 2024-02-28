@@ -3,19 +3,23 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
-internal class EventMaxGuests : ValueObject {
+public class EventMaxGuests : ValueObject {
     internal int Value { get; private init; }
 
-    private EventMaxGuests() {
+    private EventMaxGuests(int maxGuests) {
+        Value = maxGuests;
     }
 
     internal static Result<EventMaxGuests> From(int maximumGuests) {
-        return Result<EventMaxGuests>.AsBuilder(ErrorCode.BadRequest, new EventMaxGuests() {
-                Value = maximumGuests
-            })
+        return Result<EventMaxGuests>.AsBuilder(ErrorCode.BadRequest, new EventMaxGuests(maximumGuests))
             .AssertWithError(() => NoLessThan5(maximumGuests), ErrorMessage.MaxGuestsNotLessThan5)
             .AssertWithError(() => NoMoreThan50(maximumGuests), ErrorMessage.MaxGuestsNotMoreThan50)
             .Build();
+    }
+
+    internal static EventMaxGuests Default() {
+        const int defaultMaxGuests = 5;
+        return new EventMaxGuests(defaultMaxGuests);
     }
 
     private static bool NoLessThan5(int maxGuests) {
