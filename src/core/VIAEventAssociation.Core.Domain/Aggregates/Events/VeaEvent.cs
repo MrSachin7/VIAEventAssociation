@@ -77,7 +77,7 @@ public class VeaEvent : Aggregate<EventId> {
         _title = eventTitle;
     }
 
-    public Result SetStatusToReady() {
+    internal Result SetStatusToReady() {
         Result result = Result.AsBuilder(ErrorCode.BadRequest)
             .AssertWithError(
                 () => !_description.Equals(EventDescription.Default()),
@@ -117,171 +117,9 @@ public class VeaEvent : Aggregate<EventId> {
         SetStatus(ActiveStatusState.GetInstance());
     }
 
-
-    // public Result UpdateTitle(EventTitle title) {
-
-
-    //     // If the event is in active status
-
-
-    //     if (Status.Equals(EventStatus.Active)) {
-
-
-    //         return Error.BadRequest(ErrorMessage.ActiveEventIsUnmodifiable);
-
-
-    //     }
-
-
-    //
-
-
-    //     if (Status.Equals(EventStatus.Cancelled)) {
-
-
-    //         return Error.BadRequest(ErrorMessage.CancelledEventIsUnmodifiable);
-
-
-    //     }
-
-
-    //
-
-
-    //     // We arrive at success scenarios
-
-
-    //     Title = title;
-
-
-    //
-
-
-    //     // If the event is ready, it is changed to draft
-
-
-    //     if (Status.Equals(EventStatus.Ready)) {
-
-
-    //         Status = EventStatus.Draft;
-
-
-    //     }
-
-
-    //
-
-
-    //     return Result.Success();
-
-
-    // }
-
-
     internal void SetDescription(EventDescription eventDescription) {
         _description = eventDescription;
     }
-
-
-    // public Result UpdateDescription(EventDescription eventDescription) {
-
-
-    //     // If the event is in active status
-
-
-    //     if (Status.Equals(EventStatus.Active)) {
-
-    //         return Error.BadRequest(ErrorMessage.ActiveEventIsUnmodifiable);
-
-    //     }
-
-    //
-
-    //     if (Status.Equals(EventStatus.Cancelled)) {
-
-    //         return Error.BadRequest(ErrorMessage.CancelledEventIsUnmodifiable);
-
-    //     }
-
-    //
-
-    //     // Arrived at success scenario
-
-    //
-
-    //     _description = eventDescription;
-
-    //
-
-    //     // If the event is ready, it is changed to draft
-
-    //     if (Status.Equals(EventStatus.Ready)) {
-
-    //         Status = EventStatus.Draft;
-
-    //     }
-
-    //
-
-    //     return Result.Success();
-
-    // }
-
-
-    // public Result UpdateDuration(EventDuration eventDuration) {
-
-    //     if (Status.Equals(EventStatus.Active)) {
-
-    //         return Error.BadRequest(ErrorMessage.ActiveEventIsUnmodifiable);
-
-    //     }
-
-    //
-
-    //     if (Status.Equals(EventStatus.Cancelled)) {
-
-    //         return Error.BadRequest(ErrorMessage.CancelledEventIsUnmodifiable);
-
-    //     }
-
-    //
-
-    //     _duration = eventDuration;
-
-    //
-
-    //     // If the event is ready, it is changed to draft
-
-    //     if (Status.Equals(EventStatus.Ready)) {
-
-    //         Status = EventStatus.Draft;
-
-    //     }
-
-    //
-
-    //     return Result.Success();
-
-    // }
-
-
-    // Active event can be made public but not private
-
-    // public Result MakePublic() {
-
-    //     if (Status.Equals(EventStatus.Cancelled)) {
-
-    //         return Error.BadRequest(ErrorMessage.CancelledEventIsUnmodifiable);
-
-    //     }
-
-    //
-
-    //     _visibility = EventVisibility.Public;
-
-    //     return Result.Success();
-
-    // }
 
 
     internal void SetVisibility(EventVisibility visibility) {
@@ -291,31 +129,6 @@ public class VeaEvent : Aggregate<EventId> {
     internal EventVisibility GetVisibility() {
         return _visibility;
     }
-
-
-    // public Result MakePrivate() {
-
-    //     if (Status.Equals(EventStatus.Active)) {
-
-    //         return Error.BadRequest(ErrorMessage.ActiveEventIsUnmodifiable);
-
-    //     }
-
-    //
-
-    //     if (Status.Equals(EventStatus.Cancelled)) {
-
-    //         return Error.BadRequest(ErrorMessage.CancelledEventIsUnmodifiable);
-
-    //     }
-
-    //
-
-    //     _visibility = EventVisibility.Private;
-
-    //     return Result.Success();
-
-    // }
 
 
     // Todo: Location logics will be implemented later..
