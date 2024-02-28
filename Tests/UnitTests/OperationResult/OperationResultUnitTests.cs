@@ -8,7 +8,7 @@ public class OperationResultUnitTests {
     public void ImplicitConversion_FromErrorToResult()
     {
         // Arrange
-        Error error = Error.From(ErrorCode.Forbidden, "ErrorMessage");
+        Error error = Error.NotFound(ErrorMessage.TitleMustBeBetween3And75Chars);
 
         // Act
         Result result = error;
@@ -22,7 +22,7 @@ public class OperationResultUnitTests {
     public void ImplicitConversion_FromErrorToResultT()
     {
         // Arrange
-        Error error =  Error.From(ErrorCode.Forbidden, "ErrorMessage");
+        Error error = Error.NotFound(ErrorMessage.TitleMustBeBetween3And75Chars);
 
         // Act
         Result<int> result = error;
@@ -49,7 +49,7 @@ public class OperationResultUnitTests {
     public void Result_IsFailure_WhenErrorIsNotNull() {
         // Arrange
         // Example usage of implicit conversion
-        Result result = Error.From(ErrorCode.BadRequest, "Bad request");
+        Result result = Error.NotFound(ErrorMessage.TitleMustBeBetween3And75Chars);
 
         // Act and Assert
         Assert.True(result.IsFailure);
@@ -59,7 +59,7 @@ public class OperationResultUnitTests {
     public void Result_IsNotFailure_WhenErrorIsNull()
     {
         // Arrange
-        var result = new Result();
+        Result<int> result = 14;
 
         // Act & Assert
         Assert.False(result.IsFailure);
@@ -69,7 +69,7 @@ public class OperationResultUnitTests {
     public void ResultT_IsFailure_WhenErrorIsNotNull()
     {
         // Arrange
-        Result<int> result = Error.From(ErrorCode.BadRequest, "Bad request");
+        Result<int> result = Error.BadRequest(ErrorMessage.TitleMustBeBetween3And75Chars);
 
         // Act & Assert
         Assert.True(result.IsFailure);
@@ -79,7 +79,7 @@ public class OperationResultUnitTests {
     public void ResultT_IsNotFailure_WhenErrorIsNull()
     {
         // Arrange
-        var result = new Result<int> { Payload = 42 };
+        Result<int> result = 42;
 
         // Act & Assert
         Assert.False(result.IsFailure);

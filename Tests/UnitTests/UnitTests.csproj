@@ -26,4 +26,10 @@
       <ProjectReference Include="..\..\src\core\Tools\ViaEventAssociation.Core.Tools.OperationResult\ViaEventAssociation.Core.Tools.OperationResult.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Common\" />
+      <Folder Include="Fakes\" />
+      <Folder Include="Features\" />
+    </ItemGroup>
+
 </Project>

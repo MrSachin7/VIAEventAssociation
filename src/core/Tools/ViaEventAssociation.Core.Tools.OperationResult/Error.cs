@@ -1,47 +1,54 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using System.Security.Cryptography;
-
+﻿
 namespace ViaEventAssociation.Core.Tools.OperationResult;
 
 public class Error {
 
     public ErrorCode ErrorCode { get; set; }
-    public string Message { get; init; }
-    public List<ValidationError>? ValidationErrors { get; private set; }
+    internal List<ErrorMessage> Messages { get; init; }
 
-
-    // An example of a factory method
-    public static Error BadRequest(string message) => new Error(ErrorCode.BadRequest, message);
-
-
-    public static Error From(ErrorCode errorCode, string message) => new Error(errorCode, message);
-
-    public bool IsValidationError => ValidationErrors is not null || ValidationErrors?.Count > 0;
-
-
-    private Error(ErrorCode errorCode, string message) {
-        ErrorCode = errorCode;
-        Message = message;
-
-    }
-
-    public void AddValidationError(ValidationError validationError) {
-        if (ValidationErrors is null) {
-            ValidationErrors = new List<ValidationError>();
-        }
-        ValidationErrors.Add(validationError);
+    public static Error BadRequest(ErrorMessage message) {
+        return new Error(ErrorCode.BadRequest, message);
     } 
-
-    public void AddValidationError(string field, string message) {
-        AddValidationError(new ValidationError {Field = field, Message = message});
+    public static Error BadRequest(List<ErrorMessage> messages) {
+        return new Error(ErrorCode.BadRequest, messages);
     }
 
-    public void AddValidationErrors(IEnumerable<ValidationError> validationErrors) {
-        if (ValidationErrors is null) {
-            ValidationErrors = new List<ValidationError>();
+    public static Error Conflict(ErrorMessage message) {
+        return new Error(ErrorCode.Conflict, message);
+    } 
+    public static Error Conflict(List<ErrorMessage> messages) {
+        return new Error(ErrorCode.Conflict, messages);
+    }
+
+    public static Error NotFound(ErrorMessage message) {
+        return new Error(ErrorCode.NotFound, message);
+    } 
+    public static Error NotFound(List<ErrorMessage> messages) {
+        return new Error(ErrorCode.NotFound, messages);
+    }
+
+    internal Error(ErrorCode errorCode, List<ErrorMessage> messages) {
+        ErrorCode = errorCode;
+
+        // TODO: is the exception okay at this point because a developer is not supposed to do this.
+        if (messages.Count == 0) {
+            throw new Exception("At least one error message is required to create an error");
         }
-        ValidationErrors.AddRange(validationErrors);
+        Messages = messages;
     }
 
+    private Error(ErrorCode errorCode, ErrorMessage message) {
+        ErrorCode = errorCode;
+
+        // Todo : Ask Troels if i should have a validation to check message and errorCode are not null or if the non-nullable type is enough
+        Messages = new List<ErrorMessage> {message};
+    }
+
+    public override string ToString() {
+        List<string> errorMessages= Messages.Select(message => message.ToString()).ToList();
+
+        string joined = string.Join(Environment.NewLine, errorMessages);
+        return $"ErrorCode {ErrorCode.Value} : {ErrorCode} \n {joined} ";
+    }
 }
 
