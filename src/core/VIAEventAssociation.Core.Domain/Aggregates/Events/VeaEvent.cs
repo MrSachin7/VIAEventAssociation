@@ -4,7 +4,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
-public class VeaEventWithStatePattern : Aggregate<EventId> {
+public class VeaEvent : Aggregate<EventId> {
     private EventVisibility _visibility;
 
     private EventTitle _title;
@@ -18,10 +18,10 @@ public class VeaEventWithStatePattern : Aggregate<EventId> {
     private IEventStatusState _currentStatusState;
 
 
-    private VeaEventWithStatePattern() {
+    private VeaEvent() {
     }
 
-    public static VeaEventWithStatePattern Empty() {
+    public static VeaEvent Empty() {
         EventId id = EventId.New();
         IEventStatusState draftStatus = DraftStatusState.GetInstance();
         // Todo : ask troels if this default logic should be here or in the eventmaxguests
@@ -30,7 +30,7 @@ public class VeaEventWithStatePattern : Aggregate<EventId> {
         EventVisibility visibility = EventVisibility.Private;
         EventTitle title = EventTitle.Default();
 
-        return new VeaEventWithStatePattern() {
+        return new VeaEvent() {
             Id = id,
             _description = description,
             _visibility = visibility,

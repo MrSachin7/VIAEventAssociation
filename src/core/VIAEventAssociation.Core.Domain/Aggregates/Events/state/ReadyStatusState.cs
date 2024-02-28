@@ -14,46 +14,46 @@ internal class ReadyStatusState : IEventStatusState {
         return Status;
     }
 
-    public Result UpdateTitle(VeaEventWithStatePattern veaEventWithStatePattern, EventTitle title) {
-        veaEventWithStatePattern.SetTitle(title);
-        veaEventWithStatePattern.SetStatusToDraft();
+    public Result UpdateTitle(VeaEvent veaEvent, EventTitle title) {
+        veaEvent.SetTitle(title);
+        veaEvent.SetStatusToDraft();
         return Result.Success();
     }
 
-    public Result UpdateDescription(VeaEventWithStatePattern veaEventWithStatePattern,
+    public Result UpdateDescription(VeaEvent veaEvent,
         EventDescription eventDescription) {
-        veaEventWithStatePattern.SetDescription(eventDescription);
-        veaEventWithStatePattern.SetStatusToDraft();
+        veaEvent.SetDescription(eventDescription);
+        veaEvent.SetStatusToDraft();
         return Result.Success();
     }
 
-    public Result MakePublic(VeaEventWithStatePattern veaEventWithStatePattern) {
-        veaEventWithStatePattern.SetVisibility(EventVisibility.Public);
+    public Result MakePublic(VeaEvent veaEvent) {
+        veaEvent.SetVisibility(EventVisibility.Public);
         return Result.Success();
     }
 
-    public Result MakePrivate(VeaEventWithStatePattern veaEventWithStatePattern) {
+    public Result MakePrivate(VeaEvent veaEvent) {
         // If it is public before, change the status and visibility
-        if (veaEventWithStatePattern.GetVisibility().Equals(EventVisibility.Public)) {
-            veaEventWithStatePattern.SetVisibility(EventVisibility.Private);
-            veaEventWithStatePattern.SetStatusToDraft();
+        if (veaEvent.GetVisibility().Equals(EventVisibility.Public)) {
+            veaEvent.SetVisibility(EventVisibility.Private);
+            veaEvent.SetStatusToDraft();
         }
         // Otherwise do nothing.
         return Result.Success();
     }
 
-    public Result UpdateMaxNumberOfGuests(VeaEventWithStatePattern veaEventWithStatePattern, EventMaxGuests maxGuests) {
-        veaEventWithStatePattern.SetMaximumNumberOfGuests(maxGuests);
+    public Result UpdateMaxNumberOfGuests(VeaEvent veaEvent, EventMaxGuests maxGuests) {
+        veaEvent.SetMaximumNumberOfGuests(maxGuests);
         return Result.Success();
     }
 
     // Todo: the use case document has no info. Should i return error or success ?
-    public Result MakeReady(VeaEventWithStatePattern veaEventWithStatePattern) {
+    public Result MakeReady(VeaEvent veaEvent) {
         return Result.Success();
     }
 
-    public Result MakeActive(VeaEventWithStatePattern veaEventWithStatePattern) {
-        veaEventWithStatePattern.SetStatusToActive();
+    public Result MakeActive(VeaEvent veaEvent) {
+        veaEvent.SetStatusToActive();
         return Result.Success();
     }
 }

@@ -13,38 +13,38 @@ internal class DraftStatusState : IEventStatusState {
         return Status;
     }
 
-    public Result UpdateTitle(VeaEventWithStatePattern veaEventWithStatePattern, EventTitle title) {
-        veaEventWithStatePattern.SetTitle(title);
+    public Result UpdateTitle(VeaEvent veaEvent, EventTitle title) {
+        veaEvent.SetTitle(title);
         return Result.Success();
     }
 
-    public Result UpdateDescription(VeaEventWithStatePattern veaEventWithStatePattern,
+    public Result UpdateDescription(VeaEvent veaEvent,
         EventDescription eventDescription) {
-        veaEventWithStatePattern.SetDescription(eventDescription);
+        veaEvent.SetDescription(eventDescription);
         return Result.Success();
     }
 
-    public Result MakePublic(VeaEventWithStatePattern veaEventWithStatePattern) {
-        veaEventWithStatePattern.SetVisibility(EventVisibility.Public);
+    public Result MakePublic(VeaEvent veaEvent) {
+        veaEvent.SetVisibility(EventVisibility.Public);
         return Result.Success();
     }
 
-    public Result MakePrivate(VeaEventWithStatePattern veaEventWithStatePattern) {
-        veaEventWithStatePattern.SetVisibility(EventVisibility.Private);
+    public Result MakePrivate(VeaEvent veaEvent) {
+        veaEvent.SetVisibility(EventVisibility.Private);
         return Result.Success();
     }
 
-    public Result UpdateMaxNumberOfGuests(VeaEventWithStatePattern veaEventWithStatePattern, EventMaxGuests maxGuests) {
-        veaEventWithStatePattern.SetMaximumNumberOfGuests(maxGuests);
+    public Result UpdateMaxNumberOfGuests(VeaEvent veaEvent, EventMaxGuests maxGuests) {
+        veaEvent.SetMaximumNumberOfGuests(maxGuests);
         return Result.Success();
     }
 
-    public Result MakeReady(VeaEventWithStatePattern veaEventWithStatePattern) {
-        return veaEventWithStatePattern.SetStatusToReady();
+    public Result MakeReady(VeaEvent veaEvent) {
+        return veaEvent.SetStatusToReady();
     }
 
-    public Result MakeActive(VeaEventWithStatePattern veaEventWithStatePattern) {
-        Result result = veaEventWithStatePattern.MakeReady();
-        return result.IsFailure ? result : veaEventWithStatePattern.MakeActive();
+    public Result MakeActive(VeaEvent veaEvent) {
+        Result result = veaEvent.MakeReady();
+        return result.IsFailure ? result : veaEvent.MakeActive();
     }
 }

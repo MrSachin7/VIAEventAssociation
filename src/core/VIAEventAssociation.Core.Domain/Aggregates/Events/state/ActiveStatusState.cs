@@ -17,34 +17,34 @@ internal class ActiveStatusState : IEventStatusState {
         return Status;
     }
 
-    public Result UpdateTitle(VeaEventWithStatePattern veaEventWithStatePattern, EventTitle title) {
+    public Result UpdateTitle(VeaEvent veaEvent, EventTitle title) {
         return Error.BadRequest(ErrorMessage.ActiveEventIsUnmodifiable);
     }
 
-    public Result UpdateDescription(VeaEventWithStatePattern viaEventWithStatePattern,
+    public Result UpdateDescription(VeaEvent viaEvent,
         EventDescription eventDescription) {
         return Error.BadRequest(ErrorMessage.ActiveEventIsUnmodifiable);
     }
 
-    public Result MakePublic(VeaEventWithStatePattern veaEventWithStatePattern) {
-        veaEventWithStatePattern.SetVisibility(EventVisibility.Public);
+    public Result MakePublic(VeaEvent veaEvent) {
+        veaEvent.SetVisibility(EventVisibility.Public);
         return Result.Success();
     }
 
-    public Result MakePrivate(VeaEventWithStatePattern veaEventWithStatePattern) {
+    public Result MakePrivate(VeaEvent veaEvent) {
         return Error.BadRequest(ErrorMessage.ActiveEventCannotBePrivate);
     }
 
-    public Result UpdateMaxNumberOfGuests(VeaEventWithStatePattern veaEventWithStatePattern, EventMaxGuests maxGuests) {
-        return veaEventWithStatePattern.SetMaximumNumberOfGuests(maxGuests);
+    public Result UpdateMaxNumberOfGuests(VeaEvent veaEvent, EventMaxGuests maxGuests) {
+        return veaEvent.SetMaximumNumberOfGuests(maxGuests);
     }
 
     // Todo: there is nothing in the use case description regarding the active state
-    public Result MakeReady(VeaEventWithStatePattern veaEventWithStatePattern) {
+    public Result MakeReady(VeaEvent veaEvent) {
         return Error.BadRequest(ErrorMessage.ActiveEventCannotBeMadeReady);
     }
 
-    public Result MakeActive(VeaEventWithStatePattern veaEventWithStatePattern) {
+    public Result MakeActive(VeaEvent veaEvent) {
         return Result.Success();
     }
 }

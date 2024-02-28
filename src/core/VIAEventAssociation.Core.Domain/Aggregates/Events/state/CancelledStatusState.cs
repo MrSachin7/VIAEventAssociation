@@ -12,31 +12,31 @@ internal class CancelledStatusState : IEventStatusState {
         return Status;
     }
 
-    public Result UpdateTitle(VeaEventWithStatePattern veaEventWithStatePattern, EventTitle title) {
+    public Result UpdateTitle(VeaEvent veaEvent, EventTitle title) {
         return Error.BadRequest(ErrorMessage.CancelledEventIsUnmodifiable);
     }
 
-    public Result UpdateDescription(VeaEventWithStatePattern veaEventWithStatePattern, EventDescription eventDescription) {
+    public Result UpdateDescription(VeaEvent veaEvent, EventDescription eventDescription) {
         return Error.BadRequest(ErrorMessage.CancelledEventIsUnmodifiable);
     }
 
-    public Result MakePublic(VeaEventWithStatePattern veaEventWithStatePattern) {
+    public Result MakePublic(VeaEvent veaEvent) {
         return Error.BadRequest(ErrorMessage.CancelledEventIsUnmodifiable);
     }
 
-    public Result MakePrivate(VeaEventWithStatePattern veaEventWithStatePattern) {
+    public Result MakePrivate(VeaEvent veaEvent) {
         return Error.BadRequest(ErrorMessage.CancelledEventIsUnmodifiable);
     }
 
-    public Result UpdateMaxNumberOfGuests(VeaEventWithStatePattern veaEventWithStatePattern, EventMaxGuests maxGuests) {
+    public Result UpdateMaxNumberOfGuests(VeaEvent veaEvent, EventMaxGuests maxGuests) {
         return Error.BadRequest(ErrorMessage.CancelledEventIsUnmodifiable);
     }
 
-    public Result MakeReady(VeaEventWithStatePattern veaEventWithStatePattern) {
+    public Result MakeReady(VeaEvent veaEvent) {
         return Error.BadRequest(ErrorMessage.CancelledEventCannotBeMadeReady);
     }
 
-    public Result MakeActive(VeaEventWithStatePattern veaEventWithStatePattern) {
+    public Result MakeActive(VeaEvent veaEvent) {
         return Error.BadRequest(ErrorMessage.CancelledEventCannotBeActivated);
     }
 }

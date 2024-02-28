@@ -4,17 +4,17 @@ namespace VIAEventAssociation.Core.Domain.Aggregates.Events.state;
 
 internal interface IEventStatusState {
     internal EventStatus CurrentStatus();
-    internal Result UpdateTitle(VeaEventWithStatePattern veaEventWithStatePattern, EventTitle title);
+    internal Result UpdateTitle(VeaEvent veaEvent, EventTitle title);
 
-    internal Result UpdateDescription(VeaEventWithStatePattern veaEventWithStatePattern,
+    internal Result UpdateDescription(VeaEvent veaEvent,
         EventDescription eventDescription);
 
-    internal Result MakePublic(VeaEventWithStatePattern veaEventWithStatePattern);
-    internal Result MakePrivate(VeaEventWithStatePattern veaEventWithStatePattern);
+    internal Result MakePublic(VeaEvent veaEvent);
+    internal Result MakePrivate(VeaEvent veaEvent);
 
-    internal Result UpdateMaxNumberOfGuests(VeaEventWithStatePattern veaEventWithStatePattern,
+    internal Result UpdateMaxNumberOfGuests(VeaEvent veaEvent,
         EventMaxGuests maxGuests);
 
-    internal Result MakeReady(VeaEventWithStatePattern veaEventWithStatePattern);
-    internal Result MakeActive(VeaEventWithStatePattern veaEventWithStatePattern);
+    internal Result MakeReady(VeaEvent veaEvent);
+    internal Result MakeActive(VeaEvent veaEvent);
 }
