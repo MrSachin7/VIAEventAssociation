@@ -17,5 +17,6 @@ internal interface IEventStatusState {
 
     internal Result MakeReady(VeaEvent veaEvent);
     internal Result MakeActive(VeaEvent veaEvent);
-    Result MakeCancelled(VeaEvent veaEvent);
+    internal Result MakeCancelled(VeaEvent veaEvent);
+    internal Result UpdateEventDuration(VeaEvent veaEvent, EventDuration eventDuration);
 }

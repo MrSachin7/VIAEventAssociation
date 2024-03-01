@@ -138,4 +138,67 @@ public static class EventFactory {
             new object[] {start5, end5},
         };
     }
+
+    public static IEnumerable<object[]> GetInValidEventDurations() {
+        ISystemTime systemTime = new TestSystemTime();
+        DateTime currentTime = systemTime.CurrentTime();
+
+        // Duration 1: Start date before end date
+        DateTime start1 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 12, 0, 0);
+        DateTime end1 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 11, 59, 59);
+
+        // Duration 2: Start date in past
+        DateTime start2 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(-1).Day, 23, 0, 0);
+        DateTime end2 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(2).Day, 0, 0, 0);
+
+        // Duration 3: Event Duration less than 1 hour
+        DateTime start3 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 15, 0, 0);
+        DateTime end3 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 15, 59, 59);
+
+        // Duration 4: Event duration more than 10 hours 
+        DateTime start4 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 8, 0, 0);
+        DateTime end4 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 18, 0, 1);
+
+        // Duration 5: Start ime before 8am 
+        DateTime start5 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 4, 0, 0);
+        DateTime end5 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 9, 0, 0);
+
+        // Duration 6: Event spans between 1am and 8am
+        DateTime start6 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 1, 0, 0);
+        DateTime end6 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 8, 0, 0);
+
+        return new List<object[]> {
+            new object[] {start1, end1},
+            new object[] {start2, end2},
+            new object[] {start3, end3},
+            new object[] {start4, end4},
+            new object[] {start5, end5},
+            new object[] {start6, end6}
+        };
+    }
+
+
+    public static IEnumerable<object[]> GetValidEventMaxGuests() {
+        return new List<object[]>() {
+            new object[] {5},
+            new object[] {50},
+            new object[] {10},
+            new object[] {20},
+            new object[] {30},
+            new object[] {40}
+        };
+    }
+
+    public static IEnumerable<object[]> GetInValidEventMaxGuests() {
+        return new List<object[]>() {
+            new object[] {0},
+            new object[] {2},
+            new object[] {4},
+            new object[] {51},
+            new object[] {100},
+            new object[] {1500}
+        };
+    }
+
+
 }

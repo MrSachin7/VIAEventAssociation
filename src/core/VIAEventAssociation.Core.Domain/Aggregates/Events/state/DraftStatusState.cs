@@ -52,4 +52,9 @@ internal class DraftStatusState : IEventStatusState {
         return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeCancelled);
 
     }
+
+    public Result UpdateEventDuration(VeaEvent veaEvent, EventDuration eventDuration) {
+        veaEvent.SetEventDuration(eventDuration);
+        return Result.Success();
+    }
 }

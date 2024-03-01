@@ -34,7 +34,7 @@ internal class ReadyStatusState : IEventStatusState {
 
     public Result MakePrivate(VeaEvent veaEvent) {
         // If it is public before, change the status and visibility
-        if (veaEvent.GetVisibility().Equals(EventVisibility.Public)) {
+        if (veaEvent.Visibility.Equals(EventVisibility.Public)) {
             veaEvent.SetVisibility(EventVisibility.Private);
             veaEvent.SetStatusToDraft();
         }
@@ -59,5 +59,11 @@ internal class ReadyStatusState : IEventStatusState {
 
     public Result MakeCancelled(VeaEvent veaEvent) {
         return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeCancelled);
+    }
+
+    public Result UpdateEventDuration(VeaEvent veaEvent, EventDuration eventDuration) {
+        veaEvent.SetEventDuration(eventDuration);
+        veaEvent.SetStatusToDraft();
+        return Result.Success();
     }
 }

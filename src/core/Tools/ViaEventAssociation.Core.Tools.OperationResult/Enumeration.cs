@@ -4,11 +4,11 @@ namespace ViaEventAssociation.Core.Tools.OperationResult;
 
 // This class is copied from :
 // https://lostechies.com/jimmybogard/2008/08/12/enumeration-classes/
-public abstract class Enumeration : IComparable
+public abstract class Enumeration 
 {
 
-    public int Value { get; set; }
-    public string DisplayName { get; set; }
+    public int Value { get; }
+    public string DisplayName { get; }
 
     protected Enumeration()
     {
@@ -51,17 +51,14 @@ public abstract class Enumeration : IComparable
 
         var typeMatches = GetType().Equals(obj.GetType());
         var valueMatches = Value.Equals(otherValue.Value);
+        var displayNameMatches = DisplayName.Equals(otherValue.DisplayName);
 
-        return typeMatches && valueMatches;
+        return typeMatches && valueMatches && displayNameMatches;
     }
 
     public override int GetHashCode()
     {
-        return Value.GetHashCode();
+        return Value.GetHashCode() * DisplayName.GetHashCode();
     }
 
-    public int CompareTo(object other)
-    {
-        return Value.CompareTo(((Enumeration)other).Value);
-    }
 }

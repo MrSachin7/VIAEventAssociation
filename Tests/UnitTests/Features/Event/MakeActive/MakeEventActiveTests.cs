@@ -1,12 +1,23 @@
 ﻿using VIAEventAssociation.Core.Domain.Aggregates.Events;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
-namespace UnitTests.Features.Event.MakeReady;
+namespace UnitTests.Features.Event.MakeActive;
 
-public class MakeEventReadyTests {
-
+public class MakeEventActiveTests {
     [Fact]
-    public void GivenAnEventInDraftStatus_WhenMakingEventReady_AndAllFieldsAreSet_ThenReturnsSuccessResult() {
+    public void GivenAnEventInStateReady_WhenMakingEventActive_ThenReturnsSuccessResult_AndTheEventIsInActiveStatus() {
+        // Arrange
+        VeaEvent veaEvent = EventFactory.GetReadyEvent();
+        // Act
+        Result result = veaEvent.MakeActive();
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(EventStatus.Active, veaEvent.Status);
+    }
+
+    // Todo: should I also make sure that veaEvent.MakeReady() is called before veaEvent.MakeActive()? or is it too implementation specific?
+    [Fact]
+    public void GivenAnEventInDraftStatus_WhenMakingEventActive_AndAllFieldsAreSet_ThenReturnsSuccessResult() {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
         veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
@@ -14,22 +25,24 @@ public class MakeEventReadyTests {
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
 
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeActive();
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.Equal(EventStatus.Ready, veaEvent.Status);
+        
+        Assert.Equal(EventStatus.Active, veaEvent.Status);
     }
 
     [Fact]
-    public void GivenAnEventInDraftStatus_WhenMakingEventReady_AndDescriptionIsDefault_ThenReturnsFailureResult_WithCorrectErrorMessage() {
+    public void
+        GivenAnEventInDraftStatus_WhenMakingEventActive_AndDescriptionIsDefault_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with default description
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
         veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
 
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeActive();
 
         // Assert
         Assert.True(result.IsFailure);
@@ -40,14 +53,15 @@ public class MakeEventReadyTests {
     }
 
     [Fact]
-    public void GivenAnEventInDraftStatus_WhenMakingEventReady_AndTitleIsDefault_ThenReturnsFailureResult_WithCorrectErrorMessage() {
+    public void
+        GivenAnEventInDraftStatus_WhenMakingEventActive_AndTitleIsDefault_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with default title
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
         veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
 
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeActive();
 
         // Assert
         Assert.True(result.IsFailure);
@@ -58,14 +72,15 @@ public class MakeEventReadyTests {
     }
 
     [Fact]
-    public void GivenAnEventInDraftStatus_WhenMakingEventReady_AndDurationIsDefault_ThenReturnsFailureResult_WithCorrectErrorMessage() {
+    public void
+        GivenAnEventInDraftStatus_WhenMakingEventActive_AndDurationIsDefault_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with default title
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
         veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
         veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
 
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeActive();
 
         // Assert
         Assert.True(result.IsFailure);
@@ -76,12 +91,12 @@ public class MakeEventReadyTests {
     }
 
     [Fact]
-    public void GivenAnEventInStatusDraft_WhenMakingEventReady_AndDurationIsDefault_AndTitleIsDefault_AndDescriptionIsDefault_ThenReturnsFailureResult_WithMultipleErrorMessages() {
+    public void GivenAnEventInStatusDraft_WhenMakingEventActive_AndDurationIsDefault_AndTitleIsDefault_AndDescriptionIsDefault_ThenReturnsFailureResult_WithMultipleErrorMessages() {
         // Arrange with default title
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
 
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeActive();
 
         // Assert
         Assert.True(result.IsFailure);
@@ -94,27 +109,14 @@ public class MakeEventReadyTests {
     }
 
     [Fact]
-    public void GivenAnEventInStatusReady_WhenMakingEventReady_ReturnsSuccessResult() {
-        // Arrange
-        VeaEvent veaEvent = EventFactory.GetReadyEvent();
-        // Act
-        Result result = veaEvent.MakeReady();
-
-        // Assert
-        Assert.True(result.IsSuccess);
-        Assert.Equal(EventStatus.Ready, veaEvent.Status);
-    }
-
-    [Fact]
-    public void GivenAnEventInStatusActive_WhenMakingEventReady_ReturnsFailureResult() {
+    public void GivenAnEventInStatusActive_WhenMakingEventActive_ReturnsSuccessResult() {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeActive();
 
         // Assert
-        Assert.True(result.IsFailure);
-        Assert.Contains(ErrorMessage.ActiveEventCannotBeMadeReady, result.Error!.Messages);
+        Assert.True(result.IsSuccess);
         Assert.Equal(EventStatus.Active, veaEvent.Status);
     }
 
@@ -123,12 +125,11 @@ public class MakeEventReadyTests {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetCancelledEvent();
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeActive();
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(ErrorMessage.CancelledEventCannotBeMadeReady, result.Error!.Messages);
+        Assert.Contains(ErrorMessage.CancelledEventCannotBeActivated, result.Error!.Messages);
         Assert.Equal(EventStatus.Cancelled, veaEvent.Status);
     }
-    
 }

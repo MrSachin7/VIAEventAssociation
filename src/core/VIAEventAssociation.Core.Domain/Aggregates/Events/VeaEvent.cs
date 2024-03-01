@@ -5,9 +5,9 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
 public class VeaEvent : Aggregate<EventId> {
-    private  EventDuration? _duration;
+    internal  EventDuration? Duration { get; private set; }
 
-    private  IEventStatusState _currentStatusState;
+    private IEventStatusState _currentStatusState;
 
     internal EventStatus Status => _currentStatusState.CurrentStatus();
     internal EventVisibility Visibility { get; private set; }
@@ -45,8 +45,8 @@ public class VeaEvent : Aggregate<EventId> {
         return _currentStatusState.UpdateTitle(this, title);
     }
 
-    public void UpdateEventDuration(EventDuration eventDuration) {
-        _duration = eventDuration;
+    public Result UpdateEventDuration(EventDuration eventDuration) {
+        return _currentStatusState.UpdateEventDuration(this, eventDuration);
     }
 
     public Result UpdateDescription(EventDescription eventDescription) {
@@ -94,11 +94,11 @@ public class VeaEvent : Aggregate<EventId> {
                 ErrorMessage.TitleMustBeSetBeforeMakingAnEventReady
             )
             .AssertWithError(
-                () => _duration is not null,
+                () => Duration is not null,
                 ErrorMessage.EventDurationMustBeSetBeforeMakingAnEventReady
             )
             .AssertWithError(
-                () => _duration is not null && _duration.StartDateTime > DateTime.Now,
+                () => Duration is not null && Duration.StartDateTime > DateTime.Now,
                 ErrorMessage.EventInThePastCannotBeReady
             )
             .Build();
@@ -138,29 +138,19 @@ public class VeaEvent : Aggregate<EventId> {
 
 
     // Todo: Location logics will be implemented later..
-
-
     internal Result SetMaximumNumberOfGuests(EventMaxGuests maxGuests) {
-        if (MaxGuests.Value < maxGuests.Value) {
-            return Error.BadRequest(ErrorMessage.ActiveEventCannotReduceMaxGuests);
-        }
-
         MaxGuests = maxGuests;
         return Result.Success();
     }
 
-    internal EventMaxGuests GetMaximumNumberOfGuests() => MaxGuests;
-
-
-    internal void SetEventStatusState(IEventStatusState statusState) {
-        _currentStatusState = statusState;
+    internal void SetEventDuration(EventDuration eventDuration) {
+        Duration = eventDuration;
     }
 
-    internal EventDescription GetEventDescription() => Description;
-
-    internal EventTitle GetEventTitle() => Title;
 
     private void SetStatus(IEventStatusState statusState) {
         _currentStatusState = statusState;
     }
+
+
 }

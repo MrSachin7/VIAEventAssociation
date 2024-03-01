@@ -36,6 +36,9 @@ internal class ActiveStatusState : IEventStatusState {
     }
 
     public Result UpdateMaxNumberOfGuests(VeaEvent veaEvent, EventMaxGuests maxGuests) {
+        if ( maxGuests.Value < veaEvent.MaxGuests.Value) {
+            return Error.BadRequest(ErrorMessage.ActiveEventCannotReduceMaxGuests);
+        }
         return veaEvent.SetMaximumNumberOfGuests(maxGuests);
     }
 
@@ -51,5 +54,9 @@ internal class ActiveStatusState : IEventStatusState {
     public Result MakeCancelled(VeaEvent veaEvent) {
         veaEvent.SetStatusToCancelled();
         return Result.Success();
+    }
+
+    public Result UpdateEventDuration(VeaEvent veaEvent, EventDuration eventDuration) {
+        return Error.BadRequest(ErrorMessage.ActiveEventIsUnmodifiable);
     }
 }
