@@ -1,6 +1,6 @@
 ﻿using ViaEventAssociation.Core.Tools.OperationResult;
 
-namespace UnitTests.OperationResult;
+namespace UnitTests.Common.OperationResult;
 
 public class OperationResultUnitTests {
 

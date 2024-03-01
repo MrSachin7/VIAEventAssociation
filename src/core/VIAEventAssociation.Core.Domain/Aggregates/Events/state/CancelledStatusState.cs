@@ -39,4 +39,8 @@ internal class CancelledStatusState : IEventStatusState {
     public Result MakeActive(VeaEvent veaEvent) {
         return Error.BadRequest(ErrorMessage.CancelledEventCannotBeActivated);
     }
+
+    public Result MakeCancelled(VeaEvent veaEvent) {
+        return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeCancelled);
+    }
 }

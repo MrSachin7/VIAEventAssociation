@@ -64,6 +64,12 @@ public class ErrorMessage : Enumeration {
     public static readonly ErrorMessage CancelledEventCannotBeActivated =
         new(0, "Cancelled event cannot be activated");
 
+    public static readonly ErrorMessage OnlyActiveEventsCanBeCancelled =
+        new(0, "Only active events can be cancelled, if you intend to delete this event, please delete it instead");
+
+    public static readonly ErrorMessage ActiveEventCannotBeDeleted =
+        new(0, "Active event cannot be deleted, if you intend to cancel this event, please cancel it instead");
+
 
     public static readonly ErrorMessage UnParsableGuid =
         new(0, "The provided guid value is not parsable");

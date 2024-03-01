@@ -56,4 +56,8 @@ internal class ReadyStatusState : IEventStatusState {
         veaEvent.SetStatusToActive();
         return Result.Success();
     }
+
+    public Result MakeCancelled(VeaEvent veaEvent) {
+        return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeCancelled);
+    }
 }

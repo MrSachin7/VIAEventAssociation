@@ -1,0 +1,106 @@
+﻿using VIAEventAssociation.Core.Domain.Aggregates.Events;
+using ViaEventAssociation.Core.Tools.OperationResult;
+
+namespace UnitTests.Features.Event.UpdateDescription;
+
+public class UpdateEventDescriptionTests {
+    
+    [Theory]
+    [MemberData(nameof(EventFactory.GetValidEventDescriptions), MemberType = typeof(EventFactory))]
+    public void GivenValidDescription_WhenCreatingEventDescription_ThenReturnsSuccessResult(string description) {
+        // Arrange
+        string input = description;
+
+        // Act
+        Result<EventDescription> result = EventDescription.From(description);
+        Assert.True(result.IsSuccess);
+        Assert.True(result.Payload!.Value.Equals(description));
+    }
+
+    [Theory]
+    [MemberData(nameof(EventFactory.GetInValidEventDescriptions), MemberType = typeof(EventFactory))]
+    public void GivenInValidDescription_WhenCreatingEventDescription_ThenReturnsFailureResult_WithCorrectError(string description) {
+        // Arrange
+        string input = description;
+
+        // Act
+        Result<EventDescription> result = EventDescription.From(description);
+        Assert.True(result.IsFailure);
+        Assert.Contains(ErrorMessage.DescriptionMustBeLessThan250Chars, result.Error!.Messages);
+    }
+
+    [Theory]
+    [MemberData(nameof(EventFactory.GetValidEventDescriptions), MemberType = typeof(EventFactory))]
+    public void GivenEventInADraftStatus_WhenUpdatingDescription_ThenReturnsSuccessResult(string description) {
+        // Arrange with a draft event
+        VeaEvent veaEvent = EventFactory.GetDraftEvent();
+        EventDescription eventDescription = EventDescription.From(description).Payload!;
+
+        // Act
+        Result result = veaEvent.UpdateDescription(eventDescription);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(eventDescription, veaEvent.Description);
+    }
+
+    [Theory]
+    [MemberData(nameof(EventFactory.GetValidEventDescriptions), MemberType = typeof(EventFactory))]
+    public void GivenEventInAReadyStatus_WhenUpdatingDescription_ThenReturnsSuccessResult_AndTheEventIsInDraftStatus(string description) {
+        // Arrange with a draft event
+        VeaEvent veaEvent = EventFactory.GetReadyEvent();
+        EventDescription eventDescription = EventDescription.From(description).Payload!;
+
+        // Act
+        Result result = veaEvent.UpdateDescription(eventDescription);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(eventDescription, veaEvent.Description);
+
+        // Assert that the event is in draft status
+        Assert.Equal(EventStatus.Draft, veaEvent.Status);
+    }
+
+    [Theory]
+    [MemberData(nameof(EventFactory.GetValidEventDescriptions), MemberType = typeof(EventFactory))]
+    public void GivenEventInAnActiveStatus_WhenUpdatingDescription_ThenReturnsFailureResult_WithCorrectErrorMessage(string description) {
+        // Arrange with a draft event
+        VeaEvent veaEvent = EventFactory.GetActiveEvent();
+        EventDescription initialDescription = veaEvent.Description;
+        EventDescription eventDescription = EventDescription.From(description).Payload!;
+
+        // Act
+        Result result = veaEvent.UpdateDescription(eventDescription);
+
+        // Assert
+        Assert.True(result.IsFailure);
+        Assert.Contains(ErrorMessage.ActiveEventIsUnmodifiable, result.Error!.Messages);
+
+        // And the title is not updated
+        Assert.Equal(initialDescription, veaEvent.Description);
+
+    }
+
+    [Theory]
+    [MemberData(nameof(EventFactory.GetValidEventDescriptions), MemberType = typeof(EventFactory))]
+    public void GivenEventInACancelledStatus_WhenUpdatingDescription_ThenReturnsFailureResult_WithCorrectErrorMessage(string description) {
+        // Arrange with a draft event
+        VeaEvent veaEvent = EventFactory.GetCancelledEvent();
+        EventDescription initialDescription = veaEvent.Description;
+        EventDescription eventDescription = EventDescription.From(description).Payload!;
+
+        // Act
+        Result result = veaEvent.UpdateDescription(eventDescription);
+
+        // Assert
+        Assert.True(result.IsFailure);
+        Assert.Contains(ErrorMessage.CancelledEventIsUnmodifiable, result.Error!.Messages);
+
+        // And the title is not updated
+        Assert.Equal(initialDescription, veaEvent.Description);
+
+    }
+
+
+}

@@ -13,22 +13,22 @@ public class EventDuration : ValueObject {
     }
 
 
-    public static Result<EventDuration> From(DateTime startDateTime, DateTime endDateTime) {
+    public static Result<EventDuration> From(DateTime startDateTime, DateTime endDateTime, ISystemTime systemTime) {
         return Result<EventDuration>.AsBuilder(ErrorCode.BadRequest, new EventDuration(startDateTime, endDateTime))
             .AssertWithError(
                 () => StartDateBeforeEndDate(startDateTime, endDateTime),
                 ErrorMessage.StartTimeMustBeBeforeEndTime
             )
             .AssertWithError(
-                () => StartDateNotInPast(startDateTime),
+                () => StartDateNotInPast(startDateTime, systemTime),
                 ErrorMessage.EventStartTimeCannotBeInPast
             )
             .AssertWithError(
-                () => EventDurationMoreThanOneHour(startDateTime, endDateTime),
+                () => EventDurationAtLeastOneHour(startDateTime, endDateTime),
                 ErrorMessage.EventDurationMustBeMoreThan1Hour
             )
             .AssertWithError(
-                () => EventDurationLessThanTenHour(startDateTime, endDateTime),
+                () => EventDurationAtMaxTenHour(startDateTime, endDateTime),
                 ErrorMessage.EventDurationMustBeLessThan10Hour
             )
             .AssertWithError(
@@ -46,16 +46,17 @@ public class EventDuration : ValueObject {
         return startDateTime < endDateTime;
     }
 
-    private static bool StartDateNotInPast(DateTime startDateTime) {
-        return startDateTime > DateTime.Now;
+    // TODO : ask troels : Should i take ISystemTime here as a parameter , if yes then than would mean I take it as a param on the static factory method too.
+    private static bool StartDateNotInPast(DateTime startDateTime, ISystemTime systemTime) {
+        return startDateTime > systemTime.CurrentTime();
     }
 
-    private static bool EventDurationMoreThanOneHour(DateTime startDateTime, DateTime endDateTime) {
-        return endDateTime - startDateTime > TimeSpan.FromHours(1);
+    private static bool EventDurationAtLeastOneHour(DateTime startDateTime, DateTime endDateTime) {
+        return endDateTime - startDateTime >= TimeSpan.FromHours(1);
     }
 
-    private static bool EventDurationLessThanTenHour(DateTime startDateTime, DateTime endDateTime) {
-        return endDateTime - startDateTime < TimeSpan.FromHours(10);
+    private static bool EventDurationAtMaxTenHour(DateTime startDateTime, DateTime endDateTime) {
+        return endDateTime - startDateTime <= TimeSpan.FromHours(10);
     }
 
     private static bool EventCannotSpanBetween1AmAnd8Am(DateTime startDateTime, DateTime endDateTime) {

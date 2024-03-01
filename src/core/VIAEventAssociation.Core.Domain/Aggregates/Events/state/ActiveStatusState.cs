@@ -47,4 +47,9 @@ internal class ActiveStatusState : IEventStatusState {
     public Result MakeActive(VeaEvent veaEvent) {
         return Result.Success();
     }
+
+    public Result MakeCancelled(VeaEvent veaEvent) {
+        veaEvent.SetStatusToCancelled();
+        return Result.Success();
+    }
 }

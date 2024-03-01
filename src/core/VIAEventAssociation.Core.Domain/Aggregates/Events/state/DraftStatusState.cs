@@ -47,4 +47,9 @@ internal class DraftStatusState : IEventStatusState {
         Result result = veaEvent.MakeReady();
         return result.IsFailure ? result : veaEvent.MakeActive();
     }
+
+    public Result MakeCancelled(VeaEvent veaEvent) {
+        return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeCancelled);
+
+    }
 }

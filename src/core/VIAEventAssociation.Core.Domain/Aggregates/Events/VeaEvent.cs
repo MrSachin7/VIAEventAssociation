@@ -5,17 +5,18 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
 public class VeaEvent : Aggregate<EventId> {
-    private EventVisibility _visibility;
+    private  EventDuration? _duration;
 
-    private EventTitle _title;
+    private  IEventStatusState _currentStatusState;
 
-    private EventDescription _description;
+    internal EventStatus Status => _currentStatusState.CurrentStatus();
+    internal EventVisibility Visibility { get; private set; }
 
-    private EventMaxGuests _maxGuests;
+    internal EventTitle Title { get; private set; }
 
-    private EventDuration? _duration;
+    internal EventDescription Description { get; private set; }
 
-    private IEventStatusState _currentStatusState;
+    internal EventMaxGuests MaxGuests { get; private set; }
 
 
     private VeaEvent() {
@@ -32,10 +33,10 @@ public class VeaEvent : Aggregate<EventId> {
 
         return new VeaEvent() {
             Id = id,
-            _description = description,
-            _visibility = visibility,
-            _title = title,
-            _maxGuests = maxGuests,
+            Description = description,
+            Visibility = visibility,
+            Title = title,
+            MaxGuests = maxGuests,
             _currentStatusState = draftStatus
         };
     }
@@ -68,23 +69,28 @@ public class VeaEvent : Aggregate<EventId> {
         return _currentStatusState.MakeActive(this);
     }
 
+    // TODO: there is ntg regarding this in the use case desc.
+    public Result MakeCancelled() {
+        return _currentStatusState.MakeCancelled(this);
+    }
+
     public Result UpdateMaximumNumberOfGuests(EventMaxGuests maxGuests) {
         return _currentStatusState.UpdateMaxNumberOfGuests(this, maxGuests);
     }
 
 
     internal void SetTitle(EventTitle eventTitle) {
-        _title = eventTitle;
+        Title = eventTitle;
     }
 
     internal Result SetStatusToReady() {
         Result result = Result.AsBuilder(ErrorCode.BadRequest)
             .AssertWithError(
-                () => !_description.Equals(EventDescription.Default()),
+                () => !Description.Equals(EventDescription.Default()),
                 ErrorMessage.DescriptionMustBeSetBeforeMakingAnEventReady
             )
             .AssertWithError(
-                () => !_title.Equals((EventTitle.Default())),
+                () => !Title.Equals((EventTitle.Default())),
                 ErrorMessage.TitleMustBeSetBeforeMakingAnEventReady
             )
             .AssertWithError(
@@ -118,16 +124,16 @@ public class VeaEvent : Aggregate<EventId> {
     }
 
     internal void SetDescription(EventDescription eventDescription) {
-        _description = eventDescription;
+        Description = eventDescription;
     }
 
 
     internal void SetVisibility(EventVisibility visibility) {
-        _visibility = visibility;
+        Visibility = visibility;
     }
 
     internal EventVisibility GetVisibility() {
-        return _visibility;
+        return Visibility;
     }
 
 
@@ -135,24 +141,24 @@ public class VeaEvent : Aggregate<EventId> {
 
 
     internal Result SetMaximumNumberOfGuests(EventMaxGuests maxGuests) {
-        if (_maxGuests.Value < maxGuests.Value) {
+        if (MaxGuests.Value < maxGuests.Value) {
             return Error.BadRequest(ErrorMessage.ActiveEventCannotReduceMaxGuests);
         }
 
-        _maxGuests = maxGuests;
+        MaxGuests = maxGuests;
         return Result.Success();
     }
 
-    internal EventMaxGuests GetMaximumNumberOfGuests() => _maxGuests;
+    internal EventMaxGuests GetMaximumNumberOfGuests() => MaxGuests;
 
 
     internal void SetEventStatusState(IEventStatusState statusState) {
         _currentStatusState = statusState;
     }
 
-    internal EventDescription GetEventDescription() => _description;
+    internal EventDescription GetEventDescription() => Description;
 
-    internal EventTitle GetEventTitle() => _title;
+    internal EventTitle GetEventTitle() => Title;
 
     private void SetStatus(IEventStatusState statusState) {
         _currentStatusState = statusState;
