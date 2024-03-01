@@ -11,6 +11,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
+        <PackageReference Include="Moq" Version="4.20.70" />
         <PackageReference Include="xunit" Version="2.4.2"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,6 +25,16 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\core\Tools\ViaEventAssociation.Core.Tools.OperationResult\ViaEventAssociation.Core.Tools.OperationResult.csproj" />
+      <ProjectReference Include="..\..\src\Core\VIAEventAssociation.Core.Domain\VIAEventAssociation.Core.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Common\Factories\" />
+      <Folder Include="Common\Values\" />
+      <Folder Include="Fakes\" />
+      <Folder Include="Features\Event\MakePrivate\" />
+      <Folder Include="Features\Event\MakePublic\" />
+      <Folder Include="Features\Event\SetMaxGuests\" />
     </ItemGroup>
 
 </Project>

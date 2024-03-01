@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Aggregates\Guests\" />
+      <Folder Include="Aggregates\Locations\" />
+      <Folder Include="Common\Contracts\" />
+      <Folder Include="Common\Values\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Tools\ViaEventAssociation.Core.Tools.OperationResult\ViaEventAssociation.Core.Tools.OperationResult.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include ="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>UnitTests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+</Project>
