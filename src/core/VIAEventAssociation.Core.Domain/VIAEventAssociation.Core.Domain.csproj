@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Aggregates\Guests\" />
       <Folder Include="Aggregates\Locations\" />
       <Folder Include="Common\Contracts\" />
       <Folder Include="Common\Values\" />

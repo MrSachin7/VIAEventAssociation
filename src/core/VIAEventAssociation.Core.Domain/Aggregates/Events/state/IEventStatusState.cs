@@ -1,4 +1,6 @@
-﻿using ViaEventAssociation.Core.Tools.OperationResult;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
+using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events.state;
 
@@ -19,4 +21,8 @@ internal interface IEventStatusState {
     internal Result MakeActive(VeaEvent veaEvent);
     internal Result MakeCancelled(VeaEvent veaEvent);
     internal Result UpdateEventDuration(VeaEvent veaEvent, EventDuration eventDuration);
+    Result InviteGuest(VeaEvent veaEvent, EventInvitation invitation);
+    Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId);
+    Result AcceptInvitation(VeaEvent veaEvent, EventInvitationId invitationId);
+    Result DeclineInvitation(VeaEvent veaEvent, EventInvitationId invitationId);
 }

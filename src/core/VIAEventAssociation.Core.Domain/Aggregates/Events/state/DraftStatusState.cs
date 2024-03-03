@@ -1,4 +1,6 @@
-﻿using ViaEventAssociation.Core.Tools.OperationResult;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
+using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events.state;
 
@@ -56,5 +58,24 @@ internal class DraftStatusState : IEventStatusState {
     public Result UpdateEventDuration(VeaEvent veaEvent, EventDuration eventDuration) {
         veaEvent.SetEventDuration(eventDuration);
         return Result.Success();
+    }
+
+    public Result InviteGuest(VeaEvent veaEvent, EventInvitation invitation) {
+        return Error.BadRequest(ErrorMessage.InvitationsCanOnlyBeMadeOnReadyOrActiveEvent);
+
+    }
+
+    public Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId) {
+        return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeJoined);
+
+    }
+
+    public Result AcceptInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
+        return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeJoined);
+    }
+
+    public Result DeclineInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
+        return Error.BadRequest(ErrorMessage.EventsCannotBeDeclinedYet);
+
     }
 }

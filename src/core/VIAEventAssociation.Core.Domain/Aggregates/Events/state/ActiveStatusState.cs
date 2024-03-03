@@ -1,4 +1,6 @@
-﻿using ViaEventAssociation.Core.Tools.OperationResult;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
+using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events.state;
 
@@ -58,5 +60,24 @@ internal class ActiveStatusState : IEventStatusState {
 
     public Result UpdateEventDuration(VeaEvent veaEvent, EventDuration eventDuration) {
         return Error.BadRequest(ErrorMessage.ActiveEventIsUnmodifiable);
+    }
+
+    public Result InviteGuest(VeaEvent veaEvent, EventInvitation invitation) {
+        veaEvent.AddInvitation(invitation);
+        return Result.Success();
+    }
+
+    public Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId) {
+        return veaEvent.AddIntendedParticipant(guestId);
+    }
+
+    public Result AcceptInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
+         veaEvent.MakeInvitationAccepted(invitationId);
+         return Result.Success();
+    }
+
+    public Result DeclineInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
+        veaEvent.MakeInvitationDeclined(invitationId);
+        return Result.Success();
     }
 }

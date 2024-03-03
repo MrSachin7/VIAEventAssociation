@@ -8,6 +8,14 @@ public class Result {
     protected Result() {
     }
 
+    public Result WithIfFailure(ErrorMessage message) {
+        if (IsFailure) {           
+            Error!.Messages.Add(message);
+        }
+
+        return this;
+    }
+
     public static Result Success() => new Result();
 
     public static implicit operator Result(Error error)
@@ -86,11 +94,10 @@ public class Result<T> : Result {
         }
     }
 
-    
- 
 
-    public new class Builder: Result.Builder {
+    public new class Builder : Result.Builder {
         private readonly T _payloadIfSuccess;
+
         internal Builder(ErrorCode errorCodeIfFailure, T payLoadIfSuccess) : base(errorCodeIfFailure) {
             _payloadIfSuccess = payLoadIfSuccess;
         }

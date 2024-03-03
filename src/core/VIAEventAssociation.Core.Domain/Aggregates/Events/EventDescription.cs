@@ -4,7 +4,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
 public class EventDescription : ValueObject {
-    internal string Value { get; private init; }
+    internal string Value { get; }
 
     private EventDescription(string description) {
         Value = description;

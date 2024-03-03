@@ -3,7 +3,6 @@
 namespace ViaEventAssociation.Core.Tools.OperationResult;
 
 // This class is copied from :
-// https://lostechies.com/jimmybogard/2008/08/12/enumeration-classes/
 public abstract class Enumeration 
 {
 

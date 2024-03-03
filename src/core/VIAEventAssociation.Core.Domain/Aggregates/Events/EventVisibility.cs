@@ -3,7 +3,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
-internal class EventVisibility : Enumeration {
+public class EventVisibility : Enumeration {
 
 
     internal static readonly EventVisibility Private = new EventVisibility(0, "Private");
