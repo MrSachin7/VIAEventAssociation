@@ -6,11 +6,11 @@ namespace UnitTests.Common.Factories;
 
 public static class EventFactory {
     public static VeaEvent GetDraftEvent() {
-        return VeaEvent.Empty();
+        return VeaEvent.Empty(new TestSystemTime());
     }
 
     public static VeaEvent GetReadyEvent() {
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = GetDraftEvent();
         veaEvent.UpdateDescription(GetValidEventDescription());
         veaEvent.UpdateTitle(GetValidEventTitle());
         veaEvent.UpdateEventDuration(GetValidEventDuration());
@@ -99,7 +99,7 @@ public static class EventFactory {
     }
 
     public static EventDuration GetValidEventDuration() {
-        ISystemTime systemTime = new DefaultSystemTime();
+        ISystemTime systemTime = new TestSystemTime();
         DateTime validStartTime = new DateTime(systemTime.CurrentTime().Year, systemTime.CurrentTime().Month,
             systemTime.CurrentTime().AddDays(1).Day, 8, 0, 0);
         DateTime validEndTime = new DateTime(systemTime.CurrentTime().Year, systemTime.CurrentTime().Month,

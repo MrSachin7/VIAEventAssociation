@@ -1,4 +1,5 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Events;
+﻿using UnitTests.Common.Stubs;
+using VIAEventAssociation.Core.Domain.Aggregates.Events;
 
 namespace UnitTests.Features.Events.CreateEvent;
 
@@ -7,7 +8,7 @@ public class CreateEventTests {
     [Fact]
     public void CreateEvent_CreatesAnEmptyEvent_WithDefaultValues() {
         // Arrange and act
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = VeaEvent.Empty(new TestSystemTime());
 
         // Assert
         Assert.NotNull(veaEvent);

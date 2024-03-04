@@ -29,13 +29,13 @@ public class VeaEvent : Aggregate<EventId> {
     private ISystemTime _systemTime;
 
 
-    private VeaEvent() {
-        _systemTime = new DefaultSystemTime();
+    private VeaEvent(ISystemTime systemTime) {
+        _systemTime = systemTime;
         EventInvitations = new List<EventInvitation>();
         IntendedParticipants = new HashSet<GuestId>();
     }
 
-    public static VeaEvent Empty() {
+    public static VeaEvent Empty(ISystemTime systemTime) {
         EventId id = EventId.New();
         IEventStatusState draftStatus = DraftStatusState.GetInstance();
         // Todo : ask troels if this default logic should be here or in the eventmaxguests
@@ -44,7 +44,7 @@ public class VeaEvent : Aggregate<EventId> {
         EventVisibility visibility = EventVisibility.Private;
         EventTitle title = EventTitle.Default();
 
-        return new VeaEvent() {
+        return new VeaEvent(systemTime) {
             Id = id,
             Description = description,
             Visibility = visibility,
@@ -202,7 +202,7 @@ public class VeaEvent : Aggregate<EventId> {
                 ErrorMessage.EventDurationMustBeSetBeforeMakingAnEventReady
             )
             .AssertWithError(
-                () => Duration is not null && Duration.StartDateTime > DateTime.Now,
+                () => Duration is not null && Duration.StartDateTime > _systemTime.CurrentTime(),
                 ErrorMessage.EventInThePastCannotBeReady
             )
             .Build();
@@ -264,8 +264,4 @@ public class VeaEvent : Aggregate<EventId> {
     private int GetNumberOfAcceptedInvitations() {
         return EventInvitations.Count(invitation => invitation.Status.Equals(JoinStatus.Accepted));
     }
-
- 
-
-   
 }
