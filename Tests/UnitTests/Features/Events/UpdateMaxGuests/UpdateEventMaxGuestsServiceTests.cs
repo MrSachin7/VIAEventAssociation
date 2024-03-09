@@ -1,18 +1,17 @@
-﻿using UnitTests.Common.Factories;
+﻿using Moq;
+using UnitTests.Common.Factories;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
+using VIAEventAssociation.Core.Domain.Aggregates.Locations;
+using VIAEventAssociation.Core.Domain.Services;
+using VIAEventAssociation.Core.Domain.temp;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
-namespace UnitTests.Features.Events.SetMaxGuests;
+namespace UnitTests.Features.Events.UpdateMaxGuests;
 
-public class UpdateEventMaxGuestsTests {
-
-
-    
-
+public class UpdateEventMaxGuestsServiceTests {
     [Theory]
     [MemberData(nameof(EventFactory.GetValidEventMaxGuests), MemberType = typeof(EventFactory))]
     public void GivenEventOnStateDraft_WhenUpdatingMaxGuests_ReturnsSuccessResult(int validMaxGuests) {
-
         // Arrange
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
         EventMaxGuests maxGuests = EventMaxGuests.From(validMaxGuests).Payload!;
@@ -25,11 +24,10 @@ public class UpdateEventMaxGuestsTests {
         Assert.Equal(validMaxGuests, veaEvent.MaxGuests.Value);
         Assert.Equal(EventStatus.Draft, veaEvent.Status);
     }
-    
+
     [Theory]
     [MemberData(nameof(EventFactory.GetValidEventMaxGuests), MemberType = typeof(EventFactory))]
     public void GivenEventOnStateReady_WhenUpdatingMaxGuests_ReturnsSuccessResult(int validMaxGuests) {
-
         // Arrange
         VeaEvent veaEvent = EventFactory.GetReadyEvent();
         EventMaxGuests maxGuests = EventMaxGuests.From(validMaxGuests).Payload!;
@@ -44,8 +42,8 @@ public class UpdateEventMaxGuestsTests {
     }
 
     [Fact]
-    public void GivenEventOnStateActive_WhenUpdatingMaxGuests_AndNewMaxGuestsIsLargerThanPrevious_ReturnsSuccessResult() {
-
+    public void
+        GivenEventOnStateActive_WhenUpdatingMaxGuests_AndNewMaxGuestsIsLargerThanPrevious_ReturnsSuccessResult() {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
 
@@ -64,8 +62,8 @@ public class UpdateEventMaxGuestsTests {
 
 
     [Fact]
-    public void GivenEventOnStateDraft_WhenUpdatingMaxGuests_AndNewMaxGuestsIsSmallerThanPrevious_ReturnsSuccessResult() {
-
+    public void
+        GivenEventOnStateDraft_WhenUpdatingMaxGuests_AndNewMaxGuestsIsSmallerThanPrevious_ReturnsSuccessResult() {
         // Arrange with 10 max guests
         EventMaxGuests previousMaxGuests = EventMaxGuests.From(10).Payload!;
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
@@ -83,8 +81,8 @@ public class UpdateEventMaxGuestsTests {
     }
 
     [Fact]
-    public void GivenEventOnStateReady_WhenUpdatingMaxGuests_AndNewMaxGuestsIsSmallerThanPrevious_ReturnsSuccessResult() {
-
+    public void
+        GivenEventOnStateReady_WhenUpdatingMaxGuests_AndNewMaxGuestsIsSmallerThanPrevious_ReturnsSuccessResult() {
         // Arrange with 10 max guests
         EventMaxGuests previousMaxGuests = EventMaxGuests.From(10).Payload!;
         VeaEvent veaEvent = EventFactory.GetReadyEvent();
@@ -102,8 +100,8 @@ public class UpdateEventMaxGuestsTests {
     }
 
     [Fact]
-    public void GivenEventOnStateActive_WhenUpdatingMaxGuests_AndNewMaxGuestsIsSmallerThanPrevious_ReturnsFailureResult() {
-
+    public void
+        GivenEventOnStateActive_WhenUpdatingMaxGuests_AndNewMaxGuestsIsSmallerThanPrevious_ReturnsFailureResult() {
         // Arrange with 10 max guests
         EventMaxGuests previousMaxGuests = EventMaxGuests.From(10).Payload!;
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
@@ -122,7 +120,6 @@ public class UpdateEventMaxGuestsTests {
 
     [Fact]
     public void GivenEventOnStateCancelled_WhenUpdatingMaxGuests_ReturnsFailureResult_WithCorrectError() {
-
         // Arrange with 10 max guests
         VeaEvent veaEvent = EventFactory.GetCancelledEvent();
         EventMaxGuests initialMaxGuests = veaEvent.MaxGuests;
@@ -138,8 +135,9 @@ public class UpdateEventMaxGuestsTests {
         Assert.Equal(EventStatus.Cancelled, veaEvent.Status);
 
         Assert.Equal(initialMaxGuests, veaEvent.MaxGuests);
-
     }
+
+    
 
 
 }

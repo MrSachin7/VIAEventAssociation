@@ -3,7 +3,6 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
-// Todo : Ask troels.. Is id an value object ??
 public class EventId : Id {
 
 

@@ -12,13 +12,14 @@ public class EventDescription : ValueObject {
 
 
     internal static EventDescription Default() {
-        const string defaultDescription ="";
+        const string defaultDescription = "";
         return new EventDescription(defaultDescription);
     }
 
     internal static Result<EventDescription> From(string description) {
-        return Result<EventDescription>.AsBuilder(ErrorCode.BadRequest, new EventDescription(description))
+        return Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => LengthBetween0And250(description), ErrorMessage.DescriptionMustBeLessThan250Chars)
+            .WithPayload(new EventDescription(description))
             .Build();
     }
 

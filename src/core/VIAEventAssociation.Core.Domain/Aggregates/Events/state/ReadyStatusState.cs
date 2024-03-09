@@ -1,5 +1,6 @@
 ﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+using VIAEventAssociation.Core.Domain.Aggregates.Locations;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events.state;
@@ -85,5 +86,11 @@ internal class ReadyStatusState : IEventStatusState {
 
     public Result DeclineInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
         return Error.BadRequest(ErrorMessage.EventsCannotBeDeclinedYet);
+    }
+
+    public Result UpdateLocation(VeaEvent veaEvent, LocationId locationId) {
+        veaEvent.SetLocation(locationId);
+        veaEvent.SetStatusToDraft();
+        return Result.Success();
     }
 }

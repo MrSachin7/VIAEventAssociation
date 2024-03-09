@@ -8,10 +8,10 @@ public class ErrorMessage : Enumeration {
         new(0, "Events Description must be less than 250 characters");
 
     public static readonly ErrorMessage StartTimeMustBeBeforeEndTime =
-        new(0, "Events start time cannot be after event end time");
+        new(0, "Start time cannot be after end time");
 
-    public static readonly ErrorMessage EventDurationMustBeMoreThan1Hour =
-        new(0, "Events duration cannot be less than 1 hour");
+    public static readonly ErrorMessage DurationMustBeMoreThan1Hour =
+        new(0, "Duration cannot be less than 1 hour");
 
     public static readonly ErrorMessage EventDurationMustBeLessThan10Hour =
         new(0, "Events duration cannot be less than 1 hour");
@@ -19,8 +19,8 @@ public class ErrorMessage : Enumeration {
     public static readonly ErrorMessage EventCannotSpanBetween1AmAnd8Am =
         new(0, "Events cannot take place from 1am to 8am");
 
-    public static readonly ErrorMessage EventStartTimeCannotBeInPast =
-        new(0, "Events start time must not be on past");
+    public static readonly ErrorMessage StartTimeCannotBeInPast =
+        new(0, "Start time must not be on past");
 
     public static readonly ErrorMessage EventCannotStartBefore8Am =
         new(0, "Events start time cannot be before 8 am");
@@ -48,6 +48,10 @@ public class ErrorMessage : Enumeration {
 
     public static readonly ErrorMessage EventDurationMustBeSetBeforeMakingAnEventReady =
         new(0, "Events duration must be set before making an event ready");
+
+
+    public static readonly ErrorMessage LocationMustBeSetBeforeMakingAnEventReady =
+        new(0, "Location must be set before making an event ready");
 
     public static readonly ErrorMessage EventInThePastCannotBeReady =
         new(0, "Events with start time at past cannot be made ready");
@@ -141,6 +145,20 @@ public class ErrorMessage : Enumeration {
     public static readonly ErrorMessage InvitationDoesNotExist =
         new(0,
             "Invitation does not exist");
+
+
+    public static readonly ErrorMessage InvalidLocationName =
+        new(0,
+            "Invalid Location name");
+    
+    public static readonly ErrorMessage EventLocationIsNotSet =
+        new(0,
+            "Location must be set to perform this operation");    
+    public static readonly ErrorMessage EventMaxGuestsCannotExceedLocationMaxGuests =
+        new(0,
+            "Event maximum number of guests cannot exceed location maximum number of guests");
+
+
 
     private ErrorMessage() {
     }

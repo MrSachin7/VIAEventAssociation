@@ -1,5 +1,6 @@
 ﻿using UnitTests.Common.Factories;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
+using VIAEventAssociation.Core.Domain.Aggregates.Locations;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.MakeActive;
@@ -24,6 +25,7 @@ public class MakeEventActiveTests {
         veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
         veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
+        veaEvent.UpdateLocation(LocationId.New());
 
         // Act
         Result result = veaEvent.MakeActive();

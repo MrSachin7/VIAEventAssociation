@@ -2,6 +2,7 @@
 using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
 using VIAEventAssociation.Core.Domain.Aggregates.Events.state;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+using VIAEventAssociation.Core.Domain.Aggregates.Locations;
 using VIAEventAssociation.Core.Domain.Common.Bases;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
@@ -24,6 +25,8 @@ public class VeaEvent : Aggregate<EventId> {
     internal ICollection<EventInvitation> EventInvitations { get; private set; }
 
     internal ISet<GuestId> IntendedParticipants { get; private set; }
+
+    internal LocationId? LocationId { get; private set; }
 
     // Todo: ask if this is the way of handling systemtime
     private ISystemTime _systemTime;
@@ -87,10 +90,12 @@ public class VeaEvent : Aggregate<EventId> {
         return _currentStatusState.MakeCancelled(this);
     }
 
-    public Result UpdateMaximumNumberOfGuests(EventMaxGuests maxGuests) {
+    internal Result UpdateMaximumNumberOfGuests(EventMaxGuests maxGuests) {
         return _currentStatusState.UpdateMaxNumberOfGuests(this, maxGuests);
     }
 
+
+    // Todo: Maybe this should take a guestId instead ??
     public Result InviteGuest(EventInvitation invitation) {
         // Max number of guests reached
         if (GetNumberOfParticipants() >= MaxGuests.Value) {
@@ -154,6 +159,14 @@ public class VeaEvent : Aggregate<EventId> {
         return _currentStatusState.DeclineInvitation(this, invitationId);
     }
 
+    public Result UpdateLocation(LocationId locationId) {
+        return _currentStatusState.UpdateLocation(this, locationId);
+    }
+
+    internal void SetLocation(LocationId locationId) {
+        LocationId = locationId;
+    }
+
     internal void MakeInvitationAccepted(EventInvitationId invitationId) {
         // Here we are sure that the invitation exists
         EventInvitation invitation = EventInvitations.First(invitation =>
@@ -188,7 +201,7 @@ public class VeaEvent : Aggregate<EventId> {
     }
 
     internal Result SetStatusToReady() {
-        Result result = Result.AsBuilder(ErrorCode.BadRequest)
+        Result result = Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(
                 () => !Description.Equals(EventDescription.Default()),
                 ErrorMessage.DescriptionMustBeSetBeforeMakingAnEventReady
@@ -205,6 +218,10 @@ public class VeaEvent : Aggregate<EventId> {
                 () => Duration is not null && Duration.StartDateTime > _systemTime.CurrentTime(),
                 ErrorMessage.EventInThePastCannotBeReady
             )
+            .AssertWithError(
+                ()=> LocationId is not null,
+                ErrorMessage.LocationMustBeSetBeforeMakingAnEventReady
+                )
             .Build();
 
         if (result.IsFailure) {

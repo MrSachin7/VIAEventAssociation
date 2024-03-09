@@ -8,41 +8,39 @@ public class Result {
     protected Result() {
     }
 
-    public Result WithIfFailure(ErrorMessage message) {
-        if (IsFailure) {           
-            Error!.Messages.Add(message);
-        }
-
-        return this;
-    }
-
     public static Result Success() => new Result();
 
     public static implicit operator Result(Error error)
         => new Result {Error = error};
 
-    public static Result.Builder AsBuilder(ErrorCode errorCodeIfFails) => new Builder(errorCodeIfFails);
-
-    // Implicit converter
+    public static Result.Builder ToBuilder(ErrorCode errorCodeIfFails) => new(errorCodeIfFails);
 
 
     public class Builder {
-        protected readonly ErrorCode ErrorCodeIfFailure;
-        protected List<ErrorMessage>? ErrorMessages;
+        protected readonly ErrorCode ErrorCode;
+        protected IList<ErrorMessage>? ErrorMessages;
 
-        internal Builder(ErrorCode errorCodeIfFailure) {
-            ErrorCodeIfFailure = errorCodeIfFailure;
+        internal Builder(ErrorCode errorCode) {
+            ErrorCode = errorCode;
         }
 
-        public Builder AssertWithError(Func<bool> condition, ErrorMessage errorMessageToDisplayOnConditionFail) {
+        public Builder AssertWithError(Func<bool> condition, ErrorMessage errorMessage) {
             if (!condition()) {
-                AddErrorMessage(errorMessageToDisplayOnConditionFail);
+                AddErrorMessage(errorMessage);
             }
 
             return this;
         }
 
-        protected void AddErrorMessage(ErrorMessage errorMessage) {
+        public Result<T>.Builder WithPayload<T>(T payload) {
+            Result<T>.Builder builder = new(ErrorCode, payload) {
+                ErrorMessages = ErrorMessages
+            };
+            return builder;
+        }
+
+
+        private void AddErrorMessage(ErrorMessage errorMessage) {
             if (ErrorMessages is null) {
                 ErrorMessages = new List<ErrorMessage>() {errorMessage};
             }
@@ -51,17 +49,17 @@ public class Result {
             }
         }
 
-        public virtual Result Build() {
+        public Result Build() {
             if (ErrorMessages is null) {
                 return Result.Success();
             }
 
-            return new Error(ErrorCodeIfFailure, ErrorMessages);
+            return new Error(ErrorCode, ErrorMessages);
         }
     }
 }
 
-public class Result<T> : Result {
+public class Result<T> : Result  {
     private readonly T? _payload;
 
     private Result() : base() {
@@ -79,9 +77,6 @@ public class Result<T> : Result {
     }
 
 
-    public static Result<T>.Builder AsBuilder(ErrorCode errorCodeIfFailure, T payLoadIfSuccess) =>
-        new(errorCodeIfFailure, payLoadIfSuccess);
-
     public static implicit operator Result<T>(Error error)
         => new Result<T> {Error = error};
 
@@ -95,28 +90,16 @@ public class Result<T> : Result {
     }
 
 
-    public new class Builder : Result.Builder {
-        private readonly T _payloadIfSuccess;
+    public new class Builder(ErrorCode errorCode, T payload) : Result.Builder(errorCode) {
+        private readonly T? Payload = payload;
 
-        internal Builder(ErrorCode errorCodeIfFailure, T payLoadIfSuccess) : base(errorCodeIfFailure) {
-            _payloadIfSuccess = payLoadIfSuccess;
-        }
-
-        public new Builder AssertWithError(Func<bool> condition, ErrorMessage errorMessageToDisplayOnConditionFail) {
-            if (!condition()) {
-                AddErrorMessage(errorMessageToDisplayOnConditionFail);
-            }
-
-            return this;
-        }
-
-
-        public override Result<T> Build() {
+        public new Result<T> Build() {
             if (ErrorMessages is null) {
-                return _payloadIfSuccess;
+                return new Result<T> {Payload = Payload};
             }
 
-            return new Error(ErrorCodeIfFailure, ErrorMessages);
+            return new Result<T> {Error = new Error(ErrorCode, ErrorMessages)};
         }
     }
 }
+

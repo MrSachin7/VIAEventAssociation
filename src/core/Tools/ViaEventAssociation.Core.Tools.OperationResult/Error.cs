@@ -4,7 +4,7 @@ namespace ViaEventAssociation.Core.Tools.OperationResult;
 public class Error {
 
     public ErrorCode ErrorCode { get; set; }
-    public List<ErrorMessage> Messages { get; init; }
+    public IList<ErrorMessage> Messages { get; init; }
 
     public static Error BadRequest(ErrorMessage message) {
         return new Error(ErrorCode.BadRequest, message);
@@ -27,7 +27,7 @@ public class Error {
         return new Error(ErrorCode.NotFound, messages);
     }
 
-    internal Error(ErrorCode errorCode, List<ErrorMessage> messages) {
+    internal Error(ErrorCode errorCode, IList<ErrorMessage> messages) {
         ErrorCode = errorCode;
 
         // TODO: Ask troels if the exception okay at this point because a developer is not supposed to do this.

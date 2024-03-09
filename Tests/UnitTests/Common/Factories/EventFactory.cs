@@ -1,5 +1,8 @@
 ﻿using UnitTests.Common.Stubs;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
+using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
+using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+using VIAEventAssociation.Core.Domain.Aggregates.Locations;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Common.Factories;
@@ -14,6 +17,7 @@ public static class EventFactory {
         veaEvent.UpdateDescription(GetValidEventDescription());
         veaEvent.UpdateTitle(GetValidEventTitle());
         veaEvent.UpdateEventDuration(GetValidEventDuration());
+        veaEvent.UpdateLocation(LocationId.New());
         veaEvent.MakeReady();
 
         // Assert that the event is ready before returning
@@ -66,9 +70,8 @@ public static class EventFactory {
             // A string with 76 characters
             new object[] {"a".PadRight(76, 'a')},
             // A string with 75 ++ characters
-            new object[] {"a".PadRight(200, 'a')}  ,
+            new object[] {"a".PadRight(200, 'a')},
             // new object[] {null},
-
         };
     }
 
@@ -94,7 +97,6 @@ public static class EventFactory {
             // A string with 75 ++ characters
             new object[] {"a".PadRight(300, 'a')},
             // new object[] {null},
-
         };
     }
 
@@ -201,10 +203,39 @@ public static class EventFactory {
             new object[] {4},
             new object[] {51},
             new object[] {100},
-            new object[] {1500} ,
+            new object[] {1500},
             // new object[] {null}
         };
     }
 
+    public static void ArrangeFullEvent(VeaEvent veaEvent) {
+        // Arrange a full event
+        for (int i = 0; i < veaEvent.MaxGuests.Value; i++) {
+            // Since we have a different id, it will persist
 
+            // This makes sure that we have both accepted invites and intended participants
+            if (veaEvent.Status.Equals(EventStatus.Active)) {
+                if (veaEvent.Visibility.Equals(EventVisibility.Public)) {
+                    if (i % 2 == 0) {
+                        veaEvent.ParticipateGuest(GuestFactory.GetValidGuest().Id);
+                    }
+                    else {
+                        Guest guest = GuestFactory.GetValidGuest();
+                        EventInvitation invitation = EventInvitation.From(guest.Id);
+                        veaEvent.InviteGuest(invitation);
+                        veaEvent.AcceptInvitation(invitation.Id);
+                    }
+                }
+                else {
+                    Guest guest = GuestFactory.GetValidGuest();
+                    EventInvitation invitation = EventInvitation.From(guest.Id);
+                    veaEvent.InviteGuest(invitation);
+                    veaEvent.AcceptInvitation(invitation.Id);
+                }
+            }
+        }
+
+        // Make sure that event is actually full
+        Assert.True(veaEvent.IsFull());
+    }
 }

@@ -12,10 +12,11 @@ public class ViaEmail : ValueObject {
     }
 
     internal static Result<ViaEmail> From(string email) {
-        Result<ViaEmail> validEmailResult = Result<ViaEmail>.AsBuilder(ErrorCode.BadRequest, new ViaEmail(email))
+        Result<ViaEmail> validEmailResult = Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => EmailEndsWithViaDk(email), ErrorMessage.EmailMustEndWithViaDk)
             .AssertWithError(() => EmailIsInCorrectFormat(email), ErrorMessage.EmailNotInCorrectFormat)
             .AssertWithError((() => EmailIsUnique(email)), ErrorMessage.EmailAlreadyAssociatedWithAnotherGuest)
+            .WithPayload(new ViaEmail(email))
             .Build();
 
         if (validEmailResult.IsFailure) {

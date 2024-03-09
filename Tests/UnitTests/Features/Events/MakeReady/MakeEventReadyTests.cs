@@ -1,5 +1,6 @@
 ﻿using UnitTests.Common.Factories;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
+using VIAEventAssociation.Core.Domain.Aggregates.Locations;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.MakeReady;
@@ -13,6 +14,7 @@ public class MakeEventReadyTests {
         veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
         veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
+        veaEvent.UpdateLocation(LocationId.New());
 
         // Act
         Result result = veaEvent.MakeReady();
@@ -71,10 +73,31 @@ public class MakeEventReadyTests {
         // Assert
         Assert.True(result.IsFailure);
 
-        Assert.Contains(ErrorMessage.EventDurationMustBeSetBeforeMakingAnEventReady, result.Error!.Messages);
+        Assert.Contains(ErrorMessage.LocationMustBeSetBeforeMakingAnEventReady, result.Error!.Messages);
         // State is NOT updated
         Assert.Equal(EventStatus.Draft, veaEvent.Status);
     }
+
+    [Fact]
+    public void GivenAnEventInDraftStatus_WhenMakingEventReady_AndLocationIsNotSet_ThenReturnsFailureResult_WithCorrectErrorMessage() {
+        // Arrange with default title
+        VeaEvent veaEvent = EventFactory.GetDraftEvent();
+        veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
+        veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
+        veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
+
+
+        // Act
+        Result result = veaEvent.MakeReady();
+
+        // Assert
+        Assert.True(result.IsFailure);
+
+        Assert.Contains(ErrorMessage.LocationMustBeSetBeforeMakingAnEventReady, result.Error!.Messages);
+        // State is NOT updated
+        Assert.Equal(EventStatus.Draft, veaEvent.Status);
+    }
+
 
     [Fact]
     public void GivenAnEventInStatusDraft_WhenMakingEventReady_AndDurationIsDefault_AndTitleIsDefault_AndDescriptionIsDefault_ThenReturnsFailureResult_WithMultipleErrorMessages() {
@@ -93,6 +116,8 @@ public class MakeEventReadyTests {
         // State is NOT updated
         Assert.Equal(EventStatus.Draft, veaEvent.Status);
     }
+
+
 
     [Fact]
     public void GivenAnEventInStatusReady_WhenMakingEventReady_ReturnsSuccessResult() {

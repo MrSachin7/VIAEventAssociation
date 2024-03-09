@@ -9,8 +9,9 @@ public class EventTitle : ValueObject{
     private EventTitle(string title) => Value = title;
 
     internal static Result<EventTitle> From(string title) {
-        return Result<EventTitle>.AsBuilder(ErrorCode.BadRequest, new EventTitle(title))
+        return Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => TitleBetween3And75Inclusive(title), ErrorMessage.TitleMustBeBetween3And75Chars)
+            .WithPayload(new EventTitle(title))
             .Build();
     }
 

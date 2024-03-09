@@ -1,6 +1,7 @@
 ﻿using UnitTests.Common.Factories;
 using UnitTests.Common.Stubs;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
+using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
@@ -52,9 +53,8 @@ public class GuestParticipationTests {
         Guest guest = GuestFactory.GetValidGuest();
 
         // Arrange a full event
-        ArrangeFullEvent(veaEvent);
-        bool isFull = veaEvent.IsFull();
-        Assert.True(isFull);
+        EventFactory.ArrangeFullEvent(veaEvent);
+     ;
 
         // Act
         Result result = veaEvent.ParticipateGuest(guest.Id);
@@ -80,6 +80,25 @@ public class GuestParticipationTests {
         // Assert
         Assert.True(result.IsFailure);
         Assert.Contains(ErrorMessage.EventHasAlreadyStarted, result.Error!.Messages);
+    }
+
+    [Fact]
+    public void
+        GivenEventInInStatusActive_AndTheGuestParticipationExists_WhenGuestCancelsParticipation_ReturnsSuccessResult_AndTheParticipationIsDeleted() {
+        // Arrange with an event that has a guest participation
+        VeaEvent veaEvent = EventFactory.GetActiveEvent();
+        veaEvent.MakePublic();
+        Guest guest = GuestFactory.GetValidGuest();
+        veaEvent.ParticipateGuest(guest.Id);
+        // Make sure that the guest is participating before continuing
+        Assert.Contains(guest.Id, veaEvent.IntendedParticipants);
+
+        // Act
+        Result result = veaEvent.CancelGuestParticipation(guest.Id);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.DoesNotContain(guest.Id, veaEvent.IntendedParticipants);
     }
 
 
@@ -112,13 +131,7 @@ public class GuestParticipationTests {
     }
 
 
-    private void ArrangeFullEvent(VeaEvent veaEvent) {
-        // Arrange a full event
-        for (int i = 0; i < veaEvent.MaxGuests.Value; i++) {
-            // Since we have a different id, it will persist
-            veaEvent.ParticipateGuest(GuestFactory.GetValidGuest().Id);
-        }
-    }
+   
 
     private class FakeSystemTime : ISystemTime {
         public DateTime CurrentTime() {

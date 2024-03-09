@@ -41,7 +41,7 @@ public class EventDurationTests {
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(ErrorMessage.EventStartTimeCannotBeInPast, result.Error!.Messages);
+        Assert.Contains(ErrorMessage.StartTimeCannotBeInPast, result.Error!.Messages);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class EventDurationTests {
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(ErrorMessage.EventDurationMustBeMoreThan1Hour, result.Error!.Messages);
+        Assert.Contains(ErrorMessage.DurationMustBeMoreThan1Hour, result.Error!.Messages);
     }
 
     [Fact]

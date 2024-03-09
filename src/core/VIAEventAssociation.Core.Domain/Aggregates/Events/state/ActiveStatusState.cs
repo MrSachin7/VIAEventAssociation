@@ -1,5 +1,6 @@
 ﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+using VIAEventAssociation.Core.Domain.Aggregates.Locations;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events.state;
@@ -79,5 +80,9 @@ internal class ActiveStatusState : IEventStatusState {
     public Result DeclineInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
         veaEvent.MakeInvitationDeclined(invitationId);
         return Result.Success();
+    }
+
+    public Result UpdateLocation(VeaEvent veaEvent, LocationId locationId) {
+        return Error.BadRequest(ErrorMessage.ActiveEventIsUnmodifiable);
     }
 }
