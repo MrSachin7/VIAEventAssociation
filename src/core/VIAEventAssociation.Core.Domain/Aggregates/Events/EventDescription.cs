@@ -4,7 +4,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
 public class EventDescription : ValueObject {
-    internal string Value { get; private init; }
+    internal string Value { get; }
 
     private EventDescription(string description) {
         Value = description;
@@ -12,13 +12,14 @@ public class EventDescription : ValueObject {
 
 
     internal static EventDescription Default() {
-        const string defaultDescription ="";
+        const string defaultDescription = "";
         return new EventDescription(defaultDescription);
     }
 
-    internal static Result<EventDescription> From(string description) {
-        return Result<EventDescription>.AsBuilder(ErrorCode.BadRequest, new EventDescription(description))
+    internal static Result<EventDescription> Create(string description) {
+        return Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => LengthBetween0And250(description), ErrorMessage.DescriptionMustBeLessThan250Chars)
+            .WithPayload(new EventDescription(description))
             .Build();
     }
 

@@ -1,13 +1,17 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.state;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities;
+using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
+using VIAEventAssociation.Core.Domain.Aggregates.Events.state;
+using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+using VIAEventAssociation.Core.Domain.Aggregates.Locations;
 using VIAEventAssociation.Core.Domain.Common.Bases;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
 public class VeaEvent : Aggregate<EventId> {
-    private  EventDuration? _duration;
+    internal EventDuration? Duration { get; private set; }
 
-    private  IEventStatusState _currentStatusState;
+    private IEventStatusState _currentStatusState;
 
     internal EventStatus Status => _currentStatusState.CurrentStatus();
     internal EventVisibility Visibility { get; private set; }
@@ -18,11 +22,23 @@ public class VeaEvent : Aggregate<EventId> {
 
     internal EventMaxGuests MaxGuests { get; private set; }
 
+    internal ICollection<EventInvitation> EventInvitations { get; private set; }
 
-    private VeaEvent() {
+    internal ISet<GuestId> IntendedParticipants { get; private set; }
+
+    internal LocationId? LocationId { get; private set; }
+
+    // Todo: ask if this is the way of handling systemtime
+    private ISystemTime _systemTime;
+
+
+    private VeaEvent(ISystemTime systemTime) {
+        _systemTime = systemTime;
+        EventInvitations = new List<EventInvitation>();
+        IntendedParticipants = new HashSet<GuestId>();
     }
 
-    public static VeaEvent Empty() {
+    public static VeaEvent Empty(ISystemTime systemTime) {
         EventId id = EventId.New();
         IEventStatusState draftStatus = DraftStatusState.GetInstance();
         // Todo : ask troels if this default logic should be here or in the eventmaxguests
@@ -31,7 +47,7 @@ public class VeaEvent : Aggregate<EventId> {
         EventVisibility visibility = EventVisibility.Private;
         EventTitle title = EventTitle.Default();
 
-        return new VeaEvent() {
+        return new VeaEvent(systemTime) {
             Id = id,
             Description = description,
             Visibility = visibility,
@@ -45,8 +61,8 @@ public class VeaEvent : Aggregate<EventId> {
         return _currentStatusState.UpdateTitle(this, title);
     }
 
-    public void UpdateEventDuration(EventDuration eventDuration) {
-        _duration = eventDuration;
+    public Result UpdateEventDuration(EventDuration eventDuration) {
+        return _currentStatusState.UpdateEventDuration(this, eventDuration);
     }
 
     public Result UpdateDescription(EventDescription eventDescription) {
@@ -74,17 +90,118 @@ public class VeaEvent : Aggregate<EventId> {
         return _currentStatusState.MakeCancelled(this);
     }
 
-    public Result UpdateMaximumNumberOfGuests(EventMaxGuests maxGuests) {
+    internal Result UpdateMaximumNumberOfGuests(EventMaxGuests maxGuests) {
         return _currentStatusState.UpdateMaxNumberOfGuests(this, maxGuests);
     }
 
+
+    // Todo: Maybe this should take a guestId instead ??
+    public Result InviteGuest(EventInvitation invitation) {
+        // Max number of guests reached
+        if (GetNumberOfParticipants() >= MaxGuests.Value) {
+            return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
+        }
+
+        return _currentStatusState.InviteGuest(this, invitation);
+    }
+
+    //  Todo: Should I make sure that the guestId exists ?
+    public Result ParticipateGuest(GuestId guestId) {
+        // If not public, fail
+        if (Visibility.Equals(EventVisibility.Private)) {
+            return Error.BadRequest(ErrorMessage.PrivateEventCannotBeParticipatedUnlessInvited);
+        }
+
+        // Max number of guests reached
+        if (IsFull()) {
+            return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
+        }
+
+        return _currentStatusState.ParticipateGuest(this, guestId);
+    }
+
+    // Todo: So, if a guest accepted an invitation, should this also remove that accepted invitation ?
+    public Result CancelGuestParticipation(GuestId guestId) {
+        // Todo : What happens if this is called on a draft event where duration is null ?, now is that a business logic ?? or the null pointer exception is fine ?
+
+        // No real state logic, so no need to call _currentStatusState
+        if (Duration!.StartDateTime < _systemTime.CurrentTime()) {
+            return Error.BadRequest(ErrorMessage.ParticipationOnPastOrOngoingEventsCannotBeCancelled);
+        }
+
+        IntendedParticipants.Remove(guestId);
+        return Result.Success();
+    }
+
+    // Todo: Does this belong here or on GuestAggregate ??
+    public Result AcceptInvitation(EventInvitationId invitationId) {
+        // Todo: So only pending invitations ? what about the declined invitation ?
+        bool invitationExists = EventInvitations.Any(invitation =>
+            invitation.Id.Equals(invitationId) && invitation.Status.Equals(JoinStatus.Pending));
+        if (!invitationExists) {
+            return Error.NotFound(ErrorMessage.InvitationDoesNotExist);
+        }
+
+        if (IsFull()) {
+            return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
+        }
+
+        return _currentStatusState.AcceptInvitation(this, invitationId);
+    }
+
+    public Result DeclineInvitation(EventInvitationId invitationId) {
+        bool invitationExists = EventInvitations.Any(invitation =>
+            invitation.Id.Equals(invitationId));
+        if (!invitationExists) {
+            return Error.NotFound(ErrorMessage.InvitationDoesNotExist);
+        }
+
+        return _currentStatusState.DeclineInvitation(this, invitationId);
+    }
+
+    public Result UpdateLocation(LocationId locationId) {
+        return _currentStatusState.UpdateLocation(this, locationId);
+    }
+
+    internal void SetLocation(LocationId locationId) {
+        LocationId = locationId;
+    }
+
+    internal void MakeInvitationAccepted(EventInvitationId invitationId) {
+        // Here we are sure that the invitation exists
+        EventInvitation invitation = EventInvitations.First(invitation =>
+            invitation.Id.Equals(invitationId) && invitation.Status.Equals(JoinStatus.Pending));
+        invitation.Accept();
+    }
+
+    public void MakeInvitationDeclined(EventInvitationId invitationId) {
+        // Here we are sure that the invitation exists
+        EventInvitation invitation = EventInvitations.First(invitation =>
+            invitation.Id.Equals(invitationId));
+        invitation.Decline();
+    }
+
+
+    internal Result AddIntendedParticipant(GuestId guestId) {
+        // Only active event can call this method, so we are sure that the duration is not null
+        if (Duration!.StartDateTime < _systemTime.CurrentTime()) {
+            return Error.BadRequest(ErrorMessage.EventHasAlreadyStarted);
+        }
+
+        IntendedParticipants.Add(guestId);
+        return Result.Success();
+    }
+
+    internal void AddInvitation(EventInvitation invitation) {
+        EventInvitations.Add(invitation);
+    }
 
     internal void SetTitle(EventTitle eventTitle) {
         Title = eventTitle;
     }
 
     internal Result SetStatusToReady() {
-        Result result = Result.AsBuilder(ErrorCode.BadRequest)
+        Result result = Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(
                 () => !Description.Equals(EventDescription.Default()),
                 ErrorMessage.DescriptionMustBeSetBeforeMakingAnEventReady
@@ -94,13 +211,17 @@ public class VeaEvent : Aggregate<EventId> {
                 ErrorMessage.TitleMustBeSetBeforeMakingAnEventReady
             )
             .AssertWithError(
-                () => _duration is not null,
+                () => Duration is not null,
                 ErrorMessage.EventDurationMustBeSetBeforeMakingAnEventReady
             )
             .AssertWithError(
-                () => _duration is not null && _duration.StartDateTime > DateTime.Now,
+                () => Duration is not null && Duration.StartDateTime > _systemTime.CurrentTime(),
                 ErrorMessage.EventInThePastCannotBeReady
             )
+            .AssertWithError(
+                ()=> LocationId is not null,
+                ErrorMessage.LocationMustBeSetBeforeMakingAnEventReady
+                )
             .Build();
 
         if (result.IsFailure) {
@@ -132,35 +253,32 @@ public class VeaEvent : Aggregate<EventId> {
         Visibility = visibility;
     }
 
-    internal EventVisibility GetVisibility() {
-        return Visibility;
-    }
-
 
     // Todo: Location logics will be implemented later..
-
-
     internal Result SetMaximumNumberOfGuests(EventMaxGuests maxGuests) {
-        if (MaxGuests.Value < maxGuests.Value) {
-            return Error.BadRequest(ErrorMessage.ActiveEventCannotReduceMaxGuests);
-        }
-
         MaxGuests = maxGuests;
         return Result.Success();
     }
 
-    internal EventMaxGuests GetMaximumNumberOfGuests() => MaxGuests;
-
-
-    internal void SetEventStatusState(IEventStatusState statusState) {
-        _currentStatusState = statusState;
+    internal void SetEventDuration(EventDuration eventDuration) {
+        Duration = eventDuration;
     }
 
-    internal EventDescription GetEventDescription() => Description;
+    internal bool IsFull() {
+        return GetNumberOfParticipants() >= MaxGuests.Value;
+    }
 
-    internal EventTitle GetEventTitle() => Title;
 
     private void SetStatus(IEventStatusState statusState) {
         _currentStatusState = statusState;
+    }
+
+
+    private int GetNumberOfParticipants() {
+        return IntendedParticipants.Count + GetNumberOfAcceptedInvitations();
+    }
+
+    private int GetNumberOfAcceptedInvitations() {
+        return EventInvitations.Count(invitation => invitation.Status.Equals(JoinStatus.Accepted));
     }
 }

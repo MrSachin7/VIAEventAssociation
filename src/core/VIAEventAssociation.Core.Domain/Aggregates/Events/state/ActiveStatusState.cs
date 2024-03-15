@@ -1,4 +1,7 @@
-﻿using ViaEventAssociation.Core.Tools.OperationResult;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
+using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+using VIAEventAssociation.Core.Domain.Aggregates.Locations;
+using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events.state;
 
@@ -36,6 +39,9 @@ internal class ActiveStatusState : IEventStatusState {
     }
 
     public Result UpdateMaxNumberOfGuests(VeaEvent veaEvent, EventMaxGuests maxGuests) {
+        if ( maxGuests.Value < veaEvent.MaxGuests.Value) {
+            return Error.BadRequest(ErrorMessage.ActiveEventCannotReduceMaxGuests);
+        }
         return veaEvent.SetMaximumNumberOfGuests(maxGuests);
     }
 
@@ -51,5 +57,32 @@ internal class ActiveStatusState : IEventStatusState {
     public Result MakeCancelled(VeaEvent veaEvent) {
         veaEvent.SetStatusToCancelled();
         return Result.Success();
+    }
+
+    public Result UpdateEventDuration(VeaEvent veaEvent, EventDuration eventDuration) {
+        return Error.BadRequest(ErrorMessage.ActiveEventIsUnmodifiable);
+    }
+
+    public Result InviteGuest(VeaEvent veaEvent, EventInvitation invitation) {
+        veaEvent.AddInvitation(invitation);
+        return Result.Success();
+    }
+
+    public Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId) {
+        return veaEvent.AddIntendedParticipant(guestId);
+    }
+
+    public Result AcceptInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
+         veaEvent.MakeInvitationAccepted(invitationId);
+         return Result.Success();
+    }
+
+    public Result DeclineInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
+        veaEvent.MakeInvitationDeclined(invitationId);
+        return Result.Success();
+    }
+
+    public Result UpdateLocation(VeaEvent veaEvent, LocationId locationId) {
+        return Error.BadRequest(ErrorMessage.ActiveEventIsUnmodifiable);
     }
 }

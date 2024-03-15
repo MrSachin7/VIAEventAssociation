@@ -29,12 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Common\Factories\" />
-      <Folder Include="Common\Values\" />
-      <Folder Include="Fakes\" />
-      <Folder Include="Features\Event\MakePrivate\" />
-      <Folder Include="Features\Event\MakePublic\" />
-      <Folder Include="Features\Event\SetMaxGuests\" />
+      <Folder Include="Features\Locations\" />
     </ItemGroup>
 
 </Project>

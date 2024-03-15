@@ -13,19 +13,19 @@ public class EventDuration : ValueObject {
     }
 
 
-    public static Result<EventDuration> From(DateTime startDateTime, DateTime endDateTime, ISystemTime systemTime) {
-        return Result<EventDuration>.AsBuilder(ErrorCode.BadRequest, new EventDuration(startDateTime, endDateTime))
+    public static Result<EventDuration> Create(DateTime startDateTime, DateTime endDateTime, ISystemTime systemTime) {
+        return Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(
                 () => StartDateBeforeEndDate(startDateTime, endDateTime),
                 ErrorMessage.StartTimeMustBeBeforeEndTime
             )
             .AssertWithError(
                 () => StartDateNotInPast(startDateTime, systemTime),
-                ErrorMessage.EventStartTimeCannotBeInPast
+                ErrorMessage.StartTimeCannotBeInPast
             )
             .AssertWithError(
                 () => EventDurationAtLeastOneHour(startDateTime, endDateTime),
-                ErrorMessage.EventDurationMustBeMoreThan1Hour
+                ErrorMessage.DurationMustBeMoreThan1Hour
             )
             .AssertWithError(
                 () => EventDurationAtMaxTenHour(startDateTime, endDateTime),
@@ -39,6 +39,7 @@ public class EventDuration : ValueObject {
                 () => EventCannotStartBefore8Am(startDateTime),
                 ErrorMessage.EventCannotStartBefore8Am
             )
+            .WithPayload(new EventDuration(startDateTime, endDateTime))
             .Build();
     }
 
