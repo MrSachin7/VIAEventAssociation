@@ -5,6 +5,8 @@ namespace UnitTests.Features.Events.CreateEvent;
 
 public class CreateEventTests {
 
+
+    // U1
     [Fact]
     public void CreateEvent_CreatesAnEmptyEvent_WithDefaultValues() {
         // Arrange and act

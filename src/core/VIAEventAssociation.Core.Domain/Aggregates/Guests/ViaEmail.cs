@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using VIAEventAssociation.Core.Domain.Common.Bases;
+using VIAEventAssociation.Core.Domain.temp;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Guests;
@@ -11,11 +12,10 @@ public class ViaEmail : ValueObject {
         Value = email.ToLower();
     }
 
-    internal static Result<ViaEmail> From(string email) {
+    internal static async Task<Result<ViaEmail>> Create(string email, IUniqueEmailChecker emailChecker) {
         Result<ViaEmail> validEmailResult = Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => EmailEndsWithViaDk(email), ErrorMessage.EmailMustEndWithViaDk)
             .AssertWithError(() => EmailIsInCorrectFormat(email), ErrorMessage.EmailNotInCorrectFormat)
-            .AssertWithError((() => EmailIsUnique(email)), ErrorMessage.EmailAlreadyAssociatedWithAnotherGuest)
             .WithPayload(new ViaEmail(email))
             .Build();
 
@@ -25,8 +25,9 @@ public class ViaEmail : ValueObject {
 
         ViaEmail viaEmail = validEmailResult.Payload!;
 
-        // This is not concatenated with the above result because they have different error codes and can never coexist together
-        if (!EmailIsUnique(viaEmail.Value)) {
+        // Todo : Should this method be async ? If yes then should the static factory method be async too ?
+        bool isUnique = await emailChecker.IsUnique(viaEmail.Value);
+        if (!isUnique){
             return Error.Conflict(ErrorMessage.EmailAlreadyAssociatedWithAnotherGuest);
         }
 
@@ -43,11 +44,6 @@ public class ViaEmail : ValueObject {
         return Regex.IsMatch(email, emailPattern);
     }
 
-    // Todo : Ask troels if this is belongs here ??
-    private static bool EmailIsUnique(string email) {
-        // Not implemented for now
-        return true;
-    }
 
     protected override IEnumerable<object> GetEqualityComponents() {
         yield return Value;

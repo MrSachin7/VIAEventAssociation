@@ -1,16 +1,21 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+﻿using UnitTests.Fakes;
+using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+using VIAEventAssociation.Core.Domain.temp;
 
 namespace UnitTests.Common.Factories;
 
 public static class GuestFactory {
+    private static readonly IUniqueEmailChecker _uniqueEmailChecker = new TestUniqueEmailChecker() {
+        InitialValue = true
+    };
 
     public static Guest GetValidGuest() {
-        GuestFirstName firstName = GuestFirstName.From("Sachin").Payload!;
-        GuestLastName lastName = GuestLastName.From("Baral").Payload!;
-        ViaEmail email = ViaEmail.From("310628@via.dk").Payload!;
+        GuestFirstName firstName = GuestFirstName.Create("Sachin").Payload!;
+        GuestLastName lastName = GuestLastName.Create("Baral").Payload!;
+        ViaEmail email = ViaEmail.Create("310628@via.dk", _uniqueEmailChecker).Result.Payload!;
 
 
-        return Guest.From(firstName, lastName, email);
+        return Guest.Create(firstName, lastName, email);
     }
 
 
@@ -21,7 +26,7 @@ public static class GuestFactory {
             new object[] {"TRMO@via.dk"},
             new object[] {"MWA@via.dk"},
         };
-    } 
+    }
 
     public static IEnumerable<object[]> GetInValidEmails() {
         return new List<object[]>() {
@@ -35,7 +40,7 @@ public static class GuestFactory {
             new object[] {"sachin@viaa.com"},
             new object[] {"310628@via.com"},
         };
-    } 
+    }
 
     public static IEnumerable<object[]> GetValidFirstName() {
         return new List<object[]>() {
@@ -54,7 +59,7 @@ public static class GuestFactory {
             new object[] {"a".PadRight(15, 'a')},
         };
     }
-    
+
     public static IEnumerable<object[]> GetInValidFirstName() {
         return new List<object[]>() {
             new object[] {""},
@@ -67,7 +72,7 @@ public static class GuestFactory {
             new object[] {"a".PadRight(100, 'a')},
             new object[] {"a".PadRight(50, 'a')},
         };
-    } 
+    }
 
     public static IEnumerable<object[]> GetValidLastName() {
         return new List<object[]>() {
@@ -79,7 +84,7 @@ public static class GuestFactory {
             new object[] {"a".PadRight(10, 'a')},
             new object[] {"a".PadRight(15, 'a')},
         };
-    } 
+    }
 
     public static IEnumerable<object[]> GetInValidLastName() {
         return new List<object[]>() {
@@ -93,7 +98,7 @@ public static class GuestFactory {
             new object[] {"a".PadRight(50, 'a')},
         };
     }
-    
+
     public static IEnumerable<object[]> GetValidProfileUri() {
         return new List<object[]>() {
             new object[] {"https://commons.wikimedia.org/wiki/Special:MyLanguage/Commons:Wiki_Loves_Folklore_2024"},
@@ -108,5 +113,4 @@ public static class GuestFactory {
             new object[] {"     "},
         };
     }
-
 }

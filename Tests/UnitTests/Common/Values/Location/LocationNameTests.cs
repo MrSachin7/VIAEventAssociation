@@ -11,7 +11,7 @@ public class LocationNameTests {
 
     public void GivenValidLocationName_CreateLocationName_ReturnsSuccessResult(string locationName) {
         // Arrange and act
-        Result<LocationName> result = LocationName.From(locationName);
+        Result<LocationName> result = LocationName.Create(locationName);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -26,7 +26,7 @@ public class LocationNameTests {
 
     public void GivenInValidLocationName_CreateLocationName_ReturnsFailureResult(string locationName) {
         // Arrange and act
-        Result<LocationName> result = LocationName.From(locationName);
+        Result<LocationName> result = LocationName.Create(locationName);
 
         // Assert
         Assert.True(result.IsFailure);

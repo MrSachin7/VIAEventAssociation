@@ -10,14 +10,14 @@ namespace UnitTests.Features.Services;
 
 public class UpdateEventMaxGuestsServiceTests {
     [Fact]
-    public void GivenEventInMaxGuestUpdatableCondition_WhenLocationHasEnoughMaxGuests_ThenReturnsSuccessResult() {
+    public async Task GivenEventInMaxGuestUpdatableCondition_WhenLocationHasEnoughMaxGuests_ThenReturnsSuccessResult() {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
         Location location = LocationFactory.GetValidLocation();
 
         // Arrange that the location has 30 max guests
         const int locationMaxGuests = 30;
-        LocationMaxGuests newLocationMaxGuests = LocationMaxGuests.From(locationMaxGuests).Payload!;
+        LocationMaxGuests newLocationMaxGuests = LocationMaxGuests.Create(locationMaxGuests).Payload!;
         location.UpdateLocationMaxGuests(newLocationMaxGuests);
         veaEvent.UpdateLocation(location.Id);
         Assert.Equal(locationMaxGuests, location.LocationMaxGuests.Value);
@@ -27,15 +27,15 @@ public class UpdateEventMaxGuestsServiceTests {
 
         Mock<ILocationRepository> locationRepo = new Mock<ILocationRepository>();
 
-        locationRepo.Setup(x => x.FindById(location.Id.GetValue())).Returns(location);
+        locationRepo.Setup(x => x.FindById(location.Id.GetValue())).ReturnsAsync(location);
         UpdateEventMaxGuestsService updateEventMaxGuestsService = new UpdateEventMaxGuestsService(locationRepo.Object);
 
 
         // Act
         const int newEventMaxGuests = 10;
-        EventMaxGuests newEventMaxGuestsObj = EventMaxGuests.From(newEventMaxGuests).Payload!;
+        EventMaxGuests newEventMaxGuestsObj = EventMaxGuests.Create(newEventMaxGuests).Payload!;
 
-        Result result = updateEventMaxGuestsService.Handle(veaEvent, newEventMaxGuestsObj);
+        Result result =  await updateEventMaxGuestsService.Handle(veaEvent, newEventMaxGuestsObj);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -44,14 +44,14 @@ public class UpdateEventMaxGuestsServiceTests {
     }
 
     [Fact]
-    public void GivenEventInMaxGuestUpdatableCondition_WhenLocationDoesNotHaveEnoughMaxGuests_ThenReturnsFailureResult() {
+    public async Task GivenEventInMaxGuestUpdatableCondition_WhenLocationDoesNotHaveEnoughMaxGuests_ThenReturnsFailureResult() {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
         Location location = LocationFactory.GetValidLocation();
 
         // Arrange that the location has 30 max guests
         const int locationMaxGuests = 30;
-        LocationMaxGuests newLocationMaxGuests = LocationMaxGuests.From(locationMaxGuests).Payload!;
+        LocationMaxGuests newLocationMaxGuests = LocationMaxGuests.Create(locationMaxGuests).Payload!;
         location.UpdateLocationMaxGuests(newLocationMaxGuests);
         veaEvent.UpdateLocation(location.Id);
         Assert.Equal(locationMaxGuests, location.LocationMaxGuests.Value);
@@ -60,15 +60,15 @@ public class UpdateEventMaxGuestsServiceTests {
 
 
         Mock<ILocationRepository> locationRepo = new Mock<ILocationRepository>();
-        locationRepo.Setup(x => x.FindById(location.Id.GetValue())).Returns(location);
+        locationRepo.Setup(x => x.FindById(location.Id.GetValue())).ReturnsAsync(location);
         UpdateEventMaxGuestsService updateEventMaxGuestsService = new UpdateEventMaxGuestsService(locationRepo.Object);
 
 
         // Act with max guests more than location allows
         const int newEventMaxGuests = 35;
-        EventMaxGuests newEventMaxGuestsObj = EventMaxGuests.From(newEventMaxGuests).Payload!;
+        EventMaxGuests newEventMaxGuestsObj = EventMaxGuests.Create(newEventMaxGuests).Payload!;
 
-        Result result = updateEventMaxGuestsService.Handle(veaEvent, newEventMaxGuestsObj);
+        Result result =await updateEventMaxGuestsService.Handle(veaEvent, newEventMaxGuestsObj);
 
         // Assert
         Assert.True(result.IsFailure);

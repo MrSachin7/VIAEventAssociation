@@ -43,7 +43,7 @@ public static class EventFactory {
     }
 
     public static EventTitle GetValidEventTitle() {
-        return EventTitle.From("Valid Title").Payload!;
+        return EventTitle.Create("Valid Title").Payload!;
     }
 
 
@@ -76,7 +76,7 @@ public static class EventFactory {
     }
 
     public static EventDescription GetValidEventDescription() {
-        return EventDescription.From("Valid Description").Payload!;
+        return EventDescription.Create("Valid Description").Payload!;
     }
 
     public static IEnumerable<object[]> GetValidEventDescriptions() {
@@ -106,7 +106,7 @@ public static class EventFactory {
             systemTime.CurrentTime().AddDays(1).Day, 8, 0, 0);
         DateTime validEndTime = new DateTime(systemTime.CurrentTime().Year, systemTime.CurrentTime().Month,
             systemTime.CurrentTime().AddDays(1).Day, 12, 0, 0);
-        return EventDuration.From(validStartTime, validEndTime, systemTime).Payload!;
+        return EventDuration.Create(validStartTime, validEndTime, systemTime).Payload!;
     }
 
     // Any method using this data should be using the TestSystemTime
@@ -166,7 +166,7 @@ public static class EventFactory {
         DateTime start4 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 8, 0, 0);
         DateTime end4 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 18, 0, 1);
 
-        // Duration 5: Start ime before 8am 
+        // Duration 5: Start time before 8am 
         DateTime start5 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 4, 0, 0);
         DateTime end5 = new DateTime(currentTime.Year, currentTime.Month, currentTime.AddDays(1).Day, 9, 0, 0);
 
@@ -210,21 +210,16 @@ public static class EventFactory {
 
     public static void ArrangeFullEvent(VeaEvent veaEvent) {
         // Arrange a full event
+        // Cannot add inside an inactive event
+        if (!veaEvent.Status.Equals(EventStatus.Active)) return;
+
         for (int i = 0; i < veaEvent.MaxGuests.Value; i++) {
             // Since we have a different id, it will persist
 
             // This makes sure that we have both accepted invites and intended participants
-            if (veaEvent.Status.Equals(EventStatus.Active)) {
-                if (veaEvent.Visibility.Equals(EventVisibility.Public)) {
-                    if (i % 2 == 0) {
-                        veaEvent.ParticipateGuest(GuestFactory.GetValidGuest().Id);
-                    }
-                    else {
-                        Guest guest = GuestFactory.GetValidGuest();
-                        EventInvitation invitation = EventInvitation.From(guest.Id);
-                        veaEvent.InviteGuest(invitation);
-                        veaEvent.AcceptInvitation(invitation.Id);
-                    }
+            if (veaEvent.Visibility.Equals(EventVisibility.Public)) {
+                if (i % 2 == 0) {
+                    veaEvent.ParticipateGuest(GuestFactory.GetValidGuest().Id);
                 }
                 else {
                     Guest guest = GuestFactory.GetValidGuest();
@@ -232,6 +227,13 @@ public static class EventFactory {
                     veaEvent.InviteGuest(invitation);
                     veaEvent.AcceptInvitation(invitation.Id);
                 }
+            }
+            // If private, invite and accept all
+            else {
+                Guest guest = GuestFactory.GetValidGuest();
+                EventInvitation invitation = EventInvitation.From(guest.Id);
+                veaEvent.InviteGuest(invitation);
+                veaEvent.AcceptInvitation(invitation.Id);
             }
         }
 

@@ -11,7 +11,7 @@ public class UpdateEventDescriptionTests {
     public void GivenEventInADraftStatus_WhenUpdatingDescription_ThenReturnsSuccessResult(string description) {
         // Arrange with a draft event
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        EventDescription eventDescription = EventDescription.From(description).Payload!;
+        EventDescription eventDescription = EventDescription.Create(description).Payload!;
 
         // Act
         Result result = veaEvent.UpdateDescription(eventDescription);
@@ -26,7 +26,7 @@ public class UpdateEventDescriptionTests {
     public void GivenEventInAReadyStatus_WhenUpdatingDescription_ThenReturnsSuccessResult_AndTheEventIsInDraftStatus(string description) {
         // Arrange with a draft event
         VeaEvent veaEvent = EventFactory.GetReadyEvent();
-        EventDescription eventDescription = EventDescription.From(description).Payload!;
+        EventDescription eventDescription = EventDescription.Create(description).Payload!;
 
         // Act
         Result result = veaEvent.UpdateDescription(eventDescription);
@@ -45,7 +45,7 @@ public class UpdateEventDescriptionTests {
         // Arrange with a draft event
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         EventDescription initialDescription = veaEvent.Description;
-        EventDescription eventDescription = EventDescription.From(description).Payload!;
+        EventDescription eventDescription = EventDescription.Create(description).Payload!;
 
         // Act
         Result result = veaEvent.UpdateDescription(eventDescription);
@@ -65,7 +65,7 @@ public class UpdateEventDescriptionTests {
         // Arrange with a draft event
         VeaEvent veaEvent = EventFactory.GetCancelledEvent();
         EventDescription initialDescription = veaEvent.Description;
-        EventDescription eventDescription = EventDescription.From(description).Payload!;
+        EventDescription eventDescription = EventDescription.Create(description).Payload!;
 
         // Act
         Result result = veaEvent.UpdateDescription(eventDescription);

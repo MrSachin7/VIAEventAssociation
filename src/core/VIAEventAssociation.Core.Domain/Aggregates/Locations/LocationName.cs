@@ -12,7 +12,7 @@ public class LocationName : ValueObject{
         Value = name;
     }
 
-    public static Result<LocationName> From(string name) {
+    public static Result<LocationName> Create(string name) {
         return Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => ValidLocationName(name), ErrorMessage.InvalidLocationName)
             .WithPayload(new LocationName(name))

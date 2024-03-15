@@ -9,7 +9,7 @@ public class GuestProfilePictureUriTests {
     [MemberData(nameof(GuestFactory.GetValidProfileUri), MemberType = typeof(GuestFactory))]
     public void GivenValidProfileUri_CreateGuestProfileUri_ReturnsSuccessResult(string profileUri) {
         // Arrange and act
-        Result<ProfilePictureUrl> result = ProfilePictureUrl.From(profileUri);
+        Result<ProfilePictureUrl> result = ProfilePictureUrl.Create(profileUri);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -20,7 +20,7 @@ public class GuestProfilePictureUriTests {
     [MemberData(nameof(GuestFactory.GetInvalidProfileUri), MemberType = typeof(GuestFactory))]
     public void GivenInvalidProfileUri_CreateGuestProfileUri_ReturnsFailureResult(string profileUri) {
         // Arrange and act
-        Result<ProfilePictureUrl> result = ProfilePictureUrl.From(profileUri);
+        Result<ProfilePictureUrl> result = ProfilePictureUrl.Create(profileUri);
 
         // Assert
         Assert.True(result.IsFailure);

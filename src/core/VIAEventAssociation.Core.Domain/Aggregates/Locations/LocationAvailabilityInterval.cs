@@ -18,7 +18,7 @@ public class LocationAvailabilityInterval : ValueObject {
         EndTime = endTime;
     }
 
-    public static Result<LocationAvailabilityInterval> From(DateTime startTime, DateTime endTime,
+    public static Result<LocationAvailabilityInterval> Create(DateTime startTime, DateTime endTime,
         ISystemTime systemTime) {
         return Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(

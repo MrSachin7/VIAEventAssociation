@@ -13,7 +13,7 @@ public class EventDuration : ValueObject {
     }
 
 
-    public static Result<EventDuration> From(DateTime startDateTime, DateTime endDateTime, ISystemTime systemTime) {
+    public static Result<EventDuration> Create(DateTime startDateTime, DateTime endDateTime, ISystemTime systemTime) {
         return Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(
                 () => StartDateBeforeEndDate(startDateTime, endDateTime),

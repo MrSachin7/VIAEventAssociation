@@ -11,7 +11,7 @@ public class EventTitleTests {
         // Arrange
         // and
         // Act
-        Result<EventTitle> result = EventTitle.From(title);
+        Result<EventTitle> result = EventTitle.Create(title);
         Assert.True(result.IsSuccess);
         Assert.True(result.Payload!.Value.Equals(title));
     }
@@ -22,7 +22,7 @@ public class EventTitleTests {
         // Arrange
         // and
         // Act
-        Result<EventTitle> result = EventTitle.From(title);
+        Result<EventTitle> result = EventTitle.Create(title);
         Assert.True(result.IsFailure);
         Assert.Contains(ErrorMessage.TitleMustBeBetween3And75Chars, result.Error!.Messages);
     }

@@ -10,7 +10,7 @@ public class EventDurationTests {
     [MemberData(nameof(EventFactory.GetValidEventDurations), MemberType = typeof(EventFactory))]
     public void GivenValidStartAndEndTime_EventDuration_CanBeCreated(DateTime validStartTime, DateTime validEndTime) {
         ISystemTime systemTime = new TestSystemTime();
-        Result<EventDuration> result = EventDuration.From(validStartTime, validEndTime, systemTime);
+        Result<EventDuration> result = EventDuration.Create(validStartTime, validEndTime, systemTime);
 
         Assert.True(result.IsSuccess);
         Assert.Equal(validStartTime, result.Payload!.StartDateTime);
@@ -21,7 +21,7 @@ public class EventDurationTests {
     [MemberData(nameof(EventFactory.GetInValidEventDurations), MemberType = typeof(EventFactory))]
     public void GivenInValidStartAndEndTime_EventDuration_CannotBeCreated(DateTime validStartTime, DateTime validEndTime) {
         ISystemTime systemTime = new TestSystemTime();
-        Result<EventDuration> result = EventDuration.From(validStartTime, validEndTime, systemTime);
+        Result<EventDuration> result = EventDuration.Create(validStartTime, validEndTime, systemTime);
 
 
         Assert.True(result.IsFailure);
@@ -37,7 +37,7 @@ public class EventDurationTests {
         DateTime validEndTime = testCurrentTime.AddHours(5);
 
         // Act
-        Result<EventDuration> result = EventDuration.From(pastStartTime, validEndTime, systemTime);
+        Result<EventDuration> result = EventDuration.Create(pastStartTime, validEndTime, systemTime);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -54,7 +54,7 @@ public class EventDurationTests {
         DateTime endTime = testCurrentTime.AddDays(2).AddHours(-1);
 
         // Act
-        Result<EventDuration> result = EventDuration.From(startTime, endTime, systemTime);
+        Result<EventDuration> result = EventDuration.Create(startTime, endTime, systemTime);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -71,7 +71,7 @@ public class EventDurationTests {
         DateTime endTime = testCurrentTime.AddDays(2).AddMinutes(59);
 
         // Act
-        Result<EventDuration> result = EventDuration.From(startTime, endTime, systemTime);
+        Result<EventDuration> result = EventDuration.Create(startTime, endTime, systemTime);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -88,7 +88,7 @@ public class EventDurationTests {
         DateTime endTime = testCurrentTime.AddDays(2).AddHours(10).AddMinutes(1);
 
         // Act
-        Result<EventDuration> result = EventDuration.From(startTime, endTime, systemTime);
+        Result<EventDuration> result = EventDuration.Create(startTime, endTime, systemTime);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -105,7 +105,7 @@ public class EventDurationTests {
         DateTime endTime = testCurrentTime.AddDays(2).AddHours(7);
 
         // Act
-        Result<EventDuration> result = EventDuration.From(startTime, endTime, systemTime);
+        Result<EventDuration> result = EventDuration.Create(startTime, endTime, systemTime);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -122,7 +122,7 @@ public class EventDurationTests {
         DateTime endTime = testCurrentTime.AddDays(2).AddHours(9);
 
         // Act
-        Result<EventDuration> result = EventDuration.From(startTime, endTime, systemTime);
+        Result<EventDuration> result = EventDuration.Create(startTime, endTime, systemTime);
 
         // Assert
         Assert.True(result.IsFailure);

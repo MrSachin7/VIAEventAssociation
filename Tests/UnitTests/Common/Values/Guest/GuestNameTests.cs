@@ -9,7 +9,7 @@ public class GuestNameTests {
     [MemberData(nameof(GuestFactory.GetValidFirstName), MemberType = typeof(GuestFactory))]
     public void GivenValidFirstName_CreateGuestFirstName_ReturnsSuccessResult(string firstName) {
         // Arrange and act
-        Result<GuestFirstName> result = GuestFirstName.From(firstName);
+        Result<GuestFirstName> result = GuestFirstName.Create(firstName);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -24,7 +24,7 @@ public class GuestNameTests {
     [MemberData(nameof(GuestFactory.GetInValidFirstName), MemberType = typeof(GuestFactory))]
     public void GivenInValidFirstName_CreateGuestFirstName_ReturnsFailureResult(string lastName) {
         // Arrange and act
-        Result<GuestFirstName> result = GuestFirstName.From(lastName);
+        Result<GuestFirstName> result = GuestFirstName.Create(lastName);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -35,7 +35,7 @@ public class GuestNameTests {
     [MemberData(nameof(GuestFactory.GetValidLastName), MemberType = typeof(GuestFactory))]
     public void GivenValidLastName_CreateGuestLastName_ReturnsSuccessResult(string lastName) {
         // Arrange and act
-        Result<GuestFirstName> result = GuestFirstName.From(lastName);
+        Result<GuestFirstName> result = GuestFirstName.Create(lastName);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -50,7 +50,7 @@ public class GuestNameTests {
     [MemberData(nameof(GuestFactory.GetInValidLastName), MemberType = typeof(GuestFactory))]
     public void GivenInValidLastName_CreateGuestLastName_ReturnsFailureResult(string lastName) {
         // Arrange and act
-        Result<GuestFirstName> result = GuestFirstName.From(lastName);
+        Result<GuestFirstName> result = GuestFirstName.Create(lastName);
 
         // Assert
         Assert.True(result.IsFailure);

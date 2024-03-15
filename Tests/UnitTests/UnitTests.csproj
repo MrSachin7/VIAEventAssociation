@@ -29,7 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Fakes\" />
       <Folder Include="Features\Locations\" />
     </ItemGroup>
 

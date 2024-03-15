@@ -60,8 +60,8 @@ public static class LocationFactory {
     }
 
     public static Location GetValidLocation() {
-        LocationName name = LocationName.From("A01.01").Payload!;
-        return Location.From(name);
+        LocationName name = LocationName.Create("A01.01").Payload!;
+        return Location.Create(name);
     }   
     
 }

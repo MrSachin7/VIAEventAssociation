@@ -17,7 +17,7 @@ public class UpdateEventDurationTests(ITestOutputHelper testOutputHelper) {
         // Arrange with a ready event
         VeaEvent veaEvent = EventFactory.GetReadyEvent();
         ISystemTime systemTime = new TestSystemTime();
-        EventDuration eventDuration = EventDuration.From(validStartTime, validEndTime, systemTime).Payload!;
+        EventDuration eventDuration = EventDuration.Create(validStartTime, validEndTime, systemTime).Payload!;
 
         // Act
         Result result = veaEvent.UpdateEventDuration(eventDuration);

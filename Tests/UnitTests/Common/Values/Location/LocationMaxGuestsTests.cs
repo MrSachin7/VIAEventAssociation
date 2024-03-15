@@ -9,7 +9,7 @@ public class LocationMaxGuestsTests {
     [Theory]
     [MemberData(nameof(LocationFactory.GetValidLocationMaxGuests), MemberType = typeof(LocationFactory))]
     public void GivenValidMaxGuests_LocationMaxGuests_CanBeCreated(int validMaxGuests) {
-        Result<LocationMaxGuests> result = LocationMaxGuests.From(validMaxGuests);
+        Result<LocationMaxGuests> result = LocationMaxGuests.Create(validMaxGuests);
 
         Assert.True(result.IsSuccess);
         Assert.Equal(validMaxGuests, result.Payload!.Value);
@@ -18,7 +18,7 @@ public class LocationMaxGuestsTests {
     [Theory]
     [MemberData(nameof(LocationFactory.GetInvalidLocationMaxGuests), MemberType = typeof(LocationFactory))]
     public void GivenInValidMaxGuests_LocationMaxGuests_CannotBeCreated(int validMaxGuests) {
-        Result<LocationMaxGuests> result = LocationMaxGuests.From(validMaxGuests);
+        Result<LocationMaxGuests> result = LocationMaxGuests.Create(validMaxGuests);
 
         Assert.True(result.IsFailure);
     }

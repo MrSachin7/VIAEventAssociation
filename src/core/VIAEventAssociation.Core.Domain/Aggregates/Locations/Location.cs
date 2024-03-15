@@ -13,7 +13,7 @@ public class Location : Aggregate<LocationId> {
         LocationMaxGuests = LocationMaxGuests.Default();
     }
 
-    public static Location From(LocationName locationName) {
+    public static Location Create(LocationName locationName) {
         return new Location(LocationId.New(), locationName);
     }
 

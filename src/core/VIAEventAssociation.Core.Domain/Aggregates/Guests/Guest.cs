@@ -10,8 +10,6 @@ public class Guest : Aggregate<GuestId> {
     internal GuestFirstName FirstName { get; private set; }
     internal GuestLastName LastName { get; private set; }
 
-    internal string FullName => $"{FirstName.Value} {LastName.Value}";
-
     internal ViaEmail Email { get; private set; }
 
     private Guest(GuestFirstName firstName,GuestLastName lastName, ViaEmail email, ProfilePictureUrl? profilePictureUrl) {
@@ -29,11 +27,7 @@ public class Guest : Aggregate<GuestId> {
         Email = email;
     }
 
-    public static Guest From(GuestFirstName firstName, GuestLastName lastName, ViaEmail email, ProfilePictureUrl? profilePictureUrl) {
-        return new Guest(firstName, lastName, email, profilePictureUrl);
-    }
-
-    public static Guest From(GuestFirstName firstName, GuestLastName lastName, ViaEmail email) {
+    public static Guest Create(GuestFirstName firstName, GuestLastName lastName, ViaEmail email) {
         return new Guest(firstName, lastName, email);
     }
 }

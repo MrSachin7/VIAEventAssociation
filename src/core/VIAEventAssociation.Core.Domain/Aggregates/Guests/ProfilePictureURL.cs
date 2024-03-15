@@ -10,7 +10,7 @@ public class ProfilePictureUrl : ValueObject {
         Url = url;
     }
 
-    internal static Result<ProfilePictureUrl> From(string url) {
+    internal static Result<ProfilePictureUrl> Create(string url) {
         bool isValid = Uri.TryCreate(url, UriKind.Absolute, out Uri? createdUrl);
         if (!isValid) {
             return Error.BadRequest(ErrorMessage.InvalidUrl);

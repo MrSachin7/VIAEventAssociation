@@ -14,7 +14,7 @@ public class UpdateEventMaxGuestsServiceTests {
     public void GivenEventOnStateDraft_WhenUpdatingMaxGuests_ReturnsSuccessResult(int validMaxGuests) {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        EventMaxGuests maxGuests = EventMaxGuests.From(validMaxGuests).Payload!;
+        EventMaxGuests maxGuests = EventMaxGuests.Create(validMaxGuests).Payload!;
 
         // Act
         Result result = veaEvent.UpdateMaximumNumberOfGuests(maxGuests);
@@ -30,7 +30,7 @@ public class UpdateEventMaxGuestsServiceTests {
     public void GivenEventOnStateReady_WhenUpdatingMaxGuests_ReturnsSuccessResult(int validMaxGuests) {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetReadyEvent();
-        EventMaxGuests maxGuests = EventMaxGuests.From(validMaxGuests).Payload!;
+        EventMaxGuests maxGuests = EventMaxGuests.Create(validMaxGuests).Payload!;
 
         // Act
         Result result = veaEvent.UpdateMaximumNumberOfGuests(maxGuests);
@@ -51,7 +51,7 @@ public class UpdateEventMaxGuestsServiceTests {
         // Act
         // Default is 5
         int validMaxGuestsMoreThanDefault5 = 10;
-        EventMaxGuests maxGuests = EventMaxGuests.From(validMaxGuestsMoreThanDefault5).Payload!;
+        EventMaxGuests maxGuests = EventMaxGuests.Create(validMaxGuestsMoreThanDefault5).Payload!;
         Result result = veaEvent.UpdateMaximumNumberOfGuests(maxGuests);
 
         // Assert    
@@ -65,14 +65,14 @@ public class UpdateEventMaxGuestsServiceTests {
     public void
         GivenEventOnStateDraft_WhenUpdatingMaxGuests_AndNewMaxGuestsIsSmallerThanPrevious_ReturnsSuccessResult() {
         // Arrange with 10 max guests
-        EventMaxGuests previousMaxGuests = EventMaxGuests.From(10).Payload!;
+        EventMaxGuests previousMaxGuests = EventMaxGuests.Create(10).Payload!;
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
         veaEvent.UpdateMaximumNumberOfGuests(previousMaxGuests);
         Assert.Equal(previousMaxGuests, veaEvent.MaxGuests);
         Assert.Equal(EventStatus.Draft, veaEvent.Status);
 
         // Act decreasing to 9
-        EventMaxGuests newMaxGuests = EventMaxGuests.From(9).Payload!;
+        EventMaxGuests newMaxGuests = EventMaxGuests.Create(9).Payload!;
         Result result = veaEvent.UpdateMaximumNumberOfGuests(newMaxGuests);
 
         // Assert    
@@ -84,14 +84,14 @@ public class UpdateEventMaxGuestsServiceTests {
     public void
         GivenEventOnStateReady_WhenUpdatingMaxGuests_AndNewMaxGuestsIsSmallerThanPrevious_ReturnsSuccessResult() {
         // Arrange with 10 max guests
-        EventMaxGuests previousMaxGuests = EventMaxGuests.From(10).Payload!;
+        EventMaxGuests previousMaxGuests = EventMaxGuests.Create(10).Payload!;
         VeaEvent veaEvent = EventFactory.GetReadyEvent();
         veaEvent.UpdateMaximumNumberOfGuests(previousMaxGuests);
         Assert.Equal(previousMaxGuests, veaEvent.MaxGuests);
         Assert.Equal(EventStatus.Ready, veaEvent.Status);
 
         // Act decreasing to 9
-        EventMaxGuests newMaxGuests = EventMaxGuests.From(9).Payload!;
+        EventMaxGuests newMaxGuests = EventMaxGuests.Create(9).Payload!;
         Result result = veaEvent.UpdateMaximumNumberOfGuests(newMaxGuests);
 
         // Assert    
@@ -103,14 +103,14 @@ public class UpdateEventMaxGuestsServiceTests {
     public void
         GivenEventOnStateActive_WhenUpdatingMaxGuests_AndNewMaxGuestsIsSmallerThanPrevious_ReturnsFailureResult() {
         // Arrange with 10 max guests
-        EventMaxGuests previousMaxGuests = EventMaxGuests.From(10).Payload!;
+        EventMaxGuests previousMaxGuests = EventMaxGuests.Create(10).Payload!;
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         veaEvent.UpdateMaximumNumberOfGuests(previousMaxGuests);
         Assert.Equal(previousMaxGuests, veaEvent.MaxGuests);
         Assert.Equal(EventStatus.Active, veaEvent.Status);
 
         // Act decreasing to 9
-        EventMaxGuests newMaxGuests = EventMaxGuests.From(9).Payload!;
+        EventMaxGuests newMaxGuests = EventMaxGuests.Create(9).Payload!;
         Result result = veaEvent.UpdateMaximumNumberOfGuests(newMaxGuests);
 
         // Assert    
@@ -126,7 +126,7 @@ public class UpdateEventMaxGuestsServiceTests {
 
 
         // Act decreasing to 9
-        EventMaxGuests newMaxGuests = EventMaxGuests.From(9).Payload!;
+        EventMaxGuests newMaxGuests = EventMaxGuests.Create(9).Payload!;
         Result result = veaEvent.UpdateMaximumNumberOfGuests(newMaxGuests);
 
         // Assert    

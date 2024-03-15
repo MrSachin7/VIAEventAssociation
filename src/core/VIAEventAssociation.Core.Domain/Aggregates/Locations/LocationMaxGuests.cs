@@ -15,7 +15,7 @@ public class LocationMaxGuests : ValueObject{
         return new LocationMaxGuests(defaultMaxGuests);
     }
 
-    public static Result<LocationMaxGuests> From(int value) {
+    public static Result<LocationMaxGuests> Create(int value) {
         return Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => NoLessThan5(value), ErrorMessage.MaxGuestsNotLessThan5)
             .AssertWithError(() => NoMoreThan50(value), ErrorMessage.MaxGuestsNotMoreThan50)

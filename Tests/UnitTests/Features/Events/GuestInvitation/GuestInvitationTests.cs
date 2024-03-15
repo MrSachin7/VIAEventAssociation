@@ -6,6 +6,9 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.GuestInvitation;
 
+/*
+ * 
+ */
 public class GuestInvitationTests {
     
     [Fact]

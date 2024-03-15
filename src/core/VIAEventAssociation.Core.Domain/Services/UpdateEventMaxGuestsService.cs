@@ -13,12 +13,12 @@ public class UpdateEventMaxGuestsService {
         _locationRepository = locationRepository;
     }
 
-    public Result Handle(VeaEvent veaEvent, EventMaxGuests maxGuests) {
+    public async Task<Result> Handle(VeaEvent veaEvent, EventMaxGuests maxGuests) {
         LocationId? locationId = veaEvent.LocationId;
         if (locationId is null) {
             return Error.BadRequest(ErrorMessage.EventLocationIsNotSet);
         }
-        Location location = _locationRepository.FindById(locationId.GetValue());
+        Location location = await _locationRepository.FindById(locationId.GetValue());
         if (location.LocationMaxGuests.Value < maxGuests.Value) {
             return Error.BadRequest(ErrorMessage.EventMaxGuestsCannotExceedLocationMaxGuests);
         }
