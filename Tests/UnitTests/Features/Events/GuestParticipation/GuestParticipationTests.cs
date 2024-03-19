@@ -112,12 +112,10 @@ public class GuestParticipationTests {
         DateTime endDateTime = systemTime.CurrentTime().AddDays(-1).AddHours(11);
 
 
-        // Todo: I have tried my best to hack a solution to have a valid active event with a past start date.
-        // Todo: I have given different systemtimes for EventDuration and the veaEvent itself.
-        // Todo: Extremely hacky, but i could not come up with better solution.
+ 
         EventDuration eventDuration = EventDuration.Create(startDateTime, endDateTime, new FakeSystemTime()).Payload!;
 
-        // Todo: Also here i am invoking the internal setter for the state to force my way in.
+        // Also here i am invoking the internal setter for the state to force my way in.
         veaEvent.SetEventDuration(eventDuration);
         veaEvent.MakeActive();
 

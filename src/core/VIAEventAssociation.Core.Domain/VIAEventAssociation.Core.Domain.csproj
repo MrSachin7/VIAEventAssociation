@@ -7,11 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Common\Contracts\" />
-      <Folder Include="Common\Values\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Tools\ViaEventAssociation.Core.Tools.OperationResult\ViaEventAssociation.Core.Tools.OperationResult.csproj" />
     </ItemGroup>
 

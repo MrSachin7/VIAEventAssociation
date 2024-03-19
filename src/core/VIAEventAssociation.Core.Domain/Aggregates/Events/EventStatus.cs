@@ -3,7 +3,6 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
-// TODO: Ask troels if these enums (implemented as Enumerations) are also valueobjects
 public class EventStatus : Enumeration {
 
     internal static readonly EventStatus Draft

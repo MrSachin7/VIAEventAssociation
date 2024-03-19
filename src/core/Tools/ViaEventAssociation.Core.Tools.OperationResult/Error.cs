@@ -29,8 +29,6 @@ public class Error {
 
     internal Error(ErrorCode errorCode, IList<ErrorMessage> messages) {
         ErrorCode = errorCode;
-
-        // TODO: Ask troels if the exception okay at this point because a developer is not supposed to do this.
         if (messages.Count == 0) {
             throw new Exception("At least one error message is required to create an error");
         }
@@ -39,8 +37,6 @@ public class Error {
 
     private Error(ErrorCode errorCode, ErrorMessage message) {
         ErrorCode = errorCode;
-
-        // Todo : Ask Troels if i should have a validation to check message and errorCode are not null or if the non-nullable type is enough
         Messages = new List<ErrorMessage> {message};
     }
 

@@ -47,7 +47,6 @@ public class EventDuration : ValueObject {
         return startDateTime < endDateTime;
     }
 
-    // TODO : ask troels : Should i take ISystemTime here as a parameter , if yes then than would mean I take it as a param on the static factory method too.
     private static bool StartDateNotInPast(DateTime startDateTime, ISystemTime systemTime) {
         return startDateTime > systemTime.CurrentTime();
     }

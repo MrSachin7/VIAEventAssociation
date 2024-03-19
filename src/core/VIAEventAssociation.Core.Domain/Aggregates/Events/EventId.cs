@@ -15,7 +15,6 @@ public class EventId : Id {
         return new EventId(Guid.NewGuid());
     }
 
-    // Todo : Ask troels is this considered a business logic ?? Or should i throw an exception in this case
     internal static Result<EventId> From(string id) {
         Result<Guid> result = CanParseGuid(id);
         return result.IsFailure ? result.Error! : new EventId(result.Payload);

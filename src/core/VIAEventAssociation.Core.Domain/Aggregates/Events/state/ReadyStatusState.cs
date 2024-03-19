@@ -50,7 +50,6 @@ internal class ReadyStatusState : IEventStatusState {
         return Result.Success();
     }
 
-    // Todo: the use case document has no info. Should i return error or success ?
     public Result MakeReady(VeaEvent veaEvent) {
         return Result.Success();
     }

@@ -28,7 +28,7 @@ public class VeaEvent : Aggregate<EventId> {
 
     internal LocationId? LocationId { get; private set; }
 
-    // Todo: ask if this is the way of handling systemtime
+    // Todo: Should i take this from the constructor once or on the methods that i need ?
     private ISystemTime _systemTime;
 
 
@@ -41,7 +41,6 @@ public class VeaEvent : Aggregate<EventId> {
     public static VeaEvent Empty(ISystemTime systemTime) {
         EventId id = EventId.New();
         IEventStatusState draftStatus = DraftStatusState.GetInstance();
-        // Todo : ask troels if this default logic should be here or in the eventmaxguests
         EventMaxGuests maxGuests = EventMaxGuests.Default();
         EventDescription description = EventDescription.Default();
         EventVisibility visibility = EventVisibility.Private;
@@ -254,7 +253,6 @@ public class VeaEvent : Aggregate<EventId> {
     }
 
 
-    // Todo: Location logics will be implemented later..
     internal Result SetMaximumNumberOfGuests(EventMaxGuests maxGuests) {
         MaxGuests = maxGuests;
         return Result.Success();

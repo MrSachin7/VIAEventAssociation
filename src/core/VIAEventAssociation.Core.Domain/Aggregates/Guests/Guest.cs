@@ -4,7 +4,6 @@ namespace VIAEventAssociation.Core.Domain.Aggregates.Guests;
 
 public class Guest : Aggregate<GuestId> {
 
-    // Todo: Id -10. Is profile picture mandatory?
     internal ProfilePictureUrl? ProfilePictureUrl { get; private set; }
 
     internal GuestFirstName FirstName { get; private set; }
