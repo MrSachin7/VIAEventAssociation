@@ -50,11 +50,11 @@ internal class ReadyStatusState : IEventStatusState {
         return Result.Success();
     }
 
-    public Result MakeReady(VeaEvent veaEvent) {
+    public Result MakeReady(VeaEvent veaEvent, ISystemTime systemTime) {
         return Result.Success();
     }
 
-    public Result MakeActive(VeaEvent veaEvent) {
+    public Result MakeActive(VeaEvent veaEvent, ISystemTime systemTime) {
         veaEvent.SetStatusToActive();
         return Result.Success();
     }
@@ -74,7 +74,7 @@ internal class ReadyStatusState : IEventStatusState {
         return Result.Success();
     }
 
-    public Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId) {
+    public Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId, ISystemTime systemTime) {
         return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeJoined);
 
     }

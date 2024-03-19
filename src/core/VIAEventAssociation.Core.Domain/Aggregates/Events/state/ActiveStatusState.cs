@@ -46,11 +46,11 @@ internal class ActiveStatusState : IEventStatusState {
     }
 
     // Todo: there is nothing in the use case description regarding the active state
-    public Result MakeReady(VeaEvent veaEvent) {
+    public Result MakeReady(VeaEvent veaEvent, ISystemTime systemTime) {
         return Error.BadRequest(ErrorMessage.ActiveEventCannotBeMadeReady);
     }
 
-    public Result MakeActive(VeaEvent veaEvent) {
+    public Result MakeActive(VeaEvent veaEvent, ISystemTime systemTime) {
         return Result.Success();
     }
 
@@ -68,8 +68,8 @@ internal class ActiveStatusState : IEventStatusState {
         return Result.Success();
     }
 
-    public Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId) {
-        return veaEvent.AddIntendedParticipant(guestId);
+    public Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId, ISystemTime systemTime) {
+        return veaEvent.AddIntendedParticipant(guestId, systemTime);
     }
 
     public Result AcceptInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {

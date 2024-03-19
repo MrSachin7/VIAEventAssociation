@@ -1,4 +1,5 @@
 ﻿using UnitTests.Common.Factories;
+using UnitTests.Common.Stubs;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Locations;
 using ViaEventAssociation.Core.Tools.OperationResult;
@@ -17,7 +18,7 @@ public class MakeEventReadyTests {
         veaEvent.UpdateLocation(LocationId.New());
 
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeReady(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -32,7 +33,7 @@ public class MakeEventReadyTests {
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
 
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeReady(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);
@@ -50,7 +51,7 @@ public class MakeEventReadyTests {
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
 
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeReady(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);
@@ -68,7 +69,7 @@ public class MakeEventReadyTests {
         veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
 
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeReady(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);
@@ -88,7 +89,7 @@ public class MakeEventReadyTests {
 
 
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeReady(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);
@@ -105,7 +106,7 @@ public class MakeEventReadyTests {
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
 
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeReady(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);
@@ -124,7 +125,7 @@ public class MakeEventReadyTests {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetReadyEvent();
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeReady(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -136,7 +137,7 @@ public class MakeEventReadyTests {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeReady(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);
@@ -149,7 +150,7 @@ public class MakeEventReadyTests {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetCancelledEvent();
         // Act
-        Result result = veaEvent.MakeReady();
+        Result result = veaEvent.MakeReady(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);

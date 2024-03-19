@@ -35,11 +35,11 @@ internal class CancelledStatusState : IEventStatusState {
         return Error.BadRequest(ErrorMessage.CancelledEventIsUnmodifiable);
     }
 
-    public Result MakeReady(VeaEvent veaEvent) {
+    public Result MakeReady(VeaEvent veaEvent, ISystemTime systemTime) {
         return Error.BadRequest(ErrorMessage.CancelledEventCannotBeMadeReady);
     }
 
-    public Result MakeActive(VeaEvent veaEvent) {
+    public Result MakeActive(VeaEvent veaEvent, ISystemTime systemTime) {
         return Error.BadRequest(ErrorMessage.CancelledEventCannotBeActivated);
     }
 
@@ -55,7 +55,7 @@ internal class CancelledStatusState : IEventStatusState {
         return Error.BadRequest(ErrorMessage.InvitationsCanOnlyBeMadeOnReadyOrActiveEvent);
     }
 
-    public Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId) {
+    public Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId, ISystemTime systemTime) {
         return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeJoined);
     }
 

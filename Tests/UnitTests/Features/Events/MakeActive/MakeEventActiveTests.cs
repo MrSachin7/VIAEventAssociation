@@ -1,4 +1,5 @@
 ﻿using UnitTests.Common.Factories;
+using UnitTests.Common.Stubs;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Locations;
 using ViaEventAssociation.Core.Tools.OperationResult;
@@ -11,7 +12,7 @@ public class MakeEventActiveTests {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetReadyEvent();
         // Act
-        Result result = veaEvent.MakeActive();
+        Result result = veaEvent.MakeActive(new TestSystemTime());
         // Assert
         Assert.True(result.IsSuccess);
         Assert.Equal(EventStatus.Active, veaEvent.Status);
@@ -28,7 +29,7 @@ public class MakeEventActiveTests {
         veaEvent.UpdateLocation(LocationId.New());
 
         // Act
-        Result result = veaEvent.MakeActive();
+        Result result = veaEvent.MakeActive(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -45,7 +46,7 @@ public class MakeEventActiveTests {
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
 
         // Act
-        Result result = veaEvent.MakeActive();
+        Result result = veaEvent.MakeActive(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);
@@ -64,7 +65,7 @@ public class MakeEventActiveTests {
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
 
         // Act
-        Result result = veaEvent.MakeActive();
+        Result result = veaEvent.MakeActive(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);
@@ -83,7 +84,7 @@ public class MakeEventActiveTests {
         veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
 
         // Act
-        Result result = veaEvent.MakeActive();
+        Result result = veaEvent.MakeActive(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);
@@ -99,7 +100,7 @@ public class MakeEventActiveTests {
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
 
         // Act
-        Result result = veaEvent.MakeActive();
+        Result result = veaEvent.MakeActive(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);
@@ -116,7 +117,7 @@ public class MakeEventActiveTests {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         // Act
-        Result result = veaEvent.MakeActive();
+        Result result = veaEvent.MakeActive(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -128,7 +129,7 @@ public class MakeEventActiveTests {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetCancelledEvent();
         // Act
-        Result result = veaEvent.MakeActive();
+        Result result = veaEvent.MakeActive(new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);

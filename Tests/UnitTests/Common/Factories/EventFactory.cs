@@ -8,8 +8,10 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 namespace UnitTests.Common.Factories;
 
 public static class EventFactory {
+
+    private static ISystemTime _systemTime = new TestSystemTime();
     public static VeaEvent GetDraftEvent() {
-        return VeaEvent.Empty(new TestSystemTime());
+        return VeaEvent.Empty();
     }
 
     public static VeaEvent GetReadyEvent() {
@@ -18,7 +20,7 @@ public static class EventFactory {
         veaEvent.UpdateTitle(GetValidEventTitle());
         veaEvent.UpdateEventDuration(GetValidEventDuration());
         veaEvent.UpdateLocation(LocationId.New());
-        veaEvent.MakeReady();
+        veaEvent.MakeReady(_systemTime);
 
         // Assert that the event is ready before returning
         Assert.Equal(EventStatus.Ready, veaEvent.Status);
@@ -27,7 +29,7 @@ public static class EventFactory {
 
     public static VeaEvent GetActiveEvent() {
         VeaEvent veaEvent = GetReadyEvent();
-        veaEvent.MakeActive();
+        veaEvent.MakeActive(_systemTime);
         // Assert that the event is active before returning
         Assert.Equal(EventStatus.Active, veaEvent.Status);
         return veaEvent;
@@ -219,7 +221,7 @@ public static class EventFactory {
             // This makes sure that we have both accepted invites and intended participants
             if (veaEvent.Visibility.Equals(EventVisibility.Public)) {
                 if (i % 2 == 0) {
-                    veaEvent.ParticipateGuest(GuestFactory.GetValidGuest().Id);
+                    veaEvent.ParticipateGuest(GuestFactory.GetValidGuest().Id, _systemTime);
                 }
                 else {
                     Guest guest = GuestFactory.GetValidGuest();

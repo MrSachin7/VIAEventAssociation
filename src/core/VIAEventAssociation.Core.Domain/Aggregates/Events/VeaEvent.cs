@@ -28,17 +28,13 @@ public class VeaEvent : Aggregate<EventId> {
 
     internal LocationId? LocationId { get; private set; }
 
-    // Todo: Should i take this from the constructor once or on the methods that i need ?
-    private ISystemTime _systemTime;
 
-
-    private VeaEvent(ISystemTime systemTime) {
-        _systemTime = systemTime;
+    private VeaEvent( ) {
         EventInvitations = new List<EventInvitation>();
         IntendedParticipants = new HashSet<GuestId>();
     }
 
-    public static VeaEvent Empty(ISystemTime systemTime) {
+    public static VeaEvent Empty() {
         EventId id = EventId.New();
         IEventStatusState draftStatus = DraftStatusState.GetInstance();
         EventMaxGuests maxGuests = EventMaxGuests.Default();
@@ -46,7 +42,7 @@ public class VeaEvent : Aggregate<EventId> {
         EventVisibility visibility = EventVisibility.Private;
         EventTitle title = EventTitle.Default();
 
-        return new VeaEvent(systemTime) {
+        return new VeaEvent() {
             Id = id,
             Description = description,
             Visibility = visibility,
@@ -76,12 +72,12 @@ public class VeaEvent : Aggregate<EventId> {
         return _currentStatusState.MakePrivate(this);
     }
 
-    public Result MakeReady() {
-        return _currentStatusState.MakeReady(this);
+    public Result MakeReady(ISystemTime systemTime) {
+        return _currentStatusState.MakeReady(this, systemTime);
     }
 
-    public Result MakeActive() {
-        return _currentStatusState.MakeActive(this);
+    public Result MakeActive(ISystemTime systemTime) {
+        return _currentStatusState.MakeActive(this, systemTime);
     }
 
     // TODO: there is ntg regarding this in the use case desc.
@@ -105,7 +101,7 @@ public class VeaEvent : Aggregate<EventId> {
     }
 
     //  Todo: Should I make sure that the guestId exists ?
-    public Result ParticipateGuest(GuestId guestId) {
+    public Result ParticipateGuest(GuestId guestId, ISystemTime systemTime) {
         // If not public, fail
         if (Visibility.Equals(EventVisibility.Private)) {
             return Error.BadRequest(ErrorMessage.PrivateEventCannotBeParticipatedUnlessInvited);
@@ -116,15 +112,15 @@ public class VeaEvent : Aggregate<EventId> {
             return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
         }
 
-        return _currentStatusState.ParticipateGuest(this, guestId);
+        return _currentStatusState.ParticipateGuest(this, guestId, systemTime);
     }
 
     // Todo: So, if a guest accepted an invitation, should this also remove that accepted invitation ?
-    public Result CancelGuestParticipation(GuestId guestId) {
+    public Result CancelGuestParticipation(GuestId guestId, ISystemTime systemTime) {
         // Todo : What happens if this is called on a draft event where duration is null ?, now is that a business logic ?? or the null pointer exception is fine ?
 
         // No real state logic, so no need to call _currentStatusState
-        if (Duration!.StartDateTime < _systemTime.CurrentTime()) {
+        if (Duration!.StartDateTime < systemTime.CurrentTime()) {
             return Error.BadRequest(ErrorMessage.ParticipationOnPastOrOngoingEventsCannotBeCancelled);
         }
 
@@ -181,9 +177,9 @@ public class VeaEvent : Aggregate<EventId> {
     }
 
 
-    internal Result AddIntendedParticipant(GuestId guestId) {
+    internal Result AddIntendedParticipant(GuestId guestId, ISystemTime systemTime) {
         // Only active event can call this method, so we are sure that the duration is not null
-        if (Duration!.StartDateTime < _systemTime.CurrentTime()) {
+        if (Duration!.StartDateTime < systemTime.CurrentTime()) {
             return Error.BadRequest(ErrorMessage.EventHasAlreadyStarted);
         }
 
@@ -199,7 +195,7 @@ public class VeaEvent : Aggregate<EventId> {
         Title = eventTitle;
     }
 
-    internal Result SetStatusToReady() {
+    internal Result SetStatusToReady(ISystemTime systemTime) {
         Result result = Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(
                 () => !Description.Equals(EventDescription.Default()),
@@ -214,7 +210,7 @@ public class VeaEvent : Aggregate<EventId> {
                 ErrorMessage.EventDurationMustBeSetBeforeMakingAnEventReady
             )
             .AssertWithError(
-                () => Duration is not null && Duration.StartDateTime > _systemTime.CurrentTime(),
+                () => Duration is not null && Duration.StartDateTime > systemTime.CurrentTime(),
                 ErrorMessage.EventInThePastCannotBeReady
             )
             .AssertWithError(

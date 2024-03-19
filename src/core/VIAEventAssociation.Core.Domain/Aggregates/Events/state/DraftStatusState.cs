@@ -42,13 +42,13 @@ internal class DraftStatusState : IEventStatusState {
         return Result.Success();
     }
 
-    public Result MakeReady(VeaEvent veaEvent) {
-        return veaEvent.SetStatusToReady();
+    public Result MakeReady(VeaEvent veaEvent, ISystemTime systemTime) {
+        return veaEvent.SetStatusToReady(systemTime);
     }
 
-    public Result MakeActive(VeaEvent veaEvent) {
-        Result result = veaEvent.MakeReady();
-        return result.IsFailure ? result : veaEvent.MakeActive();
+    public Result MakeActive(VeaEvent veaEvent, ISystemTime systemTime) {
+        Result result = veaEvent.MakeReady(systemTime);
+        return result.IsFailure ? result : veaEvent.MakeActive(systemTime);
     }
 
     public Result MakeCancelled(VeaEvent veaEvent) {
@@ -66,7 +66,7 @@ internal class DraftStatusState : IEventStatusState {
 
     }
 
-    public Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId) {
+    public Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId, ISystemTime systemTime) {
         return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeJoined);
 
     }
@@ -84,4 +84,5 @@ internal class DraftStatusState : IEventStatusState {
         veaEvent.SetLocation(locationId);
         return Result.Success();
     }
+
 }
