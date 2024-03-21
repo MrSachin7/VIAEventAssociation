@@ -1,4 +1,4 @@
-﻿namespace VIAEventAssociation.Core.Domain.temp;
+﻿namespace VIAEventAssociation.Core.Domain.Contracts;
 
 public interface IUniqueEmailChecker {
     

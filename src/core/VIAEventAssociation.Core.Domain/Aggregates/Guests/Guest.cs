@@ -29,4 +29,8 @@ public class Guest : Aggregate<GuestId> {
     public static Guest Create(GuestFirstName firstName, GuestLastName lastName, ViaEmail email) {
         return new Guest(firstName, lastName, email);
     }
+
+    public static Guest Create(GuestFirstName firstName, GuestLastName lastName, ViaEmail email, ProfilePictureUrl profilePictureUrl) {
+        return new Guest(firstName, lastName, email, profilePictureUrl);
+    }
 }

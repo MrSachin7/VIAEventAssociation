@@ -3,7 +3,6 @@ using UnitTests.Common.Factories;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Locations;
 using VIAEventAssociation.Core.Domain.Services;
-using VIAEventAssociation.Core.Domain.temp;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.UpdateMaxGuests;

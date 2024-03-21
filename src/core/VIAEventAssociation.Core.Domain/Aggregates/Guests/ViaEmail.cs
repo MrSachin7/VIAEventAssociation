@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using VIAEventAssociation.Core.Domain.Common.Bases;
-using VIAEventAssociation.Core.Domain.temp;
+using VIAEventAssociation.Core.Domain.Contracts;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Guests;
@@ -12,7 +12,7 @@ public class ViaEmail : ValueObject {
         Value = email.ToLower();
     }
 
-    internal static async Task<Result<ViaEmail>> Create(string email, IUniqueEmailChecker emailChecker) {
+    public static async Task<Result<ViaEmail>> Create(string email, IUniqueEmailChecker emailChecker) {
         Result<ViaEmail> validEmailResult = Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => EmailEndsWithViaDk(email), ErrorMessage.EmailMustEndWithViaDk)
             .AssertWithError(() => EmailIsInCorrectFormat(email), ErrorMessage.EmailNotInCorrectFormat)

@@ -1,6 +1,5 @@
 ﻿using VIAEventAssociation.Core.Domain.Aggregates.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Locations;
-using VIAEventAssociation.Core.Domain.temp;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Services;
@@ -18,7 +17,7 @@ public class UpdateEventMaxGuestsService {
         if (locationId is null) {
             return Error.BadRequest(ErrorMessage.EventLocationIsNotSet);
         }
-        Location location = await _locationRepository.FindById(locationId.GetValue());
+        Location location = await _locationRepository.FindAsync(locationId);
         if (location.LocationMaxGuests.Value < maxGuests.Value) {
             return Error.BadRequest(ErrorMessage.EventMaxGuestsCannotExceedLocationMaxGuests);
         }

@@ -117,10 +117,10 @@ public class VeaEvent : Aggregate<EventId> {
 
     // Todo: So, if a guest accepted an invitation, should this also remove that accepted invitation ?
     public Result CancelGuestParticipation(GuestId guestId, ISystemTime systemTime) {
-        // Todo : What happens if this is called on a draft event where duration is null ?, now is that a business logic ?? or the null pointer exception is fine ?
 
         // No real state logic, so no need to call _currentStatusState
-        if (Duration!.StartDateTime < systemTime.CurrentTime()) {
+      
+        if (Duration is null || Duration.StartDateTime < systemTime.CurrentTime()) {
             return Error.BadRequest(ErrorMessage.ParticipationOnPastOrOngoingEventsCannotBeCancelled);
         }
 

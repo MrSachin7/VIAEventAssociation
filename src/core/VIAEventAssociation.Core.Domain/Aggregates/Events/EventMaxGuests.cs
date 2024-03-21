@@ -10,7 +10,7 @@ public class EventMaxGuests : ValueObject {
         Value = maxGuests;
     }
 
-    internal static Result<EventMaxGuests> Create(int maximumGuests) {
+    public static Result<EventMaxGuests> Create(int maximumGuests) {
         return Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => NoLessThan5(maximumGuests), ErrorMessage.MaxGuestsNotLessThan5)
             .AssertWithError(() => NoMoreThan50(maximumGuests), ErrorMessage.MaxGuestsNotMoreThan50)

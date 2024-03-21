@@ -3,7 +3,6 @@ using UnitTests.Common.Factories;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Locations;
 using VIAEventAssociation.Core.Domain.Services;
-using VIAEventAssociation.Core.Domain.temp;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Services;
@@ -27,7 +26,7 @@ public class UpdateEventMaxGuestsServiceTests {
 
         Mock<ILocationRepository> locationRepo = new Mock<ILocationRepository>();
 
-        locationRepo.Setup(x => x.FindById(location.Id.GetValue())).ReturnsAsync(location);
+        locationRepo.Setup(x => x.FindAsync(location.Id)).ReturnsAsync(location);
         UpdateEventMaxGuestsService updateEventMaxGuestsService = new UpdateEventMaxGuestsService(locationRepo.Object);
 
 
@@ -60,7 +59,7 @@ public class UpdateEventMaxGuestsServiceTests {
 
 
         Mock<ILocationRepository> locationRepo = new Mock<ILocationRepository>();
-        locationRepo.Setup(x => x.FindById(location.Id.GetValue())).ReturnsAsync(location);
+        locationRepo.Setup(x => x.FindAsync(location.Id)).ReturnsAsync(location);
         UpdateEventMaxGuestsService updateEventMaxGuestsService = new UpdateEventMaxGuestsService(locationRepo.Object);
 
 

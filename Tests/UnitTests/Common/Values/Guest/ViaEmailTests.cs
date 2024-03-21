@@ -1,7 +1,6 @@
 ﻿using UnitTests.Common.Factories;
 using UnitTests.Fakes;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
-using VIAEventAssociation.Core.Domain.temp;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Common.Values.Guest;

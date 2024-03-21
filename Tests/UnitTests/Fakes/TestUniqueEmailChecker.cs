@@ -1,4 +1,4 @@
-﻿using VIAEventAssociation.Core.Domain.temp;
+﻿using VIAEventAssociation.Core.Domain.Contracts;
 
 namespace UnitTests.Fakes;
 

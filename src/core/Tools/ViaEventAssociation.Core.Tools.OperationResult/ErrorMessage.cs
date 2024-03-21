@@ -155,7 +155,7 @@ public class ErrorMessage : Enumeration {
             "Location must be set to perform this operation");    
     public static readonly ErrorMessage EventMaxGuestsCannotExceedLocationMaxGuests =
         new(0,
-            "Event maximum number of guests cannot exceed location maximum number of guests");
+            "Events maximum number of guests cannot exceed location maximum number of guests");
 
 
 
