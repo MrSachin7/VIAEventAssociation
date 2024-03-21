@@ -19,7 +19,7 @@ public static class EventFactory {
         veaEvent.UpdateDescription(GetValidEventDescription());
         veaEvent.UpdateTitle(GetValidEventTitle());
         veaEvent.UpdateEventDuration(GetValidEventDuration());
-        veaEvent.UpdateLocation(LocationId.New());
+        veaEvent.UpdateLocation(Location.Create(LocationName.Create("C02.03").Payload!));
         veaEvent.MakeReady(_systemTime);
 
         // Assert that the event is ready before returning
@@ -221,13 +221,13 @@ public static class EventFactory {
             // This makes sure that we have both accepted invites and intended participants
             if (veaEvent.Visibility.Equals(EventVisibility.Public)) {
                 if (i % 2 == 0) {
-                    veaEvent.ParticipateGuest(GuestFactory.GetValidGuest().Id, _systemTime);
+                    veaEvent.ParticipateGuest(GuestFactory.GetValidGuest(), _systemTime);
                 }
                 else {
                     Guest guest = GuestFactory.GetValidGuest();
                     EventInvitation invitation = EventInvitation.From(guest.Id);
                     veaEvent.InviteGuest(invitation);
-                    veaEvent.AcceptInvitation(invitation.Id);
+                    veaEvent.AcceptInvitation(invitation);
                 }
             }
             // If private, invite and accept all
@@ -235,7 +235,7 @@ public static class EventFactory {
                 Guest guest = GuestFactory.GetValidGuest();
                 EventInvitation invitation = EventInvitation.From(guest.Id);
                 veaEvent.InviteGuest(invitation);
-                veaEvent.AcceptInvitation(invitation.Id);
+                veaEvent.AcceptInvitation(invitation);
             }
         }
 

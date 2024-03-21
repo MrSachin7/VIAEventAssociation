@@ -20,7 +20,7 @@ public class GuestParticipationTests {
         Guest guest = GuestFactory.GetValidGuest();
 
         // Act
-        Result result = veaEvent.ParticipateGuest(guest.Id, new TestSystemTime());
+        Result result = veaEvent.ParticipateGuest(guest, new TestSystemTime());
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -37,7 +37,7 @@ public class GuestParticipationTests {
         Guest guest = GuestFactory.GetValidGuest();
 
         // Act
-        Result result = veaEvent.ParticipateGuest(guest.Id, new TestSystemTime());
+        Result result = veaEvent.ParticipateGuest(guest, new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);
@@ -59,7 +59,7 @@ public class GuestParticipationTests {
         ;
 
         // Act
-        Result result = veaEvent.ParticipateGuest(guest.Id, _systemTime);
+        Result result = veaEvent.ParticipateGuest(guest, _systemTime);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -77,7 +77,7 @@ public class GuestParticipationTests {
         Guest guest = GuestFactory.GetValidGuest();
 
         // Act
-        Result result = veaEvent.ParticipateGuest(guest.Id, _systemTime);
+        Result result = veaEvent.ParticipateGuest(guest, _systemTime);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -91,12 +91,12 @@ public class GuestParticipationTests {
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         veaEvent.MakePublic();
         Guest guest = GuestFactory.GetValidGuest();
-        veaEvent.ParticipateGuest(guest.Id, _systemTime);
+        veaEvent.ParticipateGuest(guest, _systemTime);
         // Make sure that the guest is participating before continuing
         Assert.Contains(guest.Id, veaEvent.IntendedParticipants);
 
         // Act
-        Result result = veaEvent.CancelGuestParticipation(guest.Id, _systemTime);
+        Result result = veaEvent.CancelGuestParticipation(guest, _systemTime);
 
         // Assert
         Assert.True(result.IsSuccess);

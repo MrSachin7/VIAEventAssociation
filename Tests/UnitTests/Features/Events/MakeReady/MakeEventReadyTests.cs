@@ -15,7 +15,7 @@ public class MakeEventReadyTests {
         veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
         veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
-        veaEvent.UpdateLocation(LocationId.New());
+        veaEvent.UpdateLocation(Location.Create(LocationName.Create("C02.03").Payload!));
 
         // Act
         Result result = veaEvent.MakeReady(new TestSystemTime());

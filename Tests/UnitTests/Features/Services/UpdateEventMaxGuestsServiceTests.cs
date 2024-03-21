@@ -18,7 +18,7 @@ public class UpdateEventMaxGuestsServiceTests {
         const int locationMaxGuests = 30;
         LocationMaxGuests newLocationMaxGuests = LocationMaxGuests.Create(locationMaxGuests).Payload!;
         location.UpdateLocationMaxGuests(newLocationMaxGuests);
-        veaEvent.UpdateLocation(location.Id);
+        veaEvent.UpdateLocation(location);
         Assert.Equal(locationMaxGuests, location.LocationMaxGuests.Value);
         Assert.Equal(veaEvent.LocationId, location.Id);
 
@@ -52,7 +52,7 @@ public class UpdateEventMaxGuestsServiceTests {
         const int locationMaxGuests = 30;
         LocationMaxGuests newLocationMaxGuests = LocationMaxGuests.Create(locationMaxGuests).Payload!;
         location.UpdateLocationMaxGuests(newLocationMaxGuests);
-        veaEvent.UpdateLocation(location.Id);
+        veaEvent.UpdateLocation(location);
         Assert.Equal(locationMaxGuests, location.LocationMaxGuests.Value);
         Assert.Equal(veaEvent.LocationId, location.Id);
 

@@ -72,13 +72,13 @@ internal class ActiveStatusState : IEventStatusState {
         return veaEvent.AddIntendedParticipant(guestId, systemTime);
     }
 
-    public Result AcceptInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
-         veaEvent.MakeInvitationAccepted(invitationId);
+    public Result AcceptInvitation(VeaEvent veaEvent, EventInvitation invitation) {
+         veaEvent.MakeInvitationAccepted(invitation);
          return Result.Success();
     }
 
-    public Result DeclineInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
-        veaEvent.MakeInvitationDeclined(invitationId);
+    public Result DeclineInvitation(VeaEvent veaEvent, EventInvitation invitation) {
+        veaEvent.MakeInvitationDeclined(invitation);
         return Result.Success();
     }
 

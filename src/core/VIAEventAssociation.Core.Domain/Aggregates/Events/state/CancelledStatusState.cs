@@ -59,12 +59,12 @@ internal class CancelledStatusState : IEventStatusState {
         return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeJoined);
     }
 
-    public Result AcceptInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
+    public Result AcceptInvitation(VeaEvent veaEvent, EventInvitation invitation) {
         return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeJoined);
 
     }
 
-    public Result DeclineInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
+    public Result DeclineInvitation(VeaEvent veaEvent, EventInvitation invitation) {
         return Error.BadRequest(ErrorMessage.EventsCannotBeDeclinedYet);
 
     }

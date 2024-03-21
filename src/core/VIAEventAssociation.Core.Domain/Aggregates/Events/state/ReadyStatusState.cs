@@ -79,11 +79,11 @@ internal class ReadyStatusState : IEventStatusState {
 
     }
 
-    public Result AcceptInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
+    public Result AcceptInvitation(VeaEvent veaEvent, EventInvitation invitation) {
         return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeJoined);
     }
 
-    public Result DeclineInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
+    public Result DeclineInvitation(VeaEvent veaEvent, EventInvitation invitationId) {
         return Error.BadRequest(ErrorMessage.EventsCannotBeDeclinedYet);
     }
 
