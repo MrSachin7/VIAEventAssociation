@@ -12,7 +12,7 @@ public class ViaEmail : ValueObject {
         Value = email.ToLower();
     }
 
-    public static async Task<Result<ViaEmail>> Create(string email, IUniqueEmailChecker emailChecker) {
+    public static Result<ViaEmail> Create(string email) {
         Result<ViaEmail> validEmailResult = Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => EmailEndsWithViaDk(email), ErrorMessage.EmailMustEndWithViaDk)
             .AssertWithError(() => EmailIsInCorrectFormat(email), ErrorMessage.EmailNotInCorrectFormat)
@@ -24,13 +24,6 @@ public class ViaEmail : ValueObject {
         }
 
         ViaEmail viaEmail = validEmailResult.Payload!;
-
-        // Todo : Should this method be async ? If yes then should the static factory method be async too ?
-        bool isUnique = await emailChecker.IsUnique(viaEmail.Value);
-        if (!isUnique){
-            return Error.Conflict(ErrorMessage.EmailAlreadyAssociatedWithAnotherGuest);
-        }
-
         return viaEmail;
     }
 

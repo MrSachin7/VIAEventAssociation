@@ -25,16 +25,17 @@ public class UpdateEventMaxGuestsServiceTests {
 
 
         Mock<ILocationRepository> locationRepo = new Mock<ILocationRepository>();
+        Mock<IEventRepository> eventRepo = new Mock<IEventRepository>();
 
         locationRepo.Setup(x => x.FindAsync(location.Id)).ReturnsAsync(location);
-        UpdateEventMaxGuestsService updateEventMaxGuestsService = new UpdateEventMaxGuestsService(locationRepo.Object);
+        UpdateEventMaxGuestsService updateEventMaxGuestsService = new UpdateEventMaxGuestsService(locationRepo.Object, eventRepo.Object);
 
 
         // Act
         const int newEventMaxGuests = 10;
         EventMaxGuests newEventMaxGuestsObj = EventMaxGuests.Create(newEventMaxGuests).Payload!;
 
-        Result result =  await updateEventMaxGuestsService.Handle(veaEvent, newEventMaxGuestsObj);
+        Result result =  await updateEventMaxGuestsService.Handle(veaEvent.Id, newEventMaxGuestsObj);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -59,15 +60,17 @@ public class UpdateEventMaxGuestsServiceTests {
 
 
         Mock<ILocationRepository> locationRepo = new Mock<ILocationRepository>();
+        Mock<IEventRepository> eventRepo = new Mock<IEventRepository>();
+
         locationRepo.Setup(x => x.FindAsync(location.Id)).ReturnsAsync(location);
-        UpdateEventMaxGuestsService updateEventMaxGuestsService = new UpdateEventMaxGuestsService(locationRepo.Object);
+        UpdateEventMaxGuestsService updateEventMaxGuestsService = new UpdateEventMaxGuestsService(locationRepo.Object, eventRepo.Object);
 
 
         // Act with max guests more than location allows
         const int newEventMaxGuests = 35;
         EventMaxGuests newEventMaxGuestsObj = EventMaxGuests.Create(newEventMaxGuests).Payload!;
 
-        Result result =await updateEventMaxGuestsService.Handle(veaEvent, newEventMaxGuestsObj);
+        Result result =await updateEventMaxGuestsService.Handle(veaEvent.Id, newEventMaxGuestsObj);
 
         // Assert
         Assert.True(result.IsFailure);

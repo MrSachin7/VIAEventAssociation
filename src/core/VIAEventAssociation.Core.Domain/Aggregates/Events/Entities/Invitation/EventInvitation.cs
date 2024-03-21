@@ -7,16 +7,16 @@ public class EventInvitation : Entity<EventInvitationId> {
 
     internal JoinStatus Status { get; private set; }
 
-    internal Guests.GuestId GuestId { get; private set; }
+    internal GuestId GuestId { get; private set; }
 
-    private EventInvitation(EventInvitationId id, Guests.GuestId guestId) {
+    private EventInvitation(EventInvitationId id, GuestId guestId) {
         Id = id;
         GuestId = guestId;
         Status = JoinStatus.Pending;
     }
 
-    public static EventInvitation Create(Guests.GuestId guestId) {
-        return new EventInvitation(Invitation.EventInvitationId.New(), guestId);
+    public static EventInvitation Create(GuestId guestId) {
+        return new EventInvitation(EventInvitationId.New(), guestId);
     }
 
     internal void Accept() {

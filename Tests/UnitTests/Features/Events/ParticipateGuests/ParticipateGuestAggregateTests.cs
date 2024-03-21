@@ -109,7 +109,6 @@ public class GuestParticipationTests {
         ISystemTime systemTime = new TestSystemTime();
         // Arrange a valid start date but in past
 
-        // Todo: For gods sake , I cant make an active event with a past start date. I hope Troels helps me heree..
         DateTime startDateTime = systemTime.CurrentTime().AddDays(-1).AddHours(8);
         DateTime endDateTime = systemTime.CurrentTime().AddDays(-1).AddHours(11);
 

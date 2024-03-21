@@ -25,13 +25,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\core\Tools\ViaEventAssociation.Core.Tools.OperationResult\ViaEventAssociation.Core.Tools.OperationResult.csproj" />
-      <ProjectReference Include="..\..\src\core\VIAEventAssociation.Core.AppEntry\VIAEventAssociation.Core.AppEntry.csproj" />
-      <ProjectReference Include="..\..\src\core\VIAEventAssociation.Core.Application\VIAEventAssociation.Core.Application.csproj" />
       <ProjectReference Include="..\..\src\Core\VIAEventAssociation.Core.Domain\VIAEventAssociation.Core.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Features\Services\" />
     </ItemGroup>
 
 </Project>

@@ -9,7 +9,7 @@ namespace UnitTests.Common.Factories;
 
 public static class EventFactory {
 
-    private static ISystemTime _systemTime = new TestSystemTime();
+    private static readonly ISystemTime _systemTime = new TestSystemTime();
     public static VeaEvent GetDraftEvent() {
         return VeaEvent.Empty();
     }
@@ -225,7 +225,7 @@ public static class EventFactory {
                 }
                 else {
                     Guest guest = GuestFactory.GetValidGuest();
-                    EventInvitation invitation = EventInvitation.From(guest.Id);
+                    EventInvitation invitation = EventInvitation.Create(guest.Id);
                     veaEvent.InviteGuest(invitation);
                     veaEvent.AcceptInvitation(invitation);
                 }
@@ -233,7 +233,7 @@ public static class EventFactory {
             // If private, invite and accept all
             else {
                 Guest guest = GuestFactory.GetValidGuest();
-                EventInvitation invitation = EventInvitation.From(guest.Id);
+                EventInvitation invitation = EventInvitation.Create(guest.Id);
                 veaEvent.InviteGuest(invitation);
                 veaEvent.AcceptInvitation(invitation);
             }
