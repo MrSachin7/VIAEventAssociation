@@ -6,7 +6,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.MakeActive;
 
-public class MakeEventActiveAggregateTests {
+public class MakeEventActiveTests {
     [Fact]
     public void GivenAnEventInStateReady_WhenMakingEventActive_ThenReturnsSuccessResult_AndTheEventIsInActiveStatus() {
         // Arrange
@@ -18,14 +18,15 @@ public class MakeEventActiveAggregateTests {
         Assert.Equal(EventStatus.Active, veaEvent.Status);
     }
 
+    // Todo: should I also make sure that veaEvent.MakeReady() is called before veaEvent.MakeActive()? or is it too implementation specific?
     [Fact]
     public void GivenAnEventInDraftStatus_WhenMakingEventActive_AndAllFieldsAreSet_ThenReturnsSuccessResult() {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        veaEvent.UpdateEventDescription(EventFactory.GetValidEventDescription());
-        veaEvent.UpdateEventTitle(EventFactory.GetValidEventTitle());
+        veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
+        veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
-        veaEvent.UpdateLocation(LocationFactory.GetValidLocation());
+        veaEvent.UpdateLocation(Location.Create(LocationName.Create("C02.03").Payload!));
 
         // Act
         Result result = veaEvent.MakeActive(new TestSystemTime());
@@ -41,7 +42,7 @@ public class MakeEventActiveAggregateTests {
         GivenAnEventInDraftStatus_WhenMakingEventActive_AndDescriptionIsDefault_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with default description
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        veaEvent.UpdateEventTitle(EventFactory.GetValidEventTitle());
+        veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
 
         // Act
@@ -60,7 +61,7 @@ public class MakeEventActiveAggregateTests {
         GivenAnEventInDraftStatus_WhenMakingEventActive_AndTitleIsDefault_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with default title
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        veaEvent.UpdateEventDescription(EventFactory.GetValidEventDescription());
+        veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
 
         // Act
@@ -79,8 +80,8 @@ public class MakeEventActiveAggregateTests {
         GivenAnEventInDraftStatus_WhenMakingEventActive_AndDurationIsDefault_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with default title
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        veaEvent.UpdateEventDescription(EventFactory.GetValidEventDescription());
-        veaEvent.UpdateEventTitle(EventFactory.GetValidEventTitle());
+        veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
+        veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
 
         // Act
         Result result = veaEvent.MakeActive(new TestSystemTime());
