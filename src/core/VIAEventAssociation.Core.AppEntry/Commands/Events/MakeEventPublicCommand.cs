@@ -12,7 +12,6 @@ public class MakeEventPublicCommand {
     }
 
 
-    // Todo: Where should i check if the event exists in the database ??
     public static Result<MakeEventPublicCommand> Create(string eventId) {
         Result<EventId> idResult = EventId.From(eventId);
         return idResult.WithPayload(() => new MakeEventPublicCommand(idResult.Payload!));

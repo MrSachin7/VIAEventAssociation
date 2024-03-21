@@ -13,7 +13,7 @@
 //     }
 //
 //     public static Result<UpdateEventDurationCommand> Create(string eventId, string startDateTime, string endDateTime) {
-//         Result<EventId> idResult = EventId.From(eventId);
+//         Result<EventId> idResult = EventId.Create(eventId);
 //         Result<EventDuration> durationResult = EventDuration.Create(eventDuration);
 //
 //         return idResult.Combine(durationResult)
@@ -21,7 +21,7 @@
 //     }
 //
 //     public static Result<UpdateEventDurationCommand> Create(string eventId, DateTime startDateTime, DateTime endDateTime) {
-//         Result<EventId> idResult = EventId.From(eventId);
+//         Result<EventId> idResult = EventId.Create(eventId);
 //         Result<EventDuration> durationResult = EventDuration.Create(startDateTime, endDateTime);
 //
 //         return idResult.Combine(durationResult)

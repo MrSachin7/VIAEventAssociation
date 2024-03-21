@@ -80,42 +80,11 @@ public class VeaEvent : Aggregate<EventId> {
         return _currentStatusState.MakeActive(this, systemTime);
     }
 
-    // TODO: there is ntg regarding this in the use case desc.
     public Result MakeCancelled() {
         return _currentStatusState.MakeCancelled(this);
     }
 
-    internal Result UpdateMaximumNumberOfGuests(EventMaxGuests maxGuests) {
-        return _currentStatusState.UpdateMaxNumberOfGuests(this, maxGuests);
-    }
 
-
-    // Todo: Maybe this should take a guestId instead ??
-    public Result InviteGuest(EventInvitation invitation) {
-        // Max number of guests reached
-        if (GetNumberOfParticipants() >= MaxGuests.Value) {
-            return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
-        }
-
-        return _currentStatusState.InviteGuest(this, invitation);
-    }
-
-    //  Todo: Should I make sure that the guestId exists ?
-    public Result ParticipateGuest(Guest guest, ISystemTime systemTime) {
-        // If not public, fail
-        if (Visibility.Equals(EventVisibility.Private)) {
-            return Error.BadRequest(ErrorMessage.PrivateEventCannotBeParticipatedUnlessInvited);
-        }
-
-        // Max number of guests reached
-        if (IsFull()) {
-            return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
-        }
-
-        return _currentStatusState.ParticipateGuest(this, guest.Id, systemTime);
-    }
-
-    // Todo: So, if a guest accepted an invitation, should this also remove that accepted invitation ?
     public Result CancelGuestParticipation(Guest guest, ISystemTime systemTime) {
         // No real state logic, so no need to call _currentStatusState
 
@@ -127,7 +96,6 @@ public class VeaEvent : Aggregate<EventId> {
         return Result.Success();
     }
 
-    // Todo: Does this belong here or on GuestAggregate ??
     public Result AcceptInvitation(EventInvitation invitation) {
         if (IsFull()) {
             return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
@@ -160,6 +128,34 @@ public class VeaEvent : Aggregate<EventId> {
     public Result UpdateLocation(Location location) {
         return _currentStatusState.UpdateLocation(this, location.Id);
     }
+
+    internal Result ParticipateGuest(Guest guest, ISystemTime systemTime) {
+        // If not public, fail
+        if (Visibility.Equals(EventVisibility.Private)) {
+            return Error.BadRequest(ErrorMessage.PrivateEventCannotBeParticipatedUnlessInvited);
+        }
+
+        // Max number of guests reached
+        if (IsFull()) {
+            return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
+        }
+
+        return _currentStatusState.ParticipateGuest(this, guest.Id, systemTime);
+    }
+
+    internal Result InviteGuest(EventInvitation invitation) {
+        // Max number of guests reached
+        if (GetNumberOfParticipants() >= MaxGuests.Value) {
+            return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
+        }
+
+        return _currentStatusState.InviteGuest(this, invitation);
+    }
+
+    internal Result UpdateMaximumNumberOfGuests(EventMaxGuests maxGuests) {
+        return _currentStatusState.UpdateMaxNumberOfGuests(this, maxGuests);
+    }
+
 
     internal void SetLocation(LocationId locationId) {
         LocationId = locationId;

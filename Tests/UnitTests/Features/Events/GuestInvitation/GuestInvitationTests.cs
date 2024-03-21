@@ -16,7 +16,7 @@ public class GuestInvitationTests {
         // Arrange with a public event and a valid guest
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         Guest guest = GuestFactory.GetValidGuest();
-        EventInvitation invitation = EventInvitation.From(guest.Id);
+        EventInvitation invitation = EventInvitation.Create(guest.Id);
 
         // Act
         Result result = veaEvent.InviteGuest(invitation);
@@ -31,7 +31,7 @@ public class GuestInvitationTests {
         // Arrange with a public event and a valid guest
         VeaEvent veaEvent = EventFactory.GetReadyEvent();
         Guest guest = GuestFactory.GetValidGuest();
-        EventInvitation invitation = EventInvitation.From(guest.Id);
+        EventInvitation invitation = EventInvitation.Create(guest.Id);
 
         // Act
         Result result = veaEvent.InviteGuest(invitation);
@@ -46,7 +46,7 @@ public class GuestInvitationTests {
         // Arrange with a public event and a valid guest
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
         Guest guest = GuestFactory.GetValidGuest();
-        EventInvitation invitation = EventInvitation.From(guest.Id);
+        EventInvitation invitation = EventInvitation.Create(guest.Id);
 
         // Act
         Result result = veaEvent.InviteGuest(invitation);
@@ -61,7 +61,7 @@ public class GuestInvitationTests {
         // Arrange with a public event and a valid guest
         VeaEvent veaEvent = EventFactory.GetCancelledEvent();
         Guest guest = GuestFactory.GetValidGuest();
-        EventInvitation invitation = EventInvitation.From(guest.Id);
+        EventInvitation invitation = EventInvitation.Create(guest.Id);
 
         // Act
         Result result = veaEvent.InviteGuest(invitation);
@@ -78,7 +78,7 @@ public class GuestInvitationTests {
         EventFactory.ArrangeFullEvent(veaEvent);
 
         Guest guest = GuestFactory.GetValidGuest();
-        EventInvitation invitation = EventInvitation.From(guest.Id);
+        EventInvitation invitation = EventInvitation.Create(guest.Id);
 
         // Act
         Result result = veaEvent.InviteGuest(invitation);

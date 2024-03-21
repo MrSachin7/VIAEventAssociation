@@ -4,21 +4,30 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Services;
 
-// Todo: Not sure if this is the way or should the event store location instead of locationId
 public class UpdateEventMaxGuestsService {
     private readonly ILocationRepository _locationRepository;
+    private readonly IEventRepository _eventRepository;
 
-    public UpdateEventMaxGuestsService(ILocationRepository locationRepository) {
+    public UpdateEventMaxGuestsService(ILocationRepository locationRepository, IEventRepository eventRepository) {
         _locationRepository = locationRepository;
+        _eventRepository = eventRepository;
     }
 
-    public async Task<Result> Handle(VeaEvent veaEvent, EventMaxGuests maxGuests) {
+    public async Task<Result> Handle(EventId eventId, EventMaxGuests maxGuests) {
+        VeaEvent? veaEvent = await _eventRepository.FindAsync(eventId);
+        if (veaEvent is null) {
+            return Error.NotFound(ErrorMessage.EventNotFound(eventId.Value));
+        }
+
         LocationId? locationId = veaEvent.LocationId;
         if (locationId is null) {
             return Error.BadRequest(ErrorMessage.EventLocationIsNotSet);
         }
-        Location location = await _locationRepository.FindAsync(locationId);
-        if (location.LocationMaxGuests.Value < maxGuests.Value) {
+
+        Location? location = await _locationRepository.FindAsync(locationId);
+
+
+        if (location!.LocationMaxGuests.Value < maxGuests.Value) {
             return Error.BadRequest(ErrorMessage.EventMaxGuestsCannotExceedLocationMaxGuests);
         }
 

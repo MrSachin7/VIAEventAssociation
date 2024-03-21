@@ -18,7 +18,6 @@ public class MakeEventActiveTests {
         Assert.Equal(EventStatus.Active, veaEvent.Status);
     }
 
-    // Todo: should I also make sure that veaEvent.MakeReady() is called before veaEvent.MakeActive()? or is it too implementation specific?
     [Fact]
     public void GivenAnEventInDraftStatus_WhenMakingEventActive_AndAllFieldsAreSet_ThenReturnsSuccessResult() {
         // Arrange

@@ -15,7 +15,7 @@ public class EventInvitation : Entity<EventInvitationId> {
         Status = JoinStatus.Pending;
     }
 
-    public static EventInvitation From(GuestId guestId) {
+    public static EventInvitation Create(GuestId guestId) {
         return new EventInvitation(EventInvitationId.New(), guestId);
     }
 

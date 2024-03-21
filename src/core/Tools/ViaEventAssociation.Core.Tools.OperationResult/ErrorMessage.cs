@@ -1,6 +1,8 @@
 ﻿namespace ViaEventAssociation.Core.Tools.OperationResult;
 
 public class ErrorMessage : Enumeration {
+
+
     public static readonly ErrorMessage TitleMustBeBetween3And75Chars =
         new(0, "Events title must be between 3 and 75 characters");
 
@@ -157,6 +159,11 @@ public class ErrorMessage : Enumeration {
         new(0,
             "Events maximum number of guests cannot exceed location maximum number of guests");
 
+    public static ErrorMessage EventNotFound(Guid eventId) => new ErrorMessage(0
+        , $"Event with id {eventId.ToString()} is not found");
+
+    public static ErrorMessage GuestNotFound(Guid guestId) => new ErrorMessage(0
+        , $"Guest with id {guestId.ToString()} is not found");
 
 
     private ErrorMessage() {
