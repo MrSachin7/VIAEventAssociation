@@ -4,6 +4,8 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
 public class EventId : Id {
+
+
     private EventId(Guid value) {
         Value = value;
     }
@@ -13,8 +15,12 @@ public class EventId : Id {
         return new EventId(Guid.NewGuid());
     }
 
-    public static Result<EventId> Create(string id) {
+    public static Result<EventId> From(string id) {
         Result<Guid> result = CanParseGuid(id);
         return result.IsFailure ? result.Error! : new EventId(result.Payload);
     }
+
+
+ 
+
 }

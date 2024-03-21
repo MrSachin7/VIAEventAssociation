@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Tools\ViaEventAssociation.Core.Tools.OperationResult\ViaEventAssociation.Core.Tools.OperationResult.csproj" />
+      <ProjectReference Include="..\VIAEventAssociation.Core.Application\VIAEventAssociation.Core.Application.csproj" />
       <ProjectReference Include="..\VIAEventAssociation.Core.Domain\VIAEventAssociation.Core.Domain.csproj" />
     </ItemGroup>
 

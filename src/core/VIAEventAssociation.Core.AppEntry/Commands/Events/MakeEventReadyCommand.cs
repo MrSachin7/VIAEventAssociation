@@ -3,16 +3,16 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.AppEntry.Commands.Events;
 
-public class MakeEventReadyCommand  : ICommand{
-    public EventId EventId { get; set; }
+public class MakeEventReadyCommand {
+    public EventId Id { get; set; }
 
-    private MakeEventReadyCommand(EventId eventId) {
-        EventId = eventId;
+    private MakeEventReadyCommand(EventId id) {
+        Id = id;
     }
 
 
     public static Result<MakeEventReadyCommand> Create(string eventId) {
-        Result<EventId> idResult = EventId.Create(eventId);
+        Result<EventId> idResult = EventId.From(eventId);
         return idResult.WithPayload(() => new MakeEventReadyCommand(idResult.Payload!));
     }
 }

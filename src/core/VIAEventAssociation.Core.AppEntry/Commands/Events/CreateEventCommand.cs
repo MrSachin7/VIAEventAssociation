@@ -2,7 +2,7 @@
 
 namespace VIAEventAssociation.Core.AppEntry.Commands.Events;
 
-public class CreateEventCommand  : ICommand{
+public class CreateEventCommand {
     private CreateEventCommand() {
     }
 

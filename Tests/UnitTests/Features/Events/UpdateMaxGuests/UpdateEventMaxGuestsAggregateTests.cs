@@ -1,17 +1,18 @@
-﻿using UnitTests.Common.Factories;
+﻿using Moq;
+using UnitTests.Common.Factories;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
+using VIAEventAssociation.Core.Domain.Aggregates.Locations;
+using VIAEventAssociation.Core.Domain.Services;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.UpdateMaxGuests;
 
-public class UpdateEventMaxGuestsAggregateTests {
-
+public class UpdateEventMaxGuestsServiceTests {
     [Theory]
     [MemberData(nameof(EventFactory.GetValidEventMaxGuests), MemberType = typeof(EventFactory))]
     public void GivenEventOnStateDraft_WhenUpdatingMaxGuests_ReturnsSuccessResult(int validMaxGuests) {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        veaEvent.SetLocation(LocationFactory.GetValidLocation());
         EventMaxGuests maxGuests = EventMaxGuests.Create(validMaxGuests).Payload!;
 
         // Act
@@ -45,6 +46,7 @@ public class UpdateEventMaxGuestsAggregateTests {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
 
+
         // Act
         // Default is 5
         int validMaxGuestsMoreThanDefault5 = 10;
@@ -64,7 +66,6 @@ public class UpdateEventMaxGuestsAggregateTests {
         // Arrange with 10 max guests
         EventMaxGuests previousMaxGuests = EventMaxGuests.Create(10).Payload!;
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        veaEvent.SetLocation(LocationFactory.GetValidLocation());
         veaEvent.UpdateMaximumNumberOfGuests(previousMaxGuests);
         Assert.Equal(previousMaxGuests, veaEvent.MaxGuests);
         Assert.Equal(EventStatus.Draft, veaEvent.Status);

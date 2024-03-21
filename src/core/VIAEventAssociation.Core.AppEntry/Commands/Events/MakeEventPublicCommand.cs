@@ -3,17 +3,18 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.AppEntry.Commands.Events;
 
-public class MakeEventPublicCommand  : ICommand{
-    public EventId EventId { get; init; }
+public class MakeEventPublicCommand {
+    public EventId Id { get; init; }
 
 
-    private MakeEventPublicCommand(EventId eventId) {
-        EventId = eventId;
+    private MakeEventPublicCommand(EventId id) {
+        Id = id;
     }
 
 
+    // Todo: Where should i check if the event exists in the database ??
     public static Result<MakeEventPublicCommand> Create(string eventId) {
-        Result<EventId> idResult = EventId.Create(eventId);
+        Result<EventId> idResult = EventId.From(eventId);
         return idResult.WithPayload(() => new MakeEventPublicCommand(idResult.Payload!));
     }
 }
