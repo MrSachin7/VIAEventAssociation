@@ -10,7 +10,7 @@ public class CreateEventTests {
     [Fact]
     public void CreateEvent_CreatesAnEmptyEvent_WithDefaultValues() {
         // Arrange and act
-        VeaEvent veaEvent = VeaEvent.Empty(new TestSystemTime());
+        VeaEvent veaEvent = VeaEvent.Empty();
 
         // Assert
         Assert.NotNull(veaEvent);

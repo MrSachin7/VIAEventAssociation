@@ -18,12 +18,12 @@ internal interface IEventStatusState {
     Result UpdateMaxNumberOfGuests(VeaEvent veaEvent,
         EventMaxGuests maxGuests);
 
-    Result MakeReady(VeaEvent veaEvent);
-    Result MakeActive(VeaEvent veaEvent);
+    Result MakeReady(VeaEvent veaEvent, ISystemTime systemTime);
+    Result MakeActive(VeaEvent veaEvent, ISystemTime systemTime);
     Result MakeCancelled(VeaEvent veaEvent);
     Result UpdateEventDuration(VeaEvent veaEvent, EventDuration eventDuration);
     Result InviteGuest(VeaEvent veaEvent, EventInvitation invitation);
-    Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId);
+    Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId, ISystemTime systemTime);
     Result AcceptInvitation(VeaEvent veaEvent, EventInvitationId invitationId);
     Result DeclineInvitation(VeaEvent veaEvent, EventInvitationId invitationId);
     Result UpdateLocation(VeaEvent veaEvent, LocationId locationId);

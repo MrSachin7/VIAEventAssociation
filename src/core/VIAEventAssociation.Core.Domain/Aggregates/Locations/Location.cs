@@ -21,7 +21,6 @@ public class Location : Aggregate<LocationId> {
         LocationName = locationName;
     }
 
-    // Todo: What happens if the location is booked for an event and the max guests is updated?
     public void UpdateLocationMaxGuests(LocationMaxGuests locationMaxGuests) {
         LocationMaxGuests = locationMaxGuests;
     }

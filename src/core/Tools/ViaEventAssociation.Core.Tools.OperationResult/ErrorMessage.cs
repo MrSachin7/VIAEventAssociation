@@ -137,7 +137,6 @@ public class ErrorMessage : Enumeration {
         new(0,
             "Cancelled events cannot be joined");
 
-    // Todo: Very wierd use case scenario
     public static readonly ErrorMessage CancelledEventsCannotBeDeclined =
         new(0,
             "Cancelled events cannot be declined");

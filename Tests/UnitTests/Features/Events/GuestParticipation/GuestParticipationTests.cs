@@ -8,6 +8,8 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 namespace UnitTests.Features.Events.GuestParticipation;
 
 public class GuestParticipationTests {
+    private readonly ISystemTime _systemTime = new TestSystemTime();
+
     [Fact]
     public void
         GivenEventInStatusActive_AndPublic_AndNotFull_AndNotStartedYet_WhenGuestParticipates_ThenReturnsSuccessResult() {
@@ -18,7 +20,7 @@ public class GuestParticipationTests {
         Guest guest = GuestFactory.GetValidGuest();
 
         // Act
-        Result result = veaEvent.ParticipateGuest(guest.Id);
+        Result result = veaEvent.ParticipateGuest(guest.Id, new TestSystemTime());
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -35,7 +37,7 @@ public class GuestParticipationTests {
         Guest guest = GuestFactory.GetValidGuest();
 
         // Act
-        Result result = veaEvent.ParticipateGuest(guest.Id);
+        Result result = veaEvent.ParticipateGuest(guest.Id, new TestSystemTime());
 
         // Assert
         Assert.True(result.IsFailure);
@@ -54,10 +56,10 @@ public class GuestParticipationTests {
 
         // Arrange a full event
         EventFactory.ArrangeFullEvent(veaEvent);
-     ;
+        ;
 
         // Act
-        Result result = veaEvent.ParticipateGuest(guest.Id);
+        Result result = veaEvent.ParticipateGuest(guest.Id, _systemTime);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -75,7 +77,7 @@ public class GuestParticipationTests {
         Guest guest = GuestFactory.GetValidGuest();
 
         // Act
-        Result result = veaEvent.ParticipateGuest(guest.Id);
+        Result result = veaEvent.ParticipateGuest(guest.Id, _systemTime);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -89,12 +91,12 @@ public class GuestParticipationTests {
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         veaEvent.MakePublic();
         Guest guest = GuestFactory.GetValidGuest();
-        veaEvent.ParticipateGuest(guest.Id);
+        veaEvent.ParticipateGuest(guest.Id, _systemTime);
         // Make sure that the guest is participating before continuing
         Assert.Contains(guest.Id, veaEvent.IntendedParticipants);
 
         // Act
-        Result result = veaEvent.CancelGuestParticipation(guest.Id);
+        Result result = veaEvent.CancelGuestParticipation(guest.Id, _systemTime);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -112,14 +114,11 @@ public class GuestParticipationTests {
         DateTime endDateTime = systemTime.CurrentTime().AddDays(-1).AddHours(11);
 
 
-        // Todo: I have tried my best to hack a solution to have a valid active event with a past start date.
-        // Todo: I have given different systemtimes for EventDuration and the veaEvent itself.
-        // Todo: Extremely hacky, but i could not come up with better solution.
         EventDuration eventDuration = EventDuration.Create(startDateTime, endDateTime, new FakeSystemTime()).Payload!;
 
-        // Todo: Also here i am invoking the internal setter for the state to force my way in.
+        // Also here i am invoking the internal setter for the state to force my way in.
         veaEvent.SetEventDuration(eventDuration);
-        veaEvent.MakeActive();
+        veaEvent.MakeActive(_systemTime);
 
         // Make sure that the event is actually active
         Assert.Equal(
@@ -130,8 +129,6 @@ public class GuestParticipationTests {
         return veaEvent;
     }
 
-
-   
 
     private class FakeSystemTime : ISystemTime {
         public DateTime CurrentTime() {
