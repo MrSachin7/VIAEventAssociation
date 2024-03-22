@@ -12,7 +12,7 @@ public class MakeEventReadyCommand {
 
 
     public static Result<MakeEventReadyCommand> Create(string eventId) {
-        Result<EventId> idResult = EventId.From(eventId);
+        Result<EventId> idResult = EventId.Create(eventId);
         return idResult.WithPayload(() => new MakeEventReadyCommand(idResult.Payload!));
     }
 }

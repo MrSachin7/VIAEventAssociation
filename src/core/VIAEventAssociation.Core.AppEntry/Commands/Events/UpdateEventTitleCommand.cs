@@ -13,7 +13,7 @@ public class UpdateEventTitleCommand {
     }
 
     public static Result<UpdateEventTitleCommand> Create(string eventId, string eventTitle) {
-        Result<EventId> idResult = EventId.From(eventId);
+        Result<EventId> idResult = EventId.Create(eventId);
         Result<EventTitle> titleResult = EventTitle.Create(eventTitle);
 
         return idResult.Combine(titleResult)

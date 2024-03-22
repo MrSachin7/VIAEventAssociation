@@ -13,7 +13,7 @@ public class UpdateEventDescriptionCommand {
     }
 
     public static Result<UpdateEventDescriptionCommand> Create(string eventId, string eventDescription) {
-        Result<EventId> idResult = EventId.From(eventId);
+        Result<EventId> idResult = EventId.Create(eventId);
         Result<EventDescription> descriptionResult = EventDescription.Create(eventDescription);
 
         return idResult.Combine(descriptionResult)

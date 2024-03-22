@@ -9,7 +9,7 @@ namespace UnitTests.Common.Factories;
 
 public static class EventFactory {
 
-    private static readonly ISystemTime _systemTime = new TestSystemTime();
+    private static readonly ISystemTime SystemTime = new TestSystemTime();
     public static VeaEvent GetDraftEvent() {
         return VeaEvent.Empty();
     }
@@ -19,8 +19,9 @@ public static class EventFactory {
         veaEvent.UpdateDescription(GetValidEventDescription());
         veaEvent.UpdateTitle(GetValidEventTitle());
         veaEvent.UpdateEventDuration(GetValidEventDuration());
-        veaEvent.UpdateLocation(Location.Create(LocationName.Create("C02.03").Payload!));
-        veaEvent.MakeReady(_systemTime);
+        veaEvent.UpdateLocation(Location.Create(LocationName.Create("C02.03").Payload!,
+            LocationMaxGuests.Create(50).Payload!));
+        veaEvent.MakeReady(SystemTime);
 
         // Assert that the event is ready before returning
         Assert.Equal(EventStatus.Ready, veaEvent.Status);
@@ -29,7 +30,7 @@ public static class EventFactory {
 
     public static VeaEvent GetActiveEvent() {
         VeaEvent veaEvent = GetReadyEvent();
-        veaEvent.MakeActive(_systemTime);
+        veaEvent.MakeActive(SystemTime);
         // Assert that the event is active before returning
         Assert.Equal(EventStatus.Active, veaEvent.Status);
         return veaEvent;
@@ -221,10 +222,10 @@ public static class EventFactory {
             // This makes sure that we have both accepted invites and intended participants
             if (veaEvent.Visibility.Equals(EventVisibility.Public)) {
                 if (i % 2 == 0) {
-                    veaEvent.ParticipateGuest(GuestFactory.GetValidGuest(), _systemTime);
+                    veaEvent.ParticipateGuest(GuestFactory.GetValidGuest().Result, SystemTime);
                 }
                 else {
-                    Guest guest = GuestFactory.GetValidGuest();
+                    Guest guest = GuestFactory.GetValidGuest().Result;
                     EventInvitation invitation = EventInvitation.Create(guest.Id);
                     veaEvent.InviteGuest(invitation);
                     veaEvent.AcceptInvitation(invitation);
@@ -232,7 +233,7 @@ public static class EventFactory {
             }
             // If private, invite and accept all
             else {
-                Guest guest = GuestFactory.GetValidGuest();
+                Guest guest = GuestFactory.GetValidGuest().Result;
                 EventInvitation invitation = EventInvitation.Create(guest.Id);
                 veaEvent.InviteGuest(invitation);
                 veaEvent.AcceptInvitation(invitation);

@@ -13,7 +13,7 @@ public class MakeEventPublicCommand {
 
 
     public static Result<MakeEventPublicCommand> Create(string eventId) {
-        Result<EventId> idResult = EventId.From(eventId);
+        Result<EventId> idResult = EventId.Create(eventId);
         return idResult.WithPayload(() => new MakeEventPublicCommand(idResult.Payload!));
     }
 }

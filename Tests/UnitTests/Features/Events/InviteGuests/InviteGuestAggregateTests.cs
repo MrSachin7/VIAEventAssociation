@@ -12,10 +12,10 @@ namespace UnitTests.Features.Events.GuestInvitation;
 public class GuestInvitationTests {
     
     [Fact]
-    public void GivenEventInStatusActive_AndNotFull_AndNotStartedYet_WhenGuestIsInvited_ThenReturnsSuccessResult() {
+    public async Task GivenEventInStatusActive_AndNotFull_AndNotStartedYet_WhenGuestIsInvited_ThenReturnsSuccessResult() {
         // Arrange with a public event and a valid guest
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
-        Guest guest = GuestFactory.GetValidGuest();
+        Guest guest = await GuestFactory.GetValidGuest();
         EventInvitation invitation = EventInvitation.Create(guest.Id);
 
         // Act
@@ -27,10 +27,10 @@ public class GuestInvitationTests {
     }
 
     [Fact]
-    public void GivenEventInStatusReady_AndNotFull_AndNotStartedYet_WhenGuestIsInvited_ThenReturnsSuccessResult() {
+    public  async Task GivenEventInStatusReady_AndNotFull_AndNotStartedYet_WhenGuestIsInvited_ThenReturnsSuccessResult() {
         // Arrange with a public event and a valid guest
         VeaEvent veaEvent = EventFactory.GetReadyEvent();
-        Guest guest = GuestFactory.GetValidGuest();
+        Guest guest =await GuestFactory.GetValidGuest();
         EventInvitation invitation = EventInvitation.Create(guest.Id);
 
         // Act
@@ -42,10 +42,10 @@ public class GuestInvitationTests {
     }
 
     [Fact]
-    public void GivenEventInStatusDraft_AndNotFull_AndNotStartedYet_WhenGuestIsInvited_ThenReturnsFailureResult_WithCorrectErrorMessage() {
+    public  async Task GivenEventInStatusDraft_AndNotFull_AndNotStartedYet_WhenGuestIsInvited_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with a public event and a valid guest
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        Guest guest = GuestFactory.GetValidGuest();
+        Guest guest =await GuestFactory.GetValidGuest();
         EventInvitation invitation = EventInvitation.Create(guest.Id);
 
         // Act
@@ -57,10 +57,10 @@ public class GuestInvitationTests {
     }
 
     [Fact]
-    public void GivenEventInStatusCancelled_AndNotFull_AndNotStartedYet_WhenGuestIsInvited_ThenReturnsFailureResult_WithCorrectErrorMessage() {
+    public  async Task GivenEventInStatusCancelled_AndNotFull_AndNotStartedYet_WhenGuestIsInvited_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with a public event and a valid guest
         VeaEvent veaEvent = EventFactory.GetCancelledEvent();
-        Guest guest = GuestFactory.GetValidGuest();
+        Guest guest = await GuestFactory.GetValidGuest();
         EventInvitation invitation = EventInvitation.Create(guest.Id);
 
         // Act
@@ -72,12 +72,12 @@ public class GuestInvitationTests {
     }
 
     [Fact]
-    public void GivenEventInStatusActive_AndFull_AndNotStartedYet_WhenGuestIsInvited_ThenReturnsFailureResult_WithCorrectErrorMessage() {
+    public  async Task GivenEventInStatusActive_AndFull_AndNotStartedYet_WhenGuestIsInvited_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with a public event and a valid guest
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         EventFactory.ArrangeFullEvent(veaEvent);
 
-        Guest guest = GuestFactory.GetValidGuest();
+        Guest guest = await GuestFactory.GetValidGuest();
         EventInvitation invitation = EventInvitation.Create(guest.Id);
 
         // Act

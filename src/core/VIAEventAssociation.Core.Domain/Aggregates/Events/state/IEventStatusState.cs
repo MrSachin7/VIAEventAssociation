@@ -26,5 +26,5 @@ internal interface IEventStatusState {
     Result ParticipateGuest(VeaEvent veaEvent, GuestId guestId, ISystemTime systemTime);
     Result AcceptInvitation(VeaEvent veaEvent, EventInvitation invitation);
     Result DeclineInvitation(VeaEvent veaEvent, EventInvitation invitation);
-    Result UpdateLocation(VeaEvent veaEvent, LocationId locationId);
+    Result UpdateLocation(VeaEvent veaEvent, Location location);
 }
