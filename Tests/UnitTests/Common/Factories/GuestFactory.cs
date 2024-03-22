@@ -13,7 +13,8 @@ public static class GuestFactory {
         GuestLastName lastName = GuestLastName.Create("Baral").Payload!;
         IUniqueEmailChecker uniqueEmailChecker = new TestUniqueEmailChecker();
         ViaEmail email = (await ViaEmail.Create("310628@via.dk", uniqueEmailChecker)).Payload!;
-        return Guest.Create(firstName, lastName, email).Payload!;
+        ProfilePictureUrl profilePictureUrl = ProfilePictureUrl.Create("https://via.dk").Payload!;
+        return Guest.Create(firstName, lastName, email, profilePictureUrl).Payload!;
     }
 
 

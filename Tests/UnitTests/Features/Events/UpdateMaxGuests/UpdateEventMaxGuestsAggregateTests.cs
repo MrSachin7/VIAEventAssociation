@@ -4,7 +4,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.UpdateMaxGuests;
 
-public class UpdateEventMaxGuestsServiceTests {
+public class UpdateEventMaxGuestsAggregateTests {
 
     [Theory]
     [MemberData(nameof(EventFactory.GetValidEventMaxGuests), MemberType = typeof(EventFactory))]
