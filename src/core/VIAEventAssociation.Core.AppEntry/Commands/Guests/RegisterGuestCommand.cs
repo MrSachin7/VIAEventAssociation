@@ -15,7 +15,6 @@ public class RegisterGuestCommand  : ICommand{
     public static async Task<Result<RegisterGuestCommand>> Create(string firstname, string lastname,
         string viaEmail, string profilePictureUrl, IUniqueEmailChecker someEmailUniqueCheckService){
 
-
         Result<GuestFirstName> firstnameResult = GuestFirstName.Create(firstname);
         Result<GuestLastName> lastnameResult = GuestLastName.Create(lastname);
         Result<ViaEmail> viaEmailResult = await ViaEmail.Create(viaEmail, someEmailUniqueCheckService);

@@ -1,5 +1,5 @@
 ﻿namespace UnitTests.Features.Guests.RegisterGuest;
 
-public class RegisterGuestsTest {
+public class RegisterGuestAggregateTests {
     
 }

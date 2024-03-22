@@ -6,18 +6,18 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Application.CommandHandlers.Events;
 
-public class UpdateEventMaximumNumberOfGuestsCommandHandler : ICommandHandler<UpdateEventMaximumNumberOfGuestsCommand> {
+public class UpdateEventMaxGuestsCommandHandler : ICommandHandler<UpdateEventMaxGuestsCommand> {
 
     private readonly IEventRepository _eventRepository;
     private readonly IUnitOfWork _unitOfWork;
 
 
-    public UpdateEventMaximumNumberOfGuestsCommandHandler(IEventRepository eventRepository, IUnitOfWork unitOfWork) {
+    public UpdateEventMaxGuestsCommandHandler(IEventRepository eventRepository, IUnitOfWork unitOfWork) {
         _eventRepository = eventRepository;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result> Handle(UpdateEventMaximumNumberOfGuestsCommand command) {
+    public async Task<Result> Handle(UpdateEventMaxGuestsCommand command) {
         VeaEvent? veaEvent = await _eventRepository.FindAsync(command.EventId);
 
         if (veaEvent is null) {
