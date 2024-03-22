@@ -6,7 +6,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.MakeReady;
 
-public class MakeEventReadyTests {
+public class MakeEventReadyAggregateTests {
 
     [Fact]
     public void GivenAnEventInDraftStatus_WhenMakingEventReady_AndAllFieldsAreSet_ThenReturnsSuccessResult() {

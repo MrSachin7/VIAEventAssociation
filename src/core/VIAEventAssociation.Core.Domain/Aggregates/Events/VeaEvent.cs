@@ -280,4 +280,17 @@ public class VeaEvent : Aggregate<EventId> {
     private int GetNumberOfAcceptedInvitations() {
         return EventInvitations.Count(invitation => invitation.Status.Equals(JoinStatus.Accepted));
     }
+
+    public override bool Equals(object? obj) {
+        VeaEvent? other = obj as VeaEvent;
+        if (other is null) {
+            return false;
+        }
+
+        return Id.Equals(other.Id);
+    }
+
+    public override int GetHashCode() {
+        return Id.GetHashCode();
+    }
 }

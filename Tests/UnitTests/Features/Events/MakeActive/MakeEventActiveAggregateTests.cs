@@ -6,7 +6,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.MakeActive;
 
-public class MakeEventActiveTests {
+public class MakeEventActiveAggregateTests {
     [Fact]
     public void GivenAnEventInStateReady_WhenMakingEventActive_ThenReturnsSuccessResult_AndTheEventIsInActiveStatus() {
         // Arrange

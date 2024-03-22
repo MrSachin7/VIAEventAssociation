@@ -10,6 +10,8 @@ namespace UnitTests.Common.Factories;
 public static class EventFactory {
 
     private static readonly ISystemTime SystemTime = new TestSystemTime();
+    public const string ValidEventId = "9245fe4a-d402-451c-b9ed-9c1a04247482";
+
     public static VeaEvent GetDraftEvent() {
         return VeaEvent.Empty();
     }

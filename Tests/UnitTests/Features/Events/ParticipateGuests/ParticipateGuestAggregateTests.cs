@@ -1,13 +1,12 @@
 ﻿using UnitTests.Common.Factories;
 using UnitTests.Common.Stubs;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
-using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
-namespace UnitTests.Features.Events.GuestParticipation;
+namespace UnitTests.Features.Events.ParticipateGuests;
 
-public class GuestParticipationTests {
+public class ParticipateGuestAggregateTests {
     private readonly ISystemTime _systemTime = new TestSystemTime();
 
     [Fact]
