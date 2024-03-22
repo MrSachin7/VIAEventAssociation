@@ -82,7 +82,7 @@ internal class ActiveStatusState : IEventStatusState {
         return Result.Success();
     }
 
-    public Result UpdateLocation(VeaEvent veaEvent, LocationId locationId) {
+    public Result UpdateLocation(VeaEvent veaEvent, Location locationId) {
         return Error.BadRequest(ErrorMessage.ActiveEventIsUnmodifiable);
     }
 }

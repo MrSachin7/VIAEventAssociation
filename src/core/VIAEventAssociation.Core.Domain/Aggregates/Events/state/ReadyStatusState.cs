@@ -87,8 +87,8 @@ internal class ReadyStatusState : IEventStatusState {
         return Error.BadRequest(ErrorMessage.EventsCannotBeDeclinedYet);
     }
 
-    public Result UpdateLocation(VeaEvent veaEvent, LocationId locationId) {
-        veaEvent.SetLocation(locationId);
+    public Result UpdateLocation(VeaEvent veaEvent, Location location) {
+        veaEvent.SetLocation(location);
         veaEvent.SetStatusToDraft();
         return Result.Success();
     }

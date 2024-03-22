@@ -11,13 +11,13 @@ public class GuestParticipationTests {
     private readonly ISystemTime _systemTime = new TestSystemTime();
 
     [Fact]
-    public void
+    public  async Task
         GivenEventInStatusActive_AndPublic_AndNotFull_AndNotStartedYet_WhenGuestParticipates_ThenReturnsSuccessResult() {
         // Arrange with a public event and a valid guest
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         veaEvent.MakePublic();
         Assert.Equal(EventVisibility.Public, veaEvent.Visibility);
-        Guest guest = GuestFactory.GetValidGuest();
+        Guest guest =await GuestFactory.GetValidGuest();
 
         // Act
         Result result = veaEvent.ParticipateGuest(guest, new TestSystemTime());
@@ -28,13 +28,13 @@ public class GuestParticipationTests {
     }
 
     [Fact]
-    public void
+    public  async Task
         GivenEventInStatusActive_AndPrivate_AndNotFull_AndNotStartedYet_WhenGuestParticipates_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with a private event and a valid guest
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
 
         Assert.Equal(EventVisibility.Private, veaEvent.Visibility);
-        Guest guest = GuestFactory.GetValidGuest();
+        Guest guest = await GuestFactory.GetValidGuest();
 
         // Act
         Result result = veaEvent.ParticipateGuest(guest, new TestSystemTime());
@@ -46,13 +46,13 @@ public class GuestParticipationTests {
     }
 
     [Fact]
-    public void
+    public  async Task
         GivenEventInStatusActive_AndPublic_AndFull_AndNotStartedYet_WhenGuestParticipates_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with a private event and a valid guest
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         veaEvent.MakePublic();
         Assert.Equal(EventVisibility.Public, veaEvent.Visibility);
-        Guest guest = GuestFactory.GetValidGuest();
+        Guest guest =await GuestFactory.GetValidGuest();
 
         // Arrange a full event
         EventFactory.ArrangeFullEvent(veaEvent);
@@ -68,13 +68,13 @@ public class GuestParticipationTests {
     }
 
     [Fact]
-    public void
+    public  async Task
         GivenEventInStatusActive_AndPublic_AndNotFull_AndAlreadyStarted_WhenGuestParticipates_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with a public event and a valid guest
         VeaEvent veaEvent = GetAlreadyStartedActiveEvent();
         veaEvent.MakePublic();
         Assert.Equal(EventVisibility.Public, veaEvent.Visibility);
-        Guest guest = GuestFactory.GetValidGuest();
+        Guest guest = await GuestFactory.GetValidGuest();
 
         // Act
         Result result = veaEvent.ParticipateGuest(guest, _systemTime);
@@ -85,12 +85,12 @@ public class GuestParticipationTests {
     }
 
     [Fact]
-    public void
+    public  async Task
         GivenEventInInStatusActive_AndTheGuestParticipationExists_WhenGuestCancelsParticipation_ReturnsSuccessResult_AndTheParticipationIsDeleted() {
         // Arrange with an event that has a guest participation
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         veaEvent.MakePublic();
-        Guest guest = GuestFactory.GetValidGuest();
+        Guest guest = await GuestFactory.GetValidGuest();
         veaEvent.ParticipateGuest(guest, _systemTime);
         // Make sure that the guest is participating before continuing
         Assert.Contains(guest.Id, veaEvent.IntendedParticipants);

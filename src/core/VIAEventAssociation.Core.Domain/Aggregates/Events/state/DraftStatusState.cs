@@ -80,8 +80,8 @@ internal class DraftStatusState : IEventStatusState {
 
     }
 
-    public Result UpdateLocation(VeaEvent veaEvent, LocationId locationId) {
-        veaEvent.SetLocation(locationId);
+    public Result UpdateLocation(VeaEvent veaEvent, Location location) {
+        veaEvent.SetLocation(location);
         return Result.Success();
     }
 

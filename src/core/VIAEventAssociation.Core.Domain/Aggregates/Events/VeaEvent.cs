@@ -26,7 +26,7 @@ public class VeaEvent : Aggregate<EventId> {
 
     internal ISet<GuestId> IntendedParticipants { get; private set; }
 
-    internal LocationId? LocationId { get; private set; }
+    internal Location? Location { get; private set; }
 
 
     private VeaEvent() {
@@ -126,10 +126,10 @@ public class VeaEvent : Aggregate<EventId> {
     }
 
     public Result UpdateLocation(Location location) {
-        return _currentStatusState.UpdateLocation(this, location.Id);
+        return _currentStatusState.UpdateLocation(this, location);
     }
 
-    internal Result ParticipateGuest(Guest guest, ISystemTime systemTime) {
+    public Result ParticipateGuest(Guest guest, ISystemTime systemTime) {
         // If not public, fail
         if (Visibility.Equals(EventVisibility.Private)) {
             return Error.BadRequest(ErrorMessage.PrivateEventCannotBeParticipatedUnlessInvited);
@@ -143,7 +143,9 @@ public class VeaEvent : Aggregate<EventId> {
         return _currentStatusState.ParticipateGuest(this, guest.Id, systemTime);
     }
 
-    internal Result InviteGuest(EventInvitation invitation) {
+
+
+    public Result InviteGuest(EventInvitation invitation) {
         // Max number of guests reached
         if (GetNumberOfParticipants() >= MaxGuests.Value) {
             return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
@@ -152,13 +154,22 @@ public class VeaEvent : Aggregate<EventId> {
         return _currentStatusState.InviteGuest(this, invitation);
     }
 
-    internal Result UpdateMaximumNumberOfGuests(EventMaxGuests maxGuests) {
+    public Result UpdateMaximumNumberOfGuests(EventMaxGuests maxGuests) {
+        if (Location is null) {
+            return Error.BadRequest(ErrorMessage.EventLocationIsNotSet);
+        }
+        int maxGuestsAllowedByLocation = Location.LocationMaxGuests.Value;
+        int attemptedMaxGuests = maxGuests.Value;
+
+        if (attemptedMaxGuests > maxGuestsAllowedByLocation) {
+            return Error.BadRequest(ErrorMessage.EventMaxGuestsCannotExceedLocationMaxGuests);
+        }
         return _currentStatusState.UpdateMaxNumberOfGuests(this, maxGuests);
     }
 
 
-    internal void SetLocation(LocationId locationId) {
-        LocationId = locationId;
+    internal void SetLocation(Location location) {
+        Location = location;
     }
 
     internal void MakeInvitationDeclined(EventInvitation invitation) {
@@ -209,7 +220,7 @@ public class VeaEvent : Aggregate<EventId> {
                 ErrorMessage.EventInThePastCannotBeReady
             )
             .AssertWithError(
-                () => LocationId is not null,
+                () => Location is not null,
                 ErrorMessage.LocationMustBeSetBeforeMakingAnEventReady
             )
             .Build();
@@ -257,11 +268,9 @@ public class VeaEvent : Aggregate<EventId> {
         return GetNumberOfParticipants() >= MaxGuests.Value;
     }
 
-
     private void SetStatus(IEventStatusState statusState) {
         _currentStatusState = statusState;
     }
-
 
     private int GetNumberOfParticipants() {
         return IntendedParticipants.Count + GetNumberOfAcceptedInvitations();

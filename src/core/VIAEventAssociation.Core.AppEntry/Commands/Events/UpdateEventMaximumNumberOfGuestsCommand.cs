@@ -16,7 +16,7 @@ public class UpdateEventMaximumNumberOfGuestsCommand {
 
 
     public static Result<UpdateEventMaximumNumberOfGuestsCommand> Create(string eventId, int maxNumberOfGuests) {
-        Result<EventId> idResult = EventId.From(eventId);
+        Result<EventId> idResult = EventId.Create(eventId);
         Result<EventMaxGuests> maxGuestsResult = EventMaxGuests.Create(maxNumberOfGuests);
 
         return idResult.Combine(maxGuestsResult)

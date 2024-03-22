@@ -4,20 +4,20 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.AppEntry.Commands.Events;
 
-public class ParticipateGuestCommand {
+public class DeclineInvitationCommand {
     public EventId Id { get; init; }
     public GuestId GuestId { get; init; }
 
-    private ParticipateGuestCommand(EventId id, GuestId guestId) {
+    private DeclineInvitationCommand(EventId id, GuestId guestId) {
         Id = id;
         GuestId = guestId;
     }
 
-    public static Result<ParticipateGuestCommand> Create(string eventId, string guestId) {
+    public static Result<DeclineInvitationCommand> Create(string eventId, string guestId) {
         Result<EventId> eventIdResult = EventId.Create(eventId);
         Result<GuestId> guestIdResult = GuestId.Create(guestId);
 
         return eventIdResult.Combine(guestIdResult).WithPayload(() =>
-            new ParticipateGuestCommand(eventIdResult.Payload!, guestIdResult.Payload!));
+            new DeclineInvitationCommand(eventIdResult.Payload!, guestIdResult.Payload!));
     }
 }

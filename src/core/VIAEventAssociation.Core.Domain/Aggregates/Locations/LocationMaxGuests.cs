@@ -10,10 +10,6 @@ public class LocationMaxGuests : ValueObject{
         Value = maxGuests;
     }
 
-    public static LocationMaxGuests Default() {
-        const int defaultMaxGuests = 5;
-        return new LocationMaxGuests(defaultMaxGuests);
-    }
 
     public static Result<LocationMaxGuests> Create(int value) {
         return Result.ToBuilder(ErrorCode.BadRequest)

@@ -69,7 +69,7 @@ internal class CancelledStatusState : IEventStatusState {
 
     }
 
-    public Result UpdateLocation(VeaEvent veaEvent, LocationId locationId) {
+    public Result UpdateLocation(VeaEvent veaEvent, Location locationId) {
         return Error.BadRequest(ErrorMessage.CancelledEventIsUnmodifiable);
     }
 }

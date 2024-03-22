@@ -1,16 +1,16 @@
 ﻿using UnitTests.Fakes;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+using VIAEventAssociation.Core.Domain.Contracts;
 
 namespace UnitTests.Common.Factories;
 
 public static class GuestFactory {
-    public static Guest GetValidGuest() {
+    public static async Task<Guest> GetValidGuest() {
         GuestFirstName firstName = GuestFirstName.Create("Sachin").Payload!;
         GuestLastName lastName = GuestLastName.Create("Baral").Payload!;
-        ViaEmail email = ViaEmail.Create("310628@via.dk").Payload!;
-
-
-        return Guest.Create(firstName, lastName, email, new TestUniqueEmailChecker()).Payload!;
+        IUniqueEmailChecker uniqueEmailChecker = new TestUniqueEmailChecker();
+        ViaEmail email = (await ViaEmail.Create("310628@via.dk", uniqueEmailChecker)).Payload!;
+        return Guest.Create(firstName, lastName, email).Payload!;
     }
 
 

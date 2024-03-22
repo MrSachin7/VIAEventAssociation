@@ -15,7 +15,7 @@ public class GuestId : Id  {
         return new GuestId(Guid.NewGuid());
     }
 
-    internal static Result<GuestId> From(string id) {
+    public static Result<GuestId> Create(string id) {
         Result<Guid> result = CanParseGuid(id);
         return result.IsFailure ? result.Error! : new GuestId(result.Payload);
     }
