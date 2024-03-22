@@ -4,7 +4,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.MakePrivate;
 
-public class MakeEventPrivateTests {
+public class MakeEventPrivateAggregateTests {
     [Fact]
     public void
         GivenAnEventInStateDraft_AndTheEventIsAlreadyPrivate_WhenMadePrivate_ReturnsSuccessResult_AndTheEventIsUnmodified() {

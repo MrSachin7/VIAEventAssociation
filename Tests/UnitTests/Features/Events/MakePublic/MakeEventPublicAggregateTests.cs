@@ -4,7 +4,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.MakePublic;
 
-public class MakeEventPublicTests {
+public class MakeEventPublicAggregateTests {
 
 
     [Fact]

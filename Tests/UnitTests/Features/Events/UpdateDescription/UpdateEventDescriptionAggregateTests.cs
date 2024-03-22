@@ -4,7 +4,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.UpdateDescription;
 
-public class UpdateEventDescriptionTests {
+public class UpdateEventDescriptionAggregateTests {
    
     [Theory]
     [MemberData(nameof(EventFactory.GetValidEventDescriptions), MemberType = typeof(EventFactory))]

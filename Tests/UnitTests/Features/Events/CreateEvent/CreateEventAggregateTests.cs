@@ -3,7 +3,7 @@ using VIAEventAssociation.Core.Domain.Aggregates.Events;
 
 namespace UnitTests.Features.Events.CreateEvent;
 
-public class CreateEventTests {
+public class CreateEventAggregateTests {
 
 
     // U1

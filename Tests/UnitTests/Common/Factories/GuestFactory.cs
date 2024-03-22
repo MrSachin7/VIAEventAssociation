@@ -5,6 +5,9 @@ using VIAEventAssociation.Core.Domain.Contracts;
 namespace UnitTests.Common.Factories;
 
 public static class GuestFactory {
+
+    public const string ValidGuestId = "7c9e6679-7425-40de-944b-e07fc1f90ae7";
+
     public static async Task<Guest> GetValidGuest() {
         GuestFirstName firstName = GuestFirstName.Create("Sachin").Payload!;
         GuestLastName lastName = GuestLastName.Create("Baral").Payload!;
