@@ -4,7 +4,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.AppEntry.Commands.Guests;
 
-public class RegisterGuestCommand {
+public class RegisterGuestCommand  : ICommand{
     public Guest Guest { get; init; }
 
     private RegisterGuestCommand(Guest guest) {

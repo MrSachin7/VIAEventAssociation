@@ -29,7 +29,14 @@ public class VeaEvent : Aggregate<EventId> {
     internal Location? Location { get; private set; }
 
 
-    private VeaEvent() {
+    private VeaEvent(EventId id, EventDescription description, EventVisibility visibility, EventTitle title
+        , EventMaxGuests maxGuests, IEventStatusState currentStatusState) {
+        Id = id;
+        Description = description;
+        Visibility = visibility;
+        Title = title;
+        MaxGuests = maxGuests;
+        _currentStatusState = currentStatusState;
         EventInvitations = new List<EventInvitation>();
         IntendedParticipants = new HashSet<GuestId>();
     }
@@ -42,17 +49,10 @@ public class VeaEvent : Aggregate<EventId> {
         EventVisibility visibility = EventVisibility.Private;
         EventTitle title = EventTitle.Default();
 
-        return new VeaEvent() {
-            Id = id,
-            Description = description,
-            Visibility = visibility,
-            Title = title,
-            MaxGuests = maxGuests,
-            _currentStatusState = draftStatus
-        };
+        return new VeaEvent(id, description, visibility, title, maxGuests, draftStatus);
     }
 
-    public Result UpdateTitle(EventTitle title) {
+    public Result UpdateEventTitle(EventTitle title) {
         return _currentStatusState.UpdateTitle(this, title);
     }
 
@@ -60,7 +60,7 @@ public class VeaEvent : Aggregate<EventId> {
         return _currentStatusState.UpdateEventDuration(this, eventDuration);
     }
 
-    public Result UpdateDescription(EventDescription eventDescription) {
+    public Result UpdateEventDescription(EventDescription eventDescription) {
         return _currentStatusState.UpdateDescription(this, eventDescription);
     }
 
@@ -96,13 +96,13 @@ public class VeaEvent : Aggregate<EventId> {
         return Result.Success();
     }
 
-    public Result AcceptInvitation(EventInvitation invitation) {
+    public Result AcceptInvitation(EventInvitationId invitationId) {
         if (IsFull()) {
             return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
         }
 
-        EventInvitation? invitationToAccept = EventInvitations.FirstOrDefault(invite =>
-            invite.Id.Equals(invitation.Id) && invitation.Status.Equals(JoinStatus.Pending));
+        EventInvitation? invitationToAccept = EventInvitations.FirstOrDefault(invitation =>
+            invitation.Id.Equals(invitationId) && invitation.Status.Equals(JoinStatus.Pending));
 
 
         if (invitationToAccept is null) {
@@ -113,9 +113,9 @@ public class VeaEvent : Aggregate<EventId> {
         return _currentStatusState.AcceptInvitation(this, invitationToAccept);
     }
 
-    public Result DeclineInvitation(EventInvitation invitation) {
+    public Result DeclineInvitation(EventInvitationId invitationId) {
         EventInvitation? invitationToDecline = EventInvitations
-            .FirstOrDefault(invite => invite.Id.Equals(invitation.Id));
+            .FirstOrDefault(invitation => invitation.Id.Equals(invitationId));
 
 
         if (invitationToDecline is null) {
@@ -144,7 +144,6 @@ public class VeaEvent : Aggregate<EventId> {
     }
 
 
-
     public Result InviteGuest(EventInvitation invitation) {
         // Max number of guests reached
         if (GetNumberOfParticipants() >= MaxGuests.Value) {
@@ -158,12 +157,14 @@ public class VeaEvent : Aggregate<EventId> {
         if (Location is null) {
             return Error.BadRequest(ErrorMessage.EventLocationIsNotSet);
         }
+
         int maxGuestsAllowedByLocation = Location.LocationMaxGuests.Value;
         int attemptedMaxGuests = maxGuests.Value;
 
         if (attemptedMaxGuests > maxGuestsAllowedByLocation) {
             return Error.BadRequest(ErrorMessage.EventMaxGuestsCannotExceedLocationMaxGuests);
         }
+
         return _currentStatusState.UpdateMaxNumberOfGuests(this, maxGuests);
     }
 

@@ -16,8 +16,8 @@ public static class EventFactory {
 
     public static VeaEvent GetReadyEvent() {
         VeaEvent veaEvent = GetDraftEvent();
-        veaEvent.UpdateDescription(GetValidEventDescription());
-        veaEvent.UpdateTitle(GetValidEventTitle());
+        veaEvent.UpdateEventDescription(GetValidEventDescription());
+        veaEvent.UpdateEventTitle(GetValidEventTitle());
         veaEvent.UpdateEventDuration(GetValidEventDuration());
         veaEvent.UpdateLocation(Location.Create(LocationName.Create("C02.03").Payload!,
             LocationMaxGuests.Create(50).Payload!));
@@ -228,7 +228,7 @@ public static class EventFactory {
                     Guest guest = GuestFactory.GetValidGuest().Result;
                     EventInvitation invitation = EventInvitation.Create(guest.Id);
                     veaEvent.InviteGuest(invitation);
-                    veaEvent.AcceptInvitation(invitation);
+                    veaEvent.AcceptInvitation(invitation.Id);
                 }
             }
             // If private, invite and accept all
@@ -236,7 +236,7 @@ public static class EventFactory {
                 Guest guest = GuestFactory.GetValidGuest().Result;
                 EventInvitation invitation = EventInvitation.Create(guest.Id);
                 veaEvent.InviteGuest(invitation);
-                veaEvent.AcceptInvitation(invitation);
+                veaEvent.AcceptInvitation(invitation.Id);
             }
         }
 

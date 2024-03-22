@@ -14,7 +14,7 @@ public class UpdateEventDescriptionTests {
         EventDescription eventDescription = EventDescription.Create(description).Payload!;
 
         // Act
-        Result result = veaEvent.UpdateDescription(eventDescription);
+        Result result = veaEvent.UpdateEventDescription(eventDescription);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -29,7 +29,7 @@ public class UpdateEventDescriptionTests {
         EventDescription eventDescription = EventDescription.Create(description).Payload!;
 
         // Act
-        Result result = veaEvent.UpdateDescription(eventDescription);
+        Result result = veaEvent.UpdateEventDescription(eventDescription);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -48,7 +48,7 @@ public class UpdateEventDescriptionTests {
         EventDescription eventDescription = EventDescription.Create(description).Payload!;
 
         // Act
-        Result result = veaEvent.UpdateDescription(eventDescription);
+        Result result = veaEvent.UpdateEventDescription(eventDescription);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -68,7 +68,7 @@ public class UpdateEventDescriptionTests {
         EventDescription eventDescription = EventDescription.Create(description).Payload!;
 
         // Act
-        Result result = veaEvent.UpdateDescription(eventDescription);
+        Result result = veaEvent.UpdateEventDescription(eventDescription);
 
         // Assert
         Assert.True(result.IsFailure);

@@ -12,8 +12,8 @@ public class MakeEventReadyTests {
     public void GivenAnEventInDraftStatus_WhenMakingEventReady_AndAllFieldsAreSet_ThenReturnsSuccessResult() {
         // Arrange
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
-        veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
+        veaEvent.UpdateEventDescription(EventFactory.GetValidEventDescription());
+        veaEvent.UpdateEventTitle(EventFactory.GetValidEventTitle());
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
         veaEvent.UpdateLocation(LocationFactory.GetValidLocation());
 
@@ -29,7 +29,7 @@ public class MakeEventReadyTests {
     public void GivenAnEventInDraftStatus_WhenMakingEventReady_AndDescriptionIsDefault_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with default description
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
+        veaEvent.UpdateEventTitle(EventFactory.GetValidEventTitle());
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
 
         // Act
@@ -47,7 +47,7 @@ public class MakeEventReadyTests {
     public void GivenAnEventInDraftStatus_WhenMakingEventReady_AndTitleIsDefault_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with default title
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
+        veaEvent.UpdateEventDescription(EventFactory.GetValidEventDescription());
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
 
         // Act
@@ -65,8 +65,8 @@ public class MakeEventReadyTests {
     public void GivenAnEventInDraftStatus_WhenMakingEventReady_AndDurationIsDefault_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with default title
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
-        veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
+        veaEvent.UpdateEventDescription(EventFactory.GetValidEventDescription());
+        veaEvent.UpdateEventTitle(EventFactory.GetValidEventTitle());
 
         // Act
         Result result = veaEvent.MakeReady(new TestSystemTime());
@@ -83,8 +83,8 @@ public class MakeEventReadyTests {
     public void GivenAnEventInDraftStatus_WhenMakingEventReady_AndLocationIsNotSet_ThenReturnsFailureResult_WithCorrectErrorMessage() {
         // Arrange with default title
         VeaEvent veaEvent = EventFactory.GetDraftEvent();
-        veaEvent.UpdateDescription(EventFactory.GetValidEventDescription());
-        veaEvent.UpdateTitle(EventFactory.GetValidEventTitle());
+        veaEvent.UpdateEventDescription(EventFactory.GetValidEventDescription());
+        veaEvent.UpdateEventTitle(EventFactory.GetValidEventTitle());
         veaEvent.UpdateEventDuration(EventFactory.GetValidEventDuration());
 
 

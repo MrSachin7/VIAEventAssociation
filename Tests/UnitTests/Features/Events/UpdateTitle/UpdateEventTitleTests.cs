@@ -21,7 +21,7 @@ public class UpdateEventTitleTests {
         EventTitle eventTitle = EventTitle.Create(title).Payload!;
 
         // Act
-        Result result = veaEvent.UpdateTitle(eventTitle);
+        Result result = veaEvent.UpdateEventTitle(eventTitle);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -40,7 +40,7 @@ public class UpdateEventTitleTests {
         EventTitle eventTitle = EventTitle.Create(title).Payload!;
 
         // Act
-       Result result = veaEvent.UpdateTitle(eventTitle);
+       Result result = veaEvent.UpdateEventTitle(eventTitle);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -58,7 +58,7 @@ public class UpdateEventTitleTests {
         EventTitle eventTitle = EventTitle.Create(title).Payload!;
 
         // Act
-        Result result = veaEvent.UpdateTitle(eventTitle);
+        Result result = veaEvent.UpdateEventTitle(eventTitle);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -77,7 +77,7 @@ public class UpdateEventTitleTests {
         EventTitle eventTitle = EventTitle.Create(title).Payload!;
 
         // Act
-        Result result = veaEvent.UpdateTitle(eventTitle);
+        Result result = veaEvent.UpdateEventTitle(eventTitle);
 
         // Assert
         Assert.True(result.IsFailure);
