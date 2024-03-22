@@ -7,7 +7,7 @@ namespace UnitTests.Features.Events.UpdateTitle;
 /*
  * U2 : The creator updates the title of an existing event
  */
-public class UpdateEventTitleTests {
+public class UpdateEventTitleAggregateTests {
 
 
     /*

@@ -97,7 +97,6 @@ public static class EventFactory {
 
     public static IEnumerable<object[]> GetInValidEventDescriptions() {
         return new List<object[]> {
-            // Empty string
             new object[] {"a".PadRight(251, 'a')},
             // A string with 75 ++ characters
             new object[] {"a".PadRight(300, 'a')},
