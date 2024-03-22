@@ -4,12 +4,12 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.AppEntry.Commands.Events;
 
-public class ParticipateGuestCommand {
-    public EventId Id { get; init; }
+public class ParticipateGuestCommand  : ICommand{
+    public EventId EventId { get; init; }
     public GuestId GuestId { get; init; }
 
-    private ParticipateGuestCommand(EventId id, GuestId guestId) {
-        Id = id;
+    private ParticipateGuestCommand(EventId eventId, GuestId guestId) {
+        EventId = eventId;
         GuestId = guestId;
     }
 

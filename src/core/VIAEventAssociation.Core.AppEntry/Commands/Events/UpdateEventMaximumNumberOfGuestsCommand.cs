@@ -3,15 +3,15 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.AppEntry.Commands.Events;
 
-public class UpdateEventMaximumNumberOfGuestsCommand {
-    public EventId Id { get; init; }
+public class UpdateEventMaximumNumberOfGuestsCommand  : ICommand{
+    public EventId EventId { get; init; }
 
     public EventMaxGuests
-        MaxGuests { get; init; }
+        EventMaxGuests { get; init; }
 
-    private UpdateEventMaximumNumberOfGuestsCommand(EventId id, EventMaxGuests maxGuests) {
-        Id = id;
-        MaxGuests = maxGuests;
+    private UpdateEventMaximumNumberOfGuestsCommand(EventId eventId, EventMaxGuests eventMaxGuests) {
+        EventId = eventId;
+        EventMaxGuests = eventMaxGuests;
     }
 
 

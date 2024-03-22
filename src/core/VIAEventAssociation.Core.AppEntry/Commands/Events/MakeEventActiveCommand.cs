@@ -3,11 +3,11 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.AppEntry.Commands.Events;
 
-public class MakeEventActiveCommand {
-    public EventId Id { get; init; }
+public class MakeEventActiveCommand  : ICommand{
+    public EventId EventId { get; init; }
 
-    private MakeEventActiveCommand(EventId id) {
-        Id = id;
+    private MakeEventActiveCommand(EventId eventId) {
+        EventId = eventId;
     }
 
     public static Result<MakeEventActiveCommand> Create(string eventId) {

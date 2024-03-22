@@ -1,23 +1,23 @@
 ﻿using VIAEventAssociation.Core.Domain.Aggregates.Events;
-using VIAEventAssociation.Core.Domain.Aggregates.Guests;
+using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.AppEntry.Commands.Events;
 
-public class AcceptInvitationCommand {
-    public EventId Id { get; init; }
-    public GuestId GuestId { get; init; }
+public class AcceptInvitationCommand  : ICommand{
+    public EventId EventId { get; init; }
+    public EventInvitationId InvitationId { get; init; }
 
-    private AcceptInvitationCommand(EventId id, GuestId guestId) {
-        Id = id;
-        GuestId = guestId;
+    private AcceptInvitationCommand(EventId eventId,EventInvitationId invitationId) {
+        EventId = eventId;
+        InvitationId = invitationId;
     }
 
-    public static Result<AcceptInvitationCommand> Create(string eventId, string guestId) {
+    public static Result<AcceptInvitationCommand> Create(string eventId, string invitationId) {
         Result<EventId> eventIdResult = EventId.Create(eventId);
-        Result<GuestId> guestIdResult = GuestId.Create(guestId);
+        Result<EventInvitationId> invitationIdResult = EventInvitationId.Create(invitationId);
 
-        return eventIdResult.Combine(guestIdResult).WithPayload(() =>
-            new AcceptInvitationCommand(eventIdResult.Payload!, guestIdResult.Payload!));
+        return eventIdResult.Combine(invitationIdResult).WithPayload(() =>
+            new AcceptInvitationCommand(eventIdResult.Payload!, invitationIdResult.Payload!));
     }
 }

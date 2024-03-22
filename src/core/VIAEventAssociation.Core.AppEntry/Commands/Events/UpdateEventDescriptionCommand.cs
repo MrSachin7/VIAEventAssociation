@@ -3,13 +3,13 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.AppEntry.Commands.Events;
 
-public class UpdateEventDescriptionCommand {
-    public EventId Id { get; init; }
-    public EventDescription Description { get; init; }
+public class UpdateEventDescriptionCommand  : ICommand{
+    public EventId EventId { get; init; }
+    public EventDescription EventDescription { get; init; }
 
-    private UpdateEventDescriptionCommand(EventId id, EventDescription description) {
-        Id = id;
-        Description = description;
+    private UpdateEventDescriptionCommand(EventId eventId, EventDescription eventDescription) {
+        EventId = eventId;
+        EventDescription = eventDescription;
     }
 
     public static Result<UpdateEventDescriptionCommand> Create(string eventId, string eventDescription) {
