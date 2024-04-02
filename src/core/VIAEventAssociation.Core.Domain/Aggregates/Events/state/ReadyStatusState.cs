@@ -79,16 +79,16 @@ internal class ReadyStatusState : IEventStatusState {
 
     }
 
-    public Result AcceptInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
+    public Result AcceptInvitation(VeaEvent veaEvent, EventInvitation invitation) {
         return Error.BadRequest(ErrorMessage.OnlyActiveEventsCanBeJoined);
     }
 
-    public Result DeclineInvitation(VeaEvent veaEvent, EventInvitationId invitationId) {
+    public Result DeclineInvitation(VeaEvent veaEvent, EventInvitation invitationId) {
         return Error.BadRequest(ErrorMessage.EventsCannotBeDeclinedYet);
     }
 
-    public Result UpdateLocation(VeaEvent veaEvent, LocationId locationId) {
-        veaEvent.SetLocation(locationId);
+    public Result UpdateLocation(VeaEvent veaEvent, Location location) {
+        veaEvent.SetLocation(location);
         veaEvent.SetStatusToDraft();
         return Result.Success();
     }

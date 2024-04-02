@@ -61,7 +61,8 @@ public static class LocationFactory {
 
     public static Location GetValidLocation() {
         LocationName name = LocationName.Create("A01.01").Payload!;
-        return Location.Create(name);
+        LocationMaxGuests maxGuests = LocationMaxGuests.Create(50).Payload!;
+        return Location.Create(name, maxGuests);
     }   
     
 }

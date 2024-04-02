@@ -7,14 +7,14 @@ public class Location : Aggregate<LocationId> {
     internal LocationName LocationName { get; private set; }
     internal LocationMaxGuests LocationMaxGuests { get; private set; }
 
-    private Location(LocationId locationId, LocationName locationName) {
+    private Location(LocationId locationId, LocationName locationName, LocationMaxGuests locationMaxGuests) {
         Id = locationId;
         LocationName = locationName;
-        LocationMaxGuests = LocationMaxGuests.Default();
+        LocationMaxGuests = locationMaxGuests;
     }
 
-    public static Location Create(LocationName locationName) {
-        return new Location(LocationId.New(), locationName);
+    public static Location Create(LocationName locationName, LocationMaxGuests locationMaxGuests) {
+        return new Location(LocationId.New(), locationName, locationMaxGuests);
     }
 
     public void UpdateLocationName(LocationName locationName) {

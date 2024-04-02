@@ -13,7 +13,7 @@ public class EventInvitationId : Id {
         return new EventInvitationId(Guid.NewGuid());
     }
 
-    public static Result<EventInvitationId> From(string id) {
+    public static Result<EventInvitationId> Create(string id) {
         Result<Guid> result = CanParseGuid(id);
         return result.IsFailure ? result.Error! : new EventInvitationId(result.Payload);
     }

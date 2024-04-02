@@ -1,4 +1,6 @@
-﻿namespace ViaEventAssociation.Core.Tools.OperationResult;
+﻿using System.Runtime.InteropServices;
+
+namespace ViaEventAssociation.Core.Tools.OperationResult;
 
 public class Result {
     public Error? Error { get; init; }
@@ -7,6 +9,38 @@ public class Result {
 
     protected Result() {
     }
+
+    public Result Combine(Result other) {
+        // If both are failures, combine the error messages
+        if (IsFailure && other.IsFailure) {
+            List<ErrorMessage> combinedErrorMessages = Error!.Messages.Concat(other.Error!.Messages).ToList();
+            return new Result() {
+                Error = new Error(ErrorCode.BadRequest, combinedErrorMessages)
+            };
+        }
+
+        // Otherwise, return the failure if there is one
+
+        if (IsFailure) {
+            return this;
+        }
+
+        if (other.IsFailure) {
+            return other;
+        }
+
+        // If neither are failures, return success
+        return Success();
+    }
+
+    public Result<T> WithPayload<T>(Func<T> payload) {
+        if (IsFailure) {
+            return Error!;
+        }
+
+        return payload();
+    }
+
 
     public static Result Success() => new Result();
 
@@ -59,7 +93,7 @@ public class Result {
     }
 }
 
-public class Result<T> : Result  {
+public class Result<T> : Result {
     private readonly T? _payload;
 
     private Result() : base() {
@@ -91,15 +125,14 @@ public class Result<T> : Result  {
 
 
     public new class Builder(ErrorCode errorCode, T payload) : Result.Builder(errorCode) {
-        private readonly T? Payload = payload;
+        private readonly T? _payload = payload;
 
         public new Result<T> Build() {
             if (ErrorMessages is null) {
-                return new Result<T> {Payload = Payload};
+                return new Result<T> {Payload = _payload};
             }
 
             return new Result<T> {Error = new Error(ErrorCode, ErrorMessages)};
         }
     }
 }
-

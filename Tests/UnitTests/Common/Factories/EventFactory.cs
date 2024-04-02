@@ -9,18 +9,21 @@ namespace UnitTests.Common.Factories;
 
 public static class EventFactory {
 
-    private static ISystemTime _systemTime = new TestSystemTime();
+    private static readonly ISystemTime SystemTime = new TestSystemTime();
+    public const string ValidEventId = "9245fe4a-d402-451c-b9ed-9c1a04247482";
+
     public static VeaEvent GetDraftEvent() {
         return VeaEvent.Empty();
     }
 
     public static VeaEvent GetReadyEvent() {
         VeaEvent veaEvent = GetDraftEvent();
-        veaEvent.UpdateDescription(GetValidEventDescription());
-        veaEvent.UpdateTitle(GetValidEventTitle());
+        veaEvent.UpdateEventDescription(GetValidEventDescription());
+        veaEvent.UpdateEventTitle(GetValidEventTitle());
         veaEvent.UpdateEventDuration(GetValidEventDuration());
-        veaEvent.UpdateLocation(LocationId.New());
-        veaEvent.MakeReady(_systemTime);
+        veaEvent.UpdateLocation(Location.Create(LocationName.Create("C02.03").Payload!,
+            LocationMaxGuests.Create(50).Payload!));
+        veaEvent.MakeReady(SystemTime);
 
         // Assert that the event is ready before returning
         Assert.Equal(EventStatus.Ready, veaEvent.Status);
@@ -29,7 +32,7 @@ public static class EventFactory {
 
     public static VeaEvent GetActiveEvent() {
         VeaEvent veaEvent = GetReadyEvent();
-        veaEvent.MakeActive(_systemTime);
+        veaEvent.MakeActive(SystemTime);
         // Assert that the event is active before returning
         Assert.Equal(EventStatus.Active, veaEvent.Status);
         return veaEvent;
@@ -94,7 +97,6 @@ public static class EventFactory {
 
     public static IEnumerable<object[]> GetInValidEventDescriptions() {
         return new List<object[]> {
-            // Empty string
             new object[] {"a".PadRight(251, 'a')},
             // A string with 75 ++ characters
             new object[] {"a".PadRight(300, 'a')},
@@ -221,19 +223,19 @@ public static class EventFactory {
             // This makes sure that we have both accepted invites and intended participants
             if (veaEvent.Visibility.Equals(EventVisibility.Public)) {
                 if (i % 2 == 0) {
-                    veaEvent.ParticipateGuest(GuestFactory.GetValidGuest().Id, _systemTime);
+                    veaEvent.ParticipateGuest(GuestFactory.GetValidGuest().Result, SystemTime);
                 }
                 else {
-                    Guest guest = GuestFactory.GetValidGuest();
-                    EventInvitation invitation = EventInvitation.From(guest.Id);
+                    Guest guest = GuestFactory.GetValidGuest().Result;
+                    EventInvitation invitation = EventInvitation.Create(guest.Id);
                     veaEvent.InviteGuest(invitation);
                     veaEvent.AcceptInvitation(invitation.Id);
                 }
             }
             // If private, invite and accept all
             else {
-                Guest guest = GuestFactory.GetValidGuest();
-                EventInvitation invitation = EventInvitation.From(guest.Id);
+                Guest guest = GuestFactory.GetValidGuest().Result;
+                EventInvitation invitation = EventInvitation.Create(guest.Id);
                 veaEvent.InviteGuest(invitation);
                 veaEvent.AcceptInvitation(invitation.Id);
             }

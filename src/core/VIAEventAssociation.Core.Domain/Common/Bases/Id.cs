@@ -3,7 +3,7 @@
 namespace VIAEventAssociation.Core.Domain.Common.Bases;
 
 public abstract class Id : ValueObject {
-    protected Guid Value { get; init; }
+    public Guid Value { get; init; }
 
     protected Id() {
 

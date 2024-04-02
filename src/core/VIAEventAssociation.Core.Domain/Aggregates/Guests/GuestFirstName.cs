@@ -11,7 +11,7 @@ public class GuestFirstName : ValueObject {
 
     }
 
-    internal static Result<GuestFirstName> Create(string firstName ) {
+    public static Result<GuestFirstName> Create(string firstName ) {
         firstName = firstName.Trim();
 
         if (!FirstNameBetween2And25Characters(firstName)) {
