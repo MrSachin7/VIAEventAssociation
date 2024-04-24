@@ -3,26 +3,21 @@ using UnitTests.Fakes;
 using VIAEventAssociation.Core.AppEntry.Commands.Guests;
 using VIAEventAssociation.Core.Application.CommandHandlers.Guests;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
-using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Guests.RegisterGuest;
 
 public class RegisterGuestHandlerTests {
-    private readonly IUnitOfWork _unitOfWork = new TestUnitOfWork();
-
-
     [Fact]
     public async Task RegisterGuestHandler_RegistersGuest() {
         // Arrange
-
         Guest guest = await GuestFactory.GetValidGuest();
 
         // Make sure the repo contains the guest 
         TestGuestRepo guestRepo = new TestGuestRepo();
 
         RegisterGuestCommand registerGuestCommand =
-           (await RegisterGuestCommand.Create(
+            (await RegisterGuestCommand.Create(
                 guest.FirstName.Value,
                 guest.LastName.Value,
                 guest.Email.Value,
@@ -30,8 +25,8 @@ public class RegisterGuestHandlerTests {
                 new TestUniqueEmailChecker())).Payload!;
 
         // Act
-        RegisterGuestCommandHandler handler = new(guestRepo, _unitOfWork);
-        Result result = await handler.Handle(registerGuestCommand);
+        RegisterGuestCommandHandler handler = new(guestRepo);
+        Result result = await handler.HandleAsync(registerGuestCommand);
 
         // Assert
         Assert.True(result.IsSuccess);

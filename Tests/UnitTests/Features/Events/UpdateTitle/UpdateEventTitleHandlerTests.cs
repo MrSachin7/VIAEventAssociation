@@ -25,8 +25,8 @@ public class UpdateEventTitleHandlerTests {
             UpdateEventTitleCommand.Create(veaEvent.Id.Value.ToString(), title).Payload!;
 
         // Act
-        UpdateEventTitleCommandHandler handler = new(eventRepo, _unitOfWork);
-        Result result = await handler.Handle(updateEventTitleCommand);
+        UpdateEventTitleCommandHandler handler = new(eventRepo);
+        Result result = await handler.HandleAsync(updateEventTitleCommand);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -47,8 +47,8 @@ public class UpdateEventTitleHandlerTests {
             UpdateEventTitleCommand.Create(veaEvent.Id.Value.ToString(), title).Payload!;
 
         // Act
-        UpdateEventTitleCommandHandler handler = new(eventRepo, _unitOfWork);
-        Result result = await handler.Handle(updateEventTitleCommand);
+        UpdateEventTitleCommandHandler handler = new(eventRepo);
+        Result result = await handler.HandleAsync(updateEventTitleCommand);
 
         // Assert
         Assert.True(result.IsFailure);

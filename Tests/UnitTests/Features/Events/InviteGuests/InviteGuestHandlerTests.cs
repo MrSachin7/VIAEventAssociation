@@ -1,19 +1,14 @@
-﻿using Moq;
-using UnitTests.Common.Factories;
+﻿using UnitTests.Common.Factories;
 using UnitTests.Fakes;
 using VIAEventAssociation.Core.AppEntry.Commands.Events;
 using VIAEventAssociation.Core.Application.CommandHandlers.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
-using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.InviteGuests;
 
 public class InviteGuestHandlerTests {
-
-    private readonly IUnitOfWork _unitOfWork = new TestUnitOfWork();
-    
     [Fact]
     public async Task InviteGuestHandler_InvitesGuestsToEvent() {
         // Arrange
@@ -31,8 +26,8 @@ public class InviteGuestHandlerTests {
                 guest.Id.Value.ToString()).Payload!;
 
         // Act
-        InviteGuestCommandHandler handler = new(eventRepo, guestRepo, _unitOfWork);
-        Result result = await handler.Handle(inviteGuestCommand);
+        InviteGuestCommandHandler handler = new(eventRepo, guestRepo);
+        Result result = await handler.HandleAsync(inviteGuestCommand);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -58,8 +53,8 @@ public class InviteGuestHandlerTests {
                 guest.Id.Value.ToString()).Payload!;
 
         // Act
-        InviteGuestCommandHandler handler = new(eventRepo, guestRepo, _unitOfWork);
-        Result result = await handler.Handle(inviteGuestCommand);
+        InviteGuestCommandHandler handler = new(eventRepo, guestRepo);
+        Result result = await handler.HandleAsync(inviteGuestCommand);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -87,8 +82,8 @@ public class InviteGuestHandlerTests {
                 guest.Id.Value.ToString()).Payload!;
 
         // Act
-        InviteGuestCommandHandler handler = new(eventRepo, guestRepo, _unitOfWork);
-        Result result = await handler.Handle(inviteGuestCommand);
+        InviteGuestCommandHandler handler = new(eventRepo, guestRepo);
+        Result result = await handler.HandleAsync(inviteGuestCommand);
 
         // Assert
         Assert.True(result.IsFailure);

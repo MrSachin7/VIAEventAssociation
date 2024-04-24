@@ -5,14 +5,12 @@ using VIAEventAssociation.Core.AppEntry.Commands.Events;
 using VIAEventAssociation.Core.Application.CommandHandlers.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
-using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.ParticipateGuests;
 
 public class ParticipateGuestsHandlerTests {
     
-    private readonly IUnitOfWork _unitOfWork = new TestUnitOfWork();
     private readonly ISystemTime _systemTime = new TestSystemTime();
     
     [Fact]
@@ -33,8 +31,8 @@ public class ParticipateGuestsHandlerTests {
                 guest.Id.Value.ToString()).Payload!;
 
         // Act
-        ParticipateGuestCommandHandler handler = new(eventRepo, guestRepo, _unitOfWork,_systemTime);
-        Result result = await handler.Handle(inviteGuestCommand);
+        ParticipateGuestCommandHandler handler = new(eventRepo, guestRepo,_systemTime);
+        Result result = await handler.HandleAsync(inviteGuestCommand);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -60,8 +58,8 @@ public class ParticipateGuestsHandlerTests {
                 guest.Id.Value.ToString()).Payload!;
 
         // Act
-        ParticipateGuestCommandHandler handler = new(eventRepo, guestRepo, _unitOfWork,_systemTime);
-        Result result = await handler.Handle(participateGuestCommand);
+        ParticipateGuestCommandHandler handler = new(eventRepo, guestRepo,_systemTime);
+        Result result = await handler.HandleAsync(participateGuestCommand);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -88,8 +86,8 @@ public class ParticipateGuestsHandlerTests {
                 guest.Id.Value.ToString()).Payload!;
 
         // Act
-        ParticipateGuestCommandHandler handler = new(eventRepo, guestRepo, _unitOfWork,_systemTime);
-        Result result = await handler.Handle(participateGuestCommand);
+        ParticipateGuestCommandHandler handler = new(eventRepo, guestRepo,_systemTime);
+        Result result = await handler.HandleAsync(participateGuestCommand);
 
         // Assert
         Assert.True(result.IsFailure);

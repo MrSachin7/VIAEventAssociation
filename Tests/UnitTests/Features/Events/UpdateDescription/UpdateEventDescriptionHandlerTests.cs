@@ -3,13 +3,11 @@ using UnitTests.Fakes;
 using VIAEventAssociation.Core.AppEntry.Commands.Events;
 using VIAEventAssociation.Core.Application.CommandHandlers.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
-using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.UpdateDescription;
 
 public class UpdateEventDescriptionHandlerTests {
-    private readonly IUnitOfWork _unitOfWork = new TestUnitOfWork();
 
     [Fact]
     public async Task UpdateEventDescriptionHandler_UpdatesEventDescription() {
@@ -25,8 +23,8 @@ public class UpdateEventDescriptionHandlerTests {
             UpdateEventDescriptionCommand.Create(veaEvent.Id.Value.ToString(), newDescription).Payload!;
 
         // Act
-        UpdateEventDescriptionCommandHandler handler = new(eventRepo, _unitOfWork);
-        Result result = await handler.Handle(updateEventDescriptionCommand);
+        UpdateEventDescriptionCommandHandler handler = new(eventRepo);
+        Result result = await handler.HandleAsync(updateEventDescriptionCommand);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -48,8 +46,8 @@ public class UpdateEventDescriptionHandlerTests {
             UpdateEventDescriptionCommand.Create(veaEvent.Id.Value.ToString(), newDescription).Payload!;
 
         // Act
-        UpdateEventDescriptionCommandHandler handler = new(eventRepo, _unitOfWork);
-        Result result = await handler.Handle(updateEventDescriptionCommand);
+        UpdateEventDescriptionCommandHandler handler = new(eventRepo);
+        Result result = await handler.HandleAsync(updateEventDescriptionCommand);
 
         // Assert
         Assert.True(result.IsFailure);
