@@ -159,10 +159,10 @@ public class ErrorMessage : Enumeration {
         new(0,
             "Events maximum number of guests cannot exceed location maximum number of guests");
 
-    public static ErrorMessage EventNotFound(Guid eventId) => new ErrorMessage(0
+    public static ErrorMessage EventNotFound(Guid eventId) => new (0
         , $"Event with id {eventId.ToString()} is not found");
 
-    public static ErrorMessage GuestNotFound(Guid guestId) => new ErrorMessage(0
+    public static ErrorMessage GuestNotFound(Guid guestId) => new (0
         , $"Guest with id {guestId.ToString()} is not found");
 
 

@@ -45,7 +45,6 @@ internal class ActiveStatusState : IEventStatusState {
         return veaEvent.SetMaximumNumberOfGuests(maxGuests);
     }
 
-    // Todo: there is nothing in the use case description regarding the active state
     public Result MakeReady(VeaEvent veaEvent, ISystemTime systemTime) {
         return Error.BadRequest(ErrorMessage.ActiveEventCannotBeMadeReady);
     }
