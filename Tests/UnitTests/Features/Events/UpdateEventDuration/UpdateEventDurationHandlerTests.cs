@@ -4,13 +4,11 @@ using UnitTests.Fakes;
 using VIAEventAssociation.Core.AppEntry.Commands.Events;
 using VIAEventAssociation.Core.Application.CommandHandlers.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
-using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.UpdateEventDuration;
 
 public class UpdateEventDurationHandlerTests {
-    private readonly IUnitOfWork _unitOfWork = new TestUnitOfWork();
 
 
     [Fact]
@@ -27,8 +25,8 @@ public class UpdateEventDurationHandlerTests {
             UpdateEventDurationCommand.Create(veaEvent.Id.Value.ToString(), eventDuration.StartDateTime, eventDuration.EndDateTime, new TestSystemTime()).Payload!;
 
         // Act
-        UpdateEventDurationHandler handler = new(eventRepo, _unitOfWork);
-        Result result = await handler.Handle(updateEventDurationCommand);
+        UpdateEventDurationHandler handler = new(eventRepo);
+        Result result = await handler.HandleAsync(updateEventDurationCommand);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -51,8 +49,8 @@ public class UpdateEventDurationHandlerTests {
             UpdateEventDurationCommand.Create(veaEvent.Id.Value.ToString(), eventDuration.StartDateTime, eventDuration.EndDateTime, new TestSystemTime()).Payload!;
 
         // Act
-        UpdateEventDurationHandler handler = new(eventRepo, _unitOfWork);
-        Result result = await handler.Handle(updateEventDurationCommand);
+        UpdateEventDurationHandler handler = new(eventRepo);
+        Result result = await handler.HandleAsync(updateEventDurationCommand);
 
         // Assert
         Assert.True(result.IsFailure);

@@ -25,8 +25,8 @@ public class UpdateEventMaxGuestsHandlerTests {
             UpdateEventMaxGuestsCommand.Create(veaEvent.Id.Value.ToString(), maxGuests).Payload!;
 
         // Act
-        UpdateEventMaxGuestsCommandHandler handler = new(eventRepo, _unitOfWork);
-        Result result = await handler.Handle(updateEventMaxGuestsCommand);
+        UpdateEventMaxGuestsCommandHandler handler = new(eventRepo);
+        Result result = await handler.HandleAsync(updateEventMaxGuestsCommand);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -48,8 +48,8 @@ public class UpdateEventMaxGuestsHandlerTests {
             UpdateEventMaxGuestsCommand.Create(veaEvent.Id.Value.ToString(), maxGuests).Payload!;
 
         // Act
-        UpdateEventMaxGuestsCommandHandler handler = new(eventRepo, _unitOfWork);
-        Result result = await handler.Handle(updateEventMaxGuestsCommand);
+        UpdateEventMaxGuestsCommandHandler handler = new(eventRepo);
+        Result result = await handler.HandleAsync(updateEventMaxGuestsCommand);
 
         // Assert
         Assert.True(result.IsFailure);

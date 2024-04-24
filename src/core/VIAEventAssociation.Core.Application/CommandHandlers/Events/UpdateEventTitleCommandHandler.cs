@@ -1,7 +1,6 @@
 ﻿using VIAEventAssociation.Core.AppEntry;
 using VIAEventAssociation.Core.AppEntry.Commands.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
-using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Application.CommandHandlers.Events;
@@ -9,15 +8,13 @@ namespace VIAEventAssociation.Core.Application.CommandHandlers.Events;
 public class UpdateEventTitleCommandHandler : ICommandHandler<UpdateEventTitleCommand> {
     
     private readonly IEventRepository _eventRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
 
-    public UpdateEventTitleCommandHandler(IEventRepository eventRepository, IUnitOfWork unitOfWork) {
+    public UpdateEventTitleCommandHandler(IEventRepository eventRepository) {
         _eventRepository = eventRepository;
-        _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result> Handle(UpdateEventTitleCommand command) {
+    public async Task<Result> HandleAsync(UpdateEventTitleCommand command) {
         VeaEvent? veaEvent = await _eventRepository.FindAsync(command.EventId);
 
         if (veaEvent is null) {
@@ -25,10 +22,6 @@ public class UpdateEventTitleCommandHandler : ICommandHandler<UpdateEventTitleCo
         }
 
         Result result = veaEvent.UpdateEventTitle(command.EventTitle);
-        if (result.IsSuccess) {
-            await _unitOfWork.SaveChangesAsync();
-        }
-
         return result;
 
     }

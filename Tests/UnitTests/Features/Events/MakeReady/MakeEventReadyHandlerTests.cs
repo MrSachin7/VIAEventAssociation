@@ -5,13 +5,11 @@ using VIAEventAssociation.Core.AppEntry.Commands.Events;
 using VIAEventAssociation.Core.Application.CommandHandlers.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Locations;
-using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.MakeReady;
 
 public class MakeEventReadyHandlerTests {
-    private readonly IUnitOfWork _unitOfWork = new TestUnitOfWork();
     private readonly ISystemTime _systemTime = new TestSystemTime();
 
     [Fact]
@@ -32,8 +30,8 @@ public class MakeEventReadyHandlerTests {
             MakeEventReadyCommand.Create(veaEvent.Id.Value.ToString()).Payload!;
 
         // Act
-        MakeEventReadyCommandHandler handler = new(eventRepo, _unitOfWork, _systemTime);
-        Result result = await handler.Handle(makeEventReadyCommand);
+        MakeEventReadyCommandHandler handler = new(eventRepo, _systemTime);
+        Result result = await handler.HandleAsync(makeEventReadyCommand);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -58,8 +56,8 @@ public class MakeEventReadyHandlerTests {
             MakeEventReadyCommand.Create(veaEvent.Id.Value.ToString()).Payload!;
 
         // Act
-        MakeEventReadyCommandHandler handler = new(eventRepo, _unitOfWork, _systemTime);
-        Result result = await handler.Handle(makeEventReadyCommand);
+        MakeEventReadyCommandHandler handler = new(eventRepo, _systemTime);
+        Result result = await handler.HandleAsync(makeEventReadyCommand);
 
         // Assert
         Assert.True(result.IsFailure);

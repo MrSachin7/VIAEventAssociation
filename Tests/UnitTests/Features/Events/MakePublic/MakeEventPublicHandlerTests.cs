@@ -3,13 +3,11 @@ using UnitTests.Fakes;
 using VIAEventAssociation.Core.AppEntry.Commands.Events;
 using VIAEventAssociation.Core.Application.CommandHandlers.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
-using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace UnitTests.Features.Events.MakePublic;
 
 public class MakeEventPublicHandlerTests {
-    private readonly IUnitOfWork _unitOfWork = new TestUnitOfWork();
     
     [Fact]
     public async Task MakeEventPublicHandler_MakesEventPublic() {
@@ -24,8 +22,8 @@ public class MakeEventPublicHandlerTests {
             MakeEventPublicCommand.Create(veaEvent.Id.Value.ToString()).Payload!;
 
         // Act
-        MakeEventPublicCommandHandler handler = new(eventRepo, _unitOfWork);
-        Result result = await handler.Handle(makeEventPublicCommand);
+        MakeEventPublicCommandHandler handler = new(eventRepo);
+        Result result = await handler.HandleAsync(makeEventPublicCommand);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -46,8 +44,8 @@ public class MakeEventPublicHandlerTests {
             MakeEventPublicCommand.Create(veaEvent.Id.Value.ToString()).Payload!;
 
         // Act
-        MakeEventPublicCommandHandler handler = new(eventRepo, _unitOfWork);
-        Result result = await handler.Handle(makeEventPublicCommand);
+        MakeEventPublicCommandHandler handler = new(eventRepo);
+        Result result = await handler.HandleAsync(makeEventPublicCommand);
 
         // Assert
         Assert.True(result.IsFailure);
