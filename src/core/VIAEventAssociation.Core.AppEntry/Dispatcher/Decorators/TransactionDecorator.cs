@@ -1,5 +1,4 @@
-﻿using Serilog;
-using VIAEventAssociation.Core.AppEntry.Commands;
+﻿using VIAEventAssociation.Core.AppEntry.Commands;
 using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
@@ -20,7 +19,6 @@ public class TransactionDecorator : IDispatcher {
         if (result.IsSuccess) {
             await _unitOfWork.SaveChangesAsync();
         }
-
         return result;
 
     }

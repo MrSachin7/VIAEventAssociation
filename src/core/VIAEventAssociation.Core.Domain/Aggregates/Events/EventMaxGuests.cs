@@ -10,6 +10,10 @@ public class EventMaxGuests : ValueObject {
         Value = maxGuests;
     }
 
+    private EventMaxGuests() {
+        // Efc needs this
+    }
+
     public static Result<EventMaxGuests> Create(int maximumGuests) {
         return Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => NoLessThan5(maximumGuests), ErrorMessage.MaxGuestsNotLessThan5)

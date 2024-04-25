@@ -9,12 +9,16 @@ public class EventId : Id {
     }
 
 
-    internal static EventId New() {
+    public static EventId New() {
         return new EventId(Guid.NewGuid());
     }
 
     public static Result<EventId> Create(string id) {
         Result<Guid> result = CanParseGuid(id);
         return result.IsFailure ? result.Error! : new EventId(result.Payload);
+    }
+
+    public static EventId FromGuid(Guid id) {
+        return new EventId(id);
     }
 }

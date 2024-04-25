@@ -10,6 +10,10 @@ public class ProfilePictureUrl : ValueObject {
         Url = url;
     }
 
+    private ProfilePictureUrl() {
+
+    }
+
     public static Result<ProfilePictureUrl> Create(string url) {
         bool isValid = Uri.TryCreate(url, UriKind.Absolute, out Uri? createdUrl);
         if (!isValid) {

@@ -17,4 +17,5 @@ public abstract class Id : ValueObject {
         bool canBeParsed = Guid.TryParse(id, out Guid guid);
         return canBeParsed ? guid : Error.BadRequest(ErrorMessage.UnParsableGuid);
     }
+
 }

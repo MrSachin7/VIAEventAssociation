@@ -11,6 +11,9 @@ public class ViaEmail : ValueObject {
     private ViaEmail(string email) {
         Value = email.ToLower();
     }
+    private ViaEmail() {
+        // Efc needs this
+    }
 
     public static async Task<Result<ViaEmail>> Create(string email, IUniqueEmailChecker emailChecker) {
         Result<ViaEmail> validEmailResult = Result.ToBuilder(ErrorCode.BadRequest)

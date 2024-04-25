@@ -8,6 +8,10 @@ public class EventTitle : ValueObject{
 
     private EventTitle(string title) => Value = title;
 
+    private EventTitle() {
+        // Efc needs this
+    }
+
     public static Result<EventTitle> Create(string title) {
         return Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => TitleBetween3And75Inclusive(title), ErrorMessage.TitleMustBeBetween3And75Chars)

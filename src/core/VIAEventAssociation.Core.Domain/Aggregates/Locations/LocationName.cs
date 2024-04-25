@@ -12,6 +12,10 @@ public class LocationName : ValueObject{
         Value = name;
     }
 
+    private LocationName() {
+        // Efc needs this
+    }
+
     public static Result<LocationName> Create(string name) {
         return Result.ToBuilder(ErrorCode.BadRequest)
             .AssertWithError(() => ValidLocationName(name), ErrorMessage.InvalidLocationName)
