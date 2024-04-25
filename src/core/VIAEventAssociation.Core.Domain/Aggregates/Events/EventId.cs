@@ -17,4 +17,8 @@ public class EventId : Id {
         Result<Guid> result = CanParseGuid(id);
         return result.IsFailure ? result.Error! : new EventId(result.Payload);
     }
+
+    public static EventId FromGuid(Guid id) {
+        return new EventId(id);
+    }
 }

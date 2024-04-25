@@ -11,9 +11,9 @@ namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 public class VeaEvent : Aggregate<EventId> {
     internal EventDuration? Duration { get; private set; }
 
-    private IEventStatusState _currentStatusState;
+    internal IEventStatusState CurrentStatusState;
 
-    internal EventStatus Status => _currentStatusState.CurrentStatus();
+    internal EventStatus Status => CurrentStatusState.CurrentStatus();
     internal EventVisibility Visibility { get; private set; }
 
     internal EventTitle Title { get; private set; }
@@ -24,9 +24,13 @@ public class VeaEvent : Aggregate<EventId> {
 
     internal ICollection<EventInvitation> EventInvitations { get; private set; }
 
-    internal ISet<GuestId> IntendedParticipants { get; private set; }
+    internal ICollection<EventToGuest> IntendedParticipants { get; private set; }
 
     internal Location? Location { get; private set; }
+
+    private VeaEvent() {
+        // Efc needs this
+    }
 
 
     private VeaEvent(EventId id, EventDescription description, EventVisibility visibility, EventTitle title
@@ -36,9 +40,9 @@ public class VeaEvent : Aggregate<EventId> {
         Visibility = visibility;
         Title = title;
         MaxGuests = maxGuests;
-        _currentStatusState = currentStatusState;
+        CurrentStatusState = currentStatusState;
         EventInvitations = new List<EventInvitation>();
-        IntendedParticipants = new HashSet<GuestId>();
+        IntendedParticipants = new List<EventToGuest>();
     }
 
     public static VeaEvent Empty() {
@@ -53,40 +57,40 @@ public class VeaEvent : Aggregate<EventId> {
     }
 
     public Result UpdateEventTitle(EventTitle title) {
-        return _currentStatusState.UpdateTitle(this, title);
+        return CurrentStatusState.UpdateTitle(this, title);
     }
 
     public Result UpdateEventDuration(EventDuration eventDuration) {
-        return _currentStatusState.UpdateEventDuration(this, eventDuration);
+        return CurrentStatusState.UpdateEventDuration(this, eventDuration);
     }
 
     public Result UpdateEventDescription(EventDescription eventDescription) {
-        return _currentStatusState.UpdateDescription(this, eventDescription);
+        return CurrentStatusState.UpdateDescription(this, eventDescription);
     }
 
     public Result MakePublic() {
-        return _currentStatusState.MakePublic(this);
+        return CurrentStatusState.MakePublic(this);
     }
 
     public Result MakePrivate() {
-        return _currentStatusState.MakePrivate(this);
+        return CurrentStatusState.MakePrivate(this);
     }
 
     public Result MakeReady(ISystemTime systemTime) {
-        return _currentStatusState.MakeReady(this, systemTime);
+        return CurrentStatusState.MakeReady(this, systemTime);
     }
 
     public Result MakeActive(ISystemTime systemTime) {
-        return _currentStatusState.MakeActive(this, systemTime);
+        return CurrentStatusState.MakeActive(this, systemTime);
     }
 
     public Result MakeCancelled() {
-        return _currentStatusState.MakeCancelled(this);
+        return CurrentStatusState.MakeCancelled(this);
     }
 
 
     public Result CancelGuestParticipation(Guest guest, ISystemTime systemTime) {
-        // No real state logic, so no need to call _currentStatusState
+        // No real state logic, so no need to call CurrentStatusState
 
         if (Duration is null || Duration.StartDateTime < systemTime.CurrentTime()) {
             return Error.BadRequest(ErrorMessage.ParticipationOnPastOrOngoingEventsCannotBeCancelled);
@@ -110,7 +114,7 @@ public class VeaEvent : Aggregate<EventId> {
         }
 
 
-        return _currentStatusState.AcceptInvitation(this, invitationToAccept);
+        return CurrentStatusState.AcceptInvitation(this, invitationToAccept);
     }
 
     public Result DeclineInvitation(EventInvitationId invitationId) {
@@ -122,11 +126,11 @@ public class VeaEvent : Aggregate<EventId> {
             return Error.NotFound(ErrorMessage.InvitationDoesNotExist);
         }
 
-        return _currentStatusState.DeclineInvitation(this, invitationToDecline);
+        return CurrentStatusState.DeclineInvitation(this, invitationToDecline);
     }
 
     public Result UpdateLocation(Location location) {
-        return _currentStatusState.UpdateLocation(this, location);
+        return CurrentStatusState.UpdateLocation(this, location);
     }
 
     public Result ParticipateGuest(Guest guest, ISystemTime systemTime) {
@@ -140,7 +144,7 @@ public class VeaEvent : Aggregate<EventId> {
             return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
         }
 
-        return _currentStatusState.ParticipateGuest(this, guest.Id, systemTime);
+        return CurrentStatusState.ParticipateGuest(this, guest.Id, systemTime);
     }
 
 
@@ -150,7 +154,7 @@ public class VeaEvent : Aggregate<EventId> {
             return Error.BadRequest(ErrorMessage.MaximumNumberOfGuestsReached);
         }
 
-        return _currentStatusState.InviteGuest(this, invitation);
+        return CurrentStatusState.InviteGuest(this, invitation);
     }
 
     public Result UpdateMaximumNumberOfGuests(EventMaxGuests maxGuests) {
@@ -165,7 +169,7 @@ public class VeaEvent : Aggregate<EventId> {
             return Error.BadRequest(ErrorMessage.EventMaxGuestsCannotExceedLocationMaxGuests);
         }
 
-        return _currentStatusState.UpdateMaxNumberOfGuests(this, maxGuests);
+        return CurrentStatusState.UpdateMaxNumberOfGuests(this, maxGuests);
     }
 
 
@@ -270,7 +274,7 @@ public class VeaEvent : Aggregate<EventId> {
     }
 
     private void SetStatus(IEventStatusState statusState) {
-        _currentStatusState = statusState;
+        CurrentStatusState = statusState;
     }
 
     private int GetNumberOfParticipants() {

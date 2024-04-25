@@ -8,6 +8,10 @@ namespace VIAEventAssociation.Core.Domain.Aggregates.Events.state;
 internal class CancelledStatusState : IEventStatusState {
     private static readonly EventStatus Status = EventStatus.Cancelled;
 
+    private CancelledStatusState() {
+
+    }
+
     internal static CancelledStatusState GetInstance() {
         return new CancelledStatusState();
     }

@@ -10,6 +10,9 @@ public class EventDescription : ValueObject {
         Value = description;
     }
 
+    private EventDescription() {
+        // Efc needs this
+    }
 
     internal static EventDescription Default() {
         const string defaultDescription = "";

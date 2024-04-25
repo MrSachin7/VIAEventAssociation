@@ -7,7 +7,7 @@ using ErrorMessage = ViaEventAssociation.Core.Tools.OperationResult.ErrorMessage
 
 namespace UnitTests.Features.Events.UpdateEventDuration;
 
-public class UpdateEventDurationAggregateTests(ITestOutputHelper testOutputHelper) {
+public class UpdateEventDurationAggregateTests {
 
    
 

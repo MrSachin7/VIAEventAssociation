@@ -10,6 +10,9 @@ public class GuestLastName : ValueObject{
         lastName = lastName.Trim();
         Value = char.ToUpper(lastName[0]) + lastName[1..].ToLower();
 
+    }       
+    private GuestLastName() {
+        // Efc needs this
     }
 
     public static Result<GuestLastName> Create(string lastName ) {

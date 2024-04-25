@@ -11,7 +11,7 @@ public class CommandDispatcher : IDispatcher {
         _serviceProvider = serviceProvider;
     }
 
-    // From Copilot
+    // FromGuid Copilot
     public Task<Result> DispatchAsync(ICommand command) {
         Type commandHandlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
         dynamic commandHandler = _serviceProvider.GetService(commandHandlerType) ?? throw 

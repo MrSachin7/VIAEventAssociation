@@ -18,6 +18,10 @@ public class LocationAvailabilityInterval : ValueObject {
         EndTime = endTime;
     }
 
+    private LocationAvailabilityInterval() {
+        // Efc needs this
+    }
+
     public static Result<LocationAvailabilityInterval> Create(DateTime startTime, DateTime endTime,
         ISystemTime systemTime) {
         return Result.ToBuilder(ErrorCode.BadRequest)

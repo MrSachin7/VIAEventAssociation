@@ -1,5 +1,4 @@
 ﻿using VIAEventAssociation.Core.Domain.Common.Bases;
-using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Locations;
 
@@ -11,6 +10,10 @@ public class Location : Aggregate<LocationId> {
         Id = locationId;
         LocationName = locationName;
         LocationMaxGuests = locationMaxGuests;
+    }
+
+    private Location() {
+        // Efc needs this
     }
 
     public static Location Create(LocationName locationName, LocationMaxGuests locationMaxGuests) {

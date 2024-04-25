@@ -4,14 +4,17 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
 public class EventDuration : ValueObject {
-    internal DateTime StartDateTime { get; private init; }
-    internal DateTime EndDateTime { get; private init; }
+    internal DateTime StartDateTime { get;  }
+    internal DateTime EndDateTime { get; }
 
     private EventDuration(DateTime startDateTime, DateTime endDateTime) {
         StartDateTime = startDateTime;
         EndDateTime = endDateTime;
     }
 
+    private EventDuration() {
+        // Efc needs this
+    }
 
     public static Result<EventDuration> Create(DateTime startDateTime, DateTime endDateTime, ISystemTime systemTime) {
         return Result.ToBuilder(ErrorCode.BadRequest)

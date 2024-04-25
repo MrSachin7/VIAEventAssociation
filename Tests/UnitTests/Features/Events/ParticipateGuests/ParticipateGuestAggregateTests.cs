@@ -23,7 +23,8 @@ public class ParticipateGuestAggregateTests {
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.Contains(guest.Id, veaEvent.IntendedParticipants);
+        EventToGuest eventToGuest = guest.Id;
+        Assert.Contains(eventToGuest, veaEvent.IntendedParticipants);
     }
 
     [Fact]
@@ -40,7 +41,9 @@ public class ParticipateGuestAggregateTests {
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.DoesNotContain(guest.Id, veaEvent.IntendedParticipants);
+        EventToGuest eventToGuest = guest.Id;
+
+        Assert.DoesNotContain(eventToGuest, veaEvent.IntendedParticipants);
         Assert.Contains(ErrorMessage.PrivateEventCannotBeParticipatedUnlessInvited, result.Error!.Messages);
     }
 
@@ -62,7 +65,9 @@ public class ParticipateGuestAggregateTests {
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.DoesNotContain(guest.Id, veaEvent.IntendedParticipants);
+        EventToGuest eventToGuest = guest.Id;
+
+        Assert.DoesNotContain(eventToGuest, veaEvent.IntendedParticipants);
         Assert.Contains(ErrorMessage.MaximumNumberOfGuestsReached, result.Error!.Messages);
     }
 
@@ -92,14 +97,16 @@ public class ParticipateGuestAggregateTests {
         Guest guest = await GuestFactory.GetValidGuest();
         veaEvent.ParticipateGuest(guest, _systemTime);
         // Make sure that the guest is participating before continuing
-        Assert.Contains(guest.Id, veaEvent.IntendedParticipants);
+        EventToGuest eventToGuest = guest.Id;
+
+        Assert.Contains(eventToGuest, veaEvent.IntendedParticipants);
 
         // Act
         Result result = veaEvent.CancelGuestParticipation(guest, _systemTime);
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.DoesNotContain(guest.Id, veaEvent.IntendedParticipants);
+        Assert.DoesNotContain(eventToGuest, veaEvent.IntendedParticipants);
     }
 
 

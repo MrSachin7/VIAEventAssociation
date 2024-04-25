@@ -3,8 +3,7 @@ using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Locations;
 
-public class LocationId : Id{
-
+public class LocationId : Id {
     private LocationId(Guid value) {
         Value = value;
     }
@@ -22,5 +21,8 @@ public class LocationId : Id{
         return Value;
     }
 
-    
+
+    public static LocationId FromGuid(Guid value) {
+        return new LocationId(value);
+    }
 }

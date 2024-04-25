@@ -1,7 +1,5 @@
 ﻿using VIAEventAssociation.Core.Domain.Common.Bases;
-using VIAEventAssociation.Core.Domain.Contracts;
 using ViaEventAssociation.Core.Tools.OperationResult;
-
 namespace VIAEventAssociation.Core.Domain.Aggregates.Guests;
 
 public class Guest : Aggregate<GuestId> {
@@ -11,6 +9,10 @@ public class Guest : Aggregate<GuestId> {
     internal GuestLastName LastName { get; private set; }
 
     internal ViaEmail Email { get; private set; }
+
+    private Guest() {
+        // Efc needs this
+    }
 
     private Guest(GuestFirstName firstName, GuestLastName lastName, ViaEmail email,
         ProfilePictureUrl? profilePictureUrl) {

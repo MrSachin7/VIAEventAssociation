@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel;
+using System.Reflection;
 
 namespace ViaEventAssociation.Core.Tools.OperationResult;
 
@@ -22,23 +23,6 @@ public abstract class Enumeration
     public override string ToString()
     {
         return DisplayName;
-    }
-
-    public static IEnumerable<T> GetAll<T>() where T : Enumeration, new()
-    {
-        var type = typeof(T);
-        var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
-
-        foreach (var info in fields)
-        {
-            var instance = new T();
-            var locatedValue = info.GetValue(instance) as T;
-
-            if (locatedValue != null)
-            {
-                yield return locatedValue;
-            }
-        }
     }
 
     public override bool Equals(object? obj)

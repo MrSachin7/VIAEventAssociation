@@ -18,6 +18,10 @@ public class EventInvitationId : Id {
         return result.IsFailure ? result.Error! : new EventInvitationId(result.Payload);
     }
 
+    public static EventInvitationId FromGuid(Guid id) {
+        return new EventInvitationId(id);
+    }
+
 
     
 }

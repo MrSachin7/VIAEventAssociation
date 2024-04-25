@@ -8,6 +8,10 @@ namespace VIAEventAssociation.Core.Domain.Aggregates.Events.state;
 internal class DraftStatusState : IEventStatusState {
     private static readonly EventStatus Status = EventStatus.Draft;
 
+    private DraftStatusState() {
+
+    }
+
     internal static DraftStatusState GetInstance() {
         return new DraftStatusState();
     }

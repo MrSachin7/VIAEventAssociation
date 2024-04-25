@@ -8,6 +8,9 @@ namespace VIAEventAssociation.Core.Domain.Aggregates.Events.state;
 internal class ReadyStatusState : IEventStatusState {
     private static readonly EventStatus Status = EventStatus.Ready;
 
+    private ReadyStatusState() {
+
+    }
 
     internal static ReadyStatusState GetInstance() {
         return new ReadyStatusState();

@@ -10,6 +10,9 @@ public class LocationMaxGuests : ValueObject{
         Value = maxGuests;
     }
 
+    private LocationMaxGuests() {
+        // Efc needs this
+    }
 
     public static Result<LocationMaxGuests> Create(int value) {
         return Result.ToBuilder(ErrorCode.BadRequest)

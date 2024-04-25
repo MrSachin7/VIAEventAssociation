@@ -1,4 +1,6 @@
-﻿using ViaEventAssociation.Core.Tools.OperationResult;
+﻿using System.ComponentModel;
+using System.Reflection;
+using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events.Entities;
 
@@ -12,5 +14,24 @@ public class JoinStatus : Enumeration {
     private JoinStatus(){}
     private JoinStatus(int value, string displayName): base(value, displayName){}
 
+
+    public static JoinStatus FromString(string displayName) {
+        return GetAll().FirstOrDefault(e => e.DisplayName.Equals(displayName, StringComparison.OrdinalIgnoreCase)) ??
+               throw new InvalidEnumArgumentException("Invalid display name");
+    }
+
+    private static IEnumerable<JoinStatus> GetAll() {
+        var fields =
+            typeof(JoinStatus).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+
+        foreach (var info in fields) {
+            var instance = new JoinStatus();
+            var locatedValue = info.GetValue(instance) as JoinStatus;
+
+            if (locatedValue != null) {
+                yield return locatedValue;
+            }
+        }
+    }
     
 }

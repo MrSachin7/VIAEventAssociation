@@ -11,6 +11,10 @@ public class GuestFirstName : ValueObject {
 
     }
 
+    private GuestFirstName() {
+        // Efc needs this
+    }
+
     public static Result<GuestFirstName> Create(string firstName ) {
         firstName = firstName.Trim();
 
