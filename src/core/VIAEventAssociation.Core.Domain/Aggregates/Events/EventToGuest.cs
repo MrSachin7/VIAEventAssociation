@@ -27,5 +27,6 @@ public class EventToGuest : ValueObject{
 
     protected override IEnumerable<object> GetEqualityComponents() {
         yield return GuestId;
+        yield return EventId;
     }
 }

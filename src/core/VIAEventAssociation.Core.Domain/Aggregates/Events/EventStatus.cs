@@ -35,7 +35,7 @@ public class EventStatus : Enumeration {
 
     private static IEnumerable<EventStatus> GetAll() {
         var fields =
-            typeof(EventStatus).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+            typeof(EventStatus).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly );
 
         foreach (var info in fields) {
             var instance = new EventStatus();

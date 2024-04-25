@@ -9,7 +9,7 @@ public class EventId : Id {
     }
 
 
-    internal static EventId New() {
+    public static EventId New() {
         return new EventId(Guid.NewGuid());
     }
 
