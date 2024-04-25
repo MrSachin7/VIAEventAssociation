@@ -19,10 +19,4 @@
       <ProjectReference Include="..\..\Core\VIAEventAssociation.Core.Domain\VIAEventAssociation.Core.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="GuestPersistence\" />
-      <Folder Include="UnitOfWork\" />
-      <Folder Include="VeaEventPersistence\" />
-    </ItemGroup>
-
 </Project>

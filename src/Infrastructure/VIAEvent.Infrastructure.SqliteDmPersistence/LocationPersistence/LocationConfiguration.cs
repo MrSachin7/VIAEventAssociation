@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VIAEventAssociation.Core.Domain.Aggregates.Locations;
 
-namespace VIAEvent.Infrastructure.SqliteDmPersistence.Configuration;
+namespace VIAEvent.Infrastructure.SqliteDmPersistence.LocationPersistence;
 
 public class LocationConfiguration : IEntityTypeConfiguration<Location> {
 

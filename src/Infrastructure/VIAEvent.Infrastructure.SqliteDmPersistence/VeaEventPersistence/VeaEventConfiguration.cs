@@ -7,8 +7,7 @@ using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities.Invitation;
 using VIAEventAssociation.Core.Domain.Aggregates.Events.state;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
 
-
-namespace VIAEvent.Infrastructure.SqliteDmPersistence.Configuration;
+namespace VIAEvent.Infrastructure.SqliteDmPersistence.VeaEventPersistence;
 
 public class VeaEventConfiguration : IEntityTypeConfiguration<VeaEvent> {
 

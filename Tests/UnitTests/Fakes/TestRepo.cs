@@ -15,8 +15,9 @@ public class TestRepo<T, TId> : IRepository<T, TId> where TId : Id where T : Agg
         return Task.CompletedTask;
     }
 
-    public Task DeleteAsync(T aggregate) {
+    public void Remove(T aggregate) {
         Values.Remove(aggregate);
-        return Task.CompletedTask;
     }
+
+   
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VIAEventAssociation.Core.Domain.Aggregates.Events;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
 
-namespace VIAEvent.Infrastructure.SqliteDmPersistence.Configuration;
+namespace VIAEvent.Infrastructure.SqliteDmPersistence.VeaEventPersistence;
 
 public class EventToGuestConfiguration : IEntityTypeConfiguration<EventToGuest> {
 

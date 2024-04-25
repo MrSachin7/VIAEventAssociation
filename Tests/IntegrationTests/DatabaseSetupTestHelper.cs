@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VIAEvent.Infrastructure.SqliteDmPersistence;
 
-namespace IntegrationTests.DmConfiguration;
+namespace IntegrationTests;
 
-public abstract class DmConfigTestHelper {
-    protected  SqliteWriteDbContext SetupContext() {
+public abstract class DatabaseSetupTestHelper {
+    protected SqliteWriteDbContext SetupContext() {
         DbContextOptionsBuilder<SqliteWriteDbContext> optionsBuilder = new();
         string testDbName = "Test " + Guid.NewGuid() + " db";
         optionsBuilder.UseSqlite(@"Data Source = " + testDbName);

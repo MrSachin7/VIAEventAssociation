@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VIAEventAssociation.Core.Domain.Aggregates.Guests;
 
-namespace VIAEvent.Infrastructure.SqliteDmPersistence.Configuration;
+namespace VIAEvent.Infrastructure.SqliteDmPersistence.GuestPersistence;
 
 public class GuestConfiguration : IEntityTypeConfiguration<Guest> {
     public void Configure(EntityTypeBuilder<Guest> builder) {

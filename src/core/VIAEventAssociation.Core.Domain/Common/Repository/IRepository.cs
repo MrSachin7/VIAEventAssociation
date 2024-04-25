@@ -10,5 +10,5 @@ public interface IRepository<TAgg, in TId> where TId : Id
 
     Task AddAsync(TAgg aggregate);
 
-    Task DeleteAsync(TAgg aggregate);
+    void Remove(TAgg aggregate);
 }
