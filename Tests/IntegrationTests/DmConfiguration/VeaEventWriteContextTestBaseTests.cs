@@ -9,7 +9,7 @@ using VIAEventAssociation.Core.Domain.Contracts;
 
 namespace IntegrationTests.DmConfiguration;
 
-public class VeaEventDatabaseSetupTests : DatabaseSetupTestHelper {
+public class VeaEventWriteContextTestBaseTests : WriteContextTestBase {
     [Fact]
     public async Task StrongIdAsPk() {
         await using SqliteWriteDbContext context = SetupContext();

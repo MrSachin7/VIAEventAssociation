@@ -1,14 +1,13 @@
-﻿using System.Collections;
-using System.Text.Json;
+﻿using System.Text.Json;
+using VIAEventAssociation.Infrastructure.EfcQueries.DataSeeder.Data;
 
 namespace VIAEventAssociation.Infrastructure.EfcQueries.DataSeeder;
 
 public static class GuestSeedFactory {
 
-    public static async Task<ICollection<Guest>> GetGuestsFromJson() {
+    public static  ICollection<Guest> GetGuestsFromJson() {
 
-        const string filePath = @"./DataSeeder/Data/guests.json";
-        string guestsAsJson = await File.ReadAllTextAsync(filePath);
+        string guestsAsJson = GuestsData.Json;
         List<JsonGuest>? jsonGuests = JsonSerializer.Deserialize<List<JsonGuest>>(guestsAsJson);
         return jsonGuests is null ? new List<Guest>() : jsonGuests.Select(ToGuest).ToList();
     }

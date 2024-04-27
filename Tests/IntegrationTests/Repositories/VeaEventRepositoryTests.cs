@@ -7,7 +7,7 @@ using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 namespace IntegrationTests.Repositories;
 
 
-public class VeaEventRepositoryTests : DatabaseSetupTestHelper {
+public class VeaEventRepositoryTests : WriteContextTestBase {
 
     private readonly IEventRepository _eventRepository;
     private readonly IUnitOfWork _unitOfWork;
