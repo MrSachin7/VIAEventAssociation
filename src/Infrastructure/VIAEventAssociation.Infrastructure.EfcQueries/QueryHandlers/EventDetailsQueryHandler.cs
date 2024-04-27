@@ -20,12 +20,12 @@ public class EventDetailsQueryHandler : IQueryHandler<EventDetailsQuery.Query, E
             .Include(evt => evt.Location)
             .FirstOrDefaultAsync(evt => evt.Id.Equals(query.EventId));
 
+        // Todo: Ask troels..
         /*
-         Todo: Ask troels..
-       Here, I decided to make a separate query to get the total number of guests on the event,
-          I could instead have used the eventFromDb.Guests.Count, and instead not made the pagination query above
-          but I am genuinely not sure which is more efficient / better approach in this case.
-       **/
+        Here, I decided to make a separate query to get the total number of guests on the event, 
+           I could instead have used the eventFromDb.Guests.Count, and instead not made the pagination query above 
+           but I am genuinely not sure which is more efficient / better approach in this case.
+        **/
         int totalGuestsOnEvent = await _context.Guests.CountAsync(guest => guest.Events.Any(evt => evt.Id.Equals(query.EventId)));
 
         if (eventFromDb is null) {

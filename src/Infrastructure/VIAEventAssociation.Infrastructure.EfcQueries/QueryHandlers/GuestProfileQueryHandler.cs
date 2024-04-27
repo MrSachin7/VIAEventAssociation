@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using VIAEventAssociation.Core.QueryContracts.Contracts;
 using VIAEventAssociation.Core.QueryContracts.Queries;

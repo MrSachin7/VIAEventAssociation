@@ -1,13 +1,13 @@
 ﻿using System.Text.Json;
-using VIAEventAssociation.Infrastructure.EfcQueries.DataSeeder.Data;
 
 namespace VIAEventAssociation.Infrastructure.EfcQueries.DataSeeder;
 
 public static class LocationSeedFactory {
 
-    public static  ICollection<Location> GetLocationsFromJson() {
+    public static async Task<ICollection<Location>> GetLocationsFromJson() {
 
-        string locationsAsJson = LocationsData.Json;
+        const string filePath = @"./DataSeeder/Data/locations.json";
+        string locationsAsJson = await File.ReadAllTextAsync(filePath);
         List<JsonLocation>? jsonLocations = JsonSerializer.Deserialize<List<JsonLocation>>(locationsAsJson);
         return jsonLocations is null ? new List<Location>() : jsonLocations.Select(ToLocation).ToList();
     }

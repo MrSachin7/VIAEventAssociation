@@ -1,13 +1,14 @@
 ﻿using System.Text.Json;
-using VIAEventAssociation.Infrastructure.EfcQueries.DataSeeder.Data;
 
 namespace VIAEventAssociation.Infrastructure.EfcQueries.DataSeeder;
 
 public static class EventSeedFactory {
-    public static ICollection<VeaEvent> GetEventsFromJson() {
-        string eventsAsJson = EventsData.Json;
+    public static async Task<ICollection<VeaEvent>> GetEventsFromJson() {
+        const string eventsFilePath = @"./DataSeeder/Data/events.json";
+        string eventsAsJson = await File.ReadAllTextAsync(eventsFilePath);
         List<JsonEvent>? jsonEvents = JsonSerializer.Deserialize<List<JsonEvent>>(eventsAsJson);
         return jsonEvents is null ? [] : jsonEvents.Select(ToVeaEvent).ToList();
+
     }
 
     private static VeaEvent ToVeaEvent(JsonEvent jsonEvent) {
@@ -15,12 +16,11 @@ public static class EventSeedFactory {
             Id = jsonEvent.Id,
             Title = jsonEvent.Title,
             Description = jsonEvent.Description,
-            StartDateTime = DateTimeFormat.ParseFromJsonString(jsonEvent.Start),
-            EndDateTime = DateTimeFormat.ParseFromJsonString(jsonEvent.End),
+            StartDateTime = DateTime.Parse(jsonEvent.Start),
+            EndDateTime = DateTime.Parse(jsonEvent.End),
             Visibility = jsonEvent.Visibility,
             Status = jsonEvent.Status,
-            MaxGuests = jsonEvent.MaxGuests,
-            LocationId = jsonEvent.LocationId
+            MaxGuests = jsonEvent.MaxGuests
         };
     }
 
@@ -34,6 +34,5 @@ public static class EventSeedFactory {
         string Visibility,
         string Start,
         string End,
-        int MaxGuests,
-        string LocationId);
+        int MaxGuests);
 }

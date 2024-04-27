@@ -1,5 +1,5 @@
-﻿
-using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
 
 namespace VIAEventAssociation.Infrastructure.EfcQueries;
 
@@ -13,9 +13,7 @@ public partial class EventInvitation
 
     public string VeaEventId { get; set; } = null!;
 
-    [JsonIgnore]
     public virtual Guest Guest { get; set; } = null!;
 
-    [JsonIgnore]
     public virtual VeaEvent VeaEvent { get; set; } = null!;
 }

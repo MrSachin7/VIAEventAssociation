@@ -1,5 +1,5 @@
-﻿
-using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
 
 namespace VIAEventAssociation.Infrastructure.EfcQueries;
 
@@ -25,7 +25,6 @@ public partial class VeaEvent
 
     public virtual ICollection<EventInvitation> EventInvitations { get; set; } = new List<EventInvitation>();
 
-    [JsonIgnore]
     public virtual Location? Location { get; set; }
 
     public virtual ICollection<Guest> Guests { get; set; } = new List<Guest>();
