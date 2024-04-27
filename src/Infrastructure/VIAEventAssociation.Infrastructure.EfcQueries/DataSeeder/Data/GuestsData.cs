@@ -5,8 +5,8 @@ public static class GuestsData {
                              [
                                {
                                  "Id": "230c1a99-d5c7-4fbc-9f48-07ccbb100936",
-                                 "FirstName": "Sachin",
-                                 "LastName": "Baral",
+                                 "FirstName": "John",
+                                 "LastName": "Doe",
                                  "Email": "286848@via.dk",
                                  "Url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScgIcP58MKd4CpuMNwdTncyXrDwBGmCYXWHA\u0026usqp=CAU"
                                },

@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using VIAEventAssociation.Infrastructure.EfcQueries.DataSeeder.Data;
 
 namespace VIAEventAssociation.Infrastructure.EfcQueries.DataSeeder;
 
@@ -8,17 +8,23 @@ public static class ParticipationSeedFactory {
 
 
     public static async Task SeedParticipationsAsync(VeadatabaseProductionContext context) {
-        ICollection<JsonParticipation> participations = await GetParticipationFromJson();
-        ICollection<VeaEvent> events =await EventSeedFactory.GetEventsFromJson();
-        foreach (VeaEvent eVeaEvent in events) {
-            await AddParticipantsToEventAsync(context, eVeaEvent.Id, participations);
+        ICollection<JsonParticipation> participations =  GetParticipationFromJson();
+        foreach (JsonParticipation participation in participations) {
+            VeaEvent? veaEvent = await context.VeaEvents.FindAsync(participation.EventId);
+            Guest? guest = await context.Guests.FindAsync(participation.GuestId);
+
+            if (guest is null) {
+                continue;
+            }
+            veaEvent?.Guests.Add(guest!);
+            await context.SaveChangesAsync();
         }
+       
     }
 
-    private static async Task<ICollection<JsonParticipation>> GetParticipationFromJson() {
+    private static  ICollection<JsonParticipation> GetParticipationFromJson() {
 
-        const string filePath = @"./DataSeeder/Data/participations.json";
-        string participationAsJson =await File.ReadAllTextAsync(filePath);
+        string participationAsJson =ParticipationsData.Json;
         return 
             JsonSerializer.Deserialize<List<JsonParticipation>>(participationAsJson)
             ?? new List<JsonParticipation>();
@@ -30,10 +36,14 @@ public static class ParticipationSeedFactory {
 
         VeaEvent? veaEvent = await context.VeaEvents.SingleAsync(ev => ev.Id.Equals(eventId));
 
-        IEnumerable<JsonParticipation> paricipantsForCurrentEvent = participations.Where(p => p.EventId.Equals(eventId));
+        IList<JsonParticipation> paricipantsForCurrentEvent = participations.Where(p => p.EventId.Equals(eventId)).ToList();
 
         foreach (JsonParticipation jsonParticipation in paricipantsForCurrentEvent) {
-            Guest guest = await context.Guests.Include(guest => guest.Events).SingleAsync(g => g.Id.Equals(jsonParticipation.GuestId));
+            Guest? guest = await context.Guests.Include(guest => guest.Events).SingleOrDefaultAsync(g => g.Id.Equals(jsonParticipation.GuestId));
+            if (guest is null) {
+                continue;
+            }
+
             if (guest.Events.Contains(veaEvent)) {
                 continue;
             }
