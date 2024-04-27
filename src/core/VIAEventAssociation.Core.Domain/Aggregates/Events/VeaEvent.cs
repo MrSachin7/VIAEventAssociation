@@ -24,7 +24,7 @@ public class VeaEvent : Aggregate<EventId> {
 
     internal ICollection<EventInvitation> EventInvitations { get; private set; }
 
-    internal ICollection<EventToGuest> IntendedParticipants { get; private set; }
+    internal ICollection<EventParticipation> IntendedParticipants { get; private set; }
 
     internal Location? Location { get; private set; }
 
@@ -42,7 +42,7 @@ public class VeaEvent : Aggregate<EventId> {
         MaxGuests = maxGuests;
         CurrentStatusState = currentStatusState;
         EventInvitations = new List<EventInvitation>();
-        IntendedParticipants = new List<EventToGuest>();
+        IntendedParticipants = new List<EventParticipation>();
     }
 
     public static VeaEvent Empty() {

@@ -18,7 +18,7 @@ namespace VIAEvent.Infrastructure.SqliteDmPersistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
 
-            modelBuilder.Entity("VIAEventAssociation.Core.Domain.Aggregates.Events.EventToGuest", b =>
+            modelBuilder.Entity("VIAEventAssociation.Core.Domain.Aggregates.Events.EventParticipation", b =>
                 {
                     b.Property<Guid>("EventId")
                         .HasColumnType("TEXT");
@@ -30,7 +30,7 @@ namespace VIAEvent.Infrastructure.SqliteDmPersistence.Migrations
 
                     b.HasIndex("GuestId");
 
-                    b.ToTable("EventToGuest");
+                    b.ToTable("EventParticipation");
                 });
 
             modelBuilder.Entity("VIAEventAssociation.Core.Domain.Aggregates.Events.VeaEvent", b =>
@@ -40,7 +40,8 @@ namespace VIAEvent.Infrastructure.SqliteDmPersistence.Migrations
 
                     b.Property<string>("CurrentStatusState")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Status");
 
                     b.Property<Guid?>("LocationId")
                         .HasColumnType("TEXT");
@@ -88,7 +89,7 @@ namespace VIAEvent.Infrastructure.SqliteDmPersistence.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Events");
+                    b.ToTable("VeaEvents");
                 });
 
             modelBuilder.Entity("VIAEventAssociation.Core.Domain.Aggregates.Guests.Guest", b =>
@@ -160,7 +161,7 @@ namespace VIAEvent.Infrastructure.SqliteDmPersistence.Migrations
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("VIAEventAssociation.Core.Domain.Aggregates.Events.EventToGuest", b =>
+            modelBuilder.Entity("VIAEventAssociation.Core.Domain.Aggregates.Events.EventParticipation", b =>
                 {
                     b.HasOne("VIAEventAssociation.Core.Domain.Aggregates.Events.VeaEvent", null)
                         .WithMany("IntendedParticipants")
@@ -220,16 +221,16 @@ namespace VIAEvent.Infrastructure.SqliteDmPersistence.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<DateTime>("EndDateTime")
-                                .HasColumnType("TEXT")
+                                .HasColumnType("DATETIME")
                                 .HasColumnName("EndDateTime");
 
                             b1.Property<DateTime>("StartDateTime")
-                                .HasColumnType("TEXT")
+                                .HasColumnType("DATETIME")
                                 .HasColumnName("StartDateTime");
 
                             b1.HasKey("VeaEventId");
 
-                            b1.ToTable("Events");
+                            b1.ToTable("VeaEvents");
 
                             b1.WithOwner()
                                 .HasForeignKey("VeaEventId");

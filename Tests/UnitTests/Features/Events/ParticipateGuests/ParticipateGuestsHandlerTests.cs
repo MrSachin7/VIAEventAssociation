@@ -36,10 +36,10 @@ public class ParticipateGuestsHandlerTests {
 
         // Assert
         Assert.True(result.IsSuccess);
-        EventToGuest eventToGuest = guest.Id;
+        EventParticipation eventParticipation = guest.Id;
 
         // Assert that the guest is participated to the event
-        Assert.Contains(eventToGuest, veaEvent.IntendedParticipants);
+        Assert.Contains(eventParticipation, veaEvent.IntendedParticipants);
 
     }
 
@@ -67,9 +67,9 @@ public class ParticipateGuestsHandlerTests {
         Assert.True(result.IsFailure);
         Assert.Contains(ErrorMessage.GuestNotFound(guest.Id.Value), result.Error!.Messages);
         // Assert that the guest is not participated to the event
-        EventToGuest eventToGuest = guest.Id;
+        EventParticipation eventParticipation = guest.Id;
 
-        Assert.DoesNotContain(eventToGuest, veaEvent.IntendedParticipants);
+        Assert.DoesNotContain(eventParticipation, veaEvent.IntendedParticipants);
 
     }
 
@@ -97,9 +97,9 @@ public class ParticipateGuestsHandlerTests {
         Assert.True(result.IsFailure);
         Assert.Contains(ErrorMessage.EventNotFound(veaEvent.Id.Value), result.Error!.Messages);
         // Assert that the guest is not participated to the event
-        EventToGuest eventToGuest = guest.Id;
+        EventParticipation eventParticipation = guest.Id;
 
-        Assert.DoesNotContain(eventToGuest, veaEvent.IntendedParticipants);
+        Assert.DoesNotContain(eventParticipation, veaEvent.IntendedParticipants);
 
     }
 }

@@ -9,7 +9,7 @@ public class SqliteWriteDbContext : DbContext {
 
     public SqliteWriteDbContext(DbContextOptions<SqliteWriteDbContext> options) : base(options) { }
 
-    public DbSet<VeaEvent> Events => Set<VeaEvent>();
+    public DbSet<VeaEvent> VeaEvents => Set<VeaEvent>();
     public DbSet<Guest> Guests => Set<Guest>();
     public DbSet<Location> Locations => Set<Location>();
 

@@ -20,7 +20,7 @@ public class VeaEventDatabaseSetupTests : DatabaseSetupTestHelper {
         await SaveAndClearAsync(veaEvent, context);
 
 
-        VeaEvent? retrieved = context.Events.SingleOrDefault(x => x.Id.Equals(veaEvent.Id));
+        VeaEvent? retrieved = context.VeaEvents.SingleOrDefault(x => x.Id.Equals(veaEvent.Id));
         Assert.NotNull(retrieved);
         Assert.Equal(veaEvent.Id, retrieved.Id);
     }
@@ -34,7 +34,7 @@ public class VeaEventDatabaseSetupTests : DatabaseSetupTestHelper {
         veaEvent.UpdateEventTitle(title);
         await SaveAndClearAsync(veaEvent, context);
 
-        VeaEvent? retrieved = context.Events.SingleOrDefault(x => x.Id.Equals(veaEvent.Id));
+        VeaEvent? retrieved = context.VeaEvents.SingleOrDefault(x => x.Id.Equals(veaEvent.Id));
         Assert.NotNull(retrieved);
         Assert.Equal(veaEvent.Id, retrieved.Id);
         Assert.Equal(veaEvent.Title, retrieved.Title);
@@ -47,7 +47,7 @@ public class VeaEventDatabaseSetupTests : DatabaseSetupTestHelper {
 
         await SaveAndClearAsync(veaEvent, context);
 
-        VeaEvent? retrieved = context.Events.SingleOrDefault(x => x.Id.Equals(veaEvent.Id));
+        VeaEvent? retrieved = context.VeaEvents.SingleOrDefault(x => x.Id.Equals(veaEvent.Id));
         Assert.NotNull(retrieved);
         Assert.Null(veaEvent.Duration);
     }
@@ -72,7 +72,7 @@ public class VeaEventDatabaseSetupTests : DatabaseSetupTestHelper {
 
         await SaveAndClearAsync(veaEvent1, context);
 
-        VeaEvent retrieved = context.Events.Include(ev => ev.IntendedParticipants)
+        VeaEvent retrieved = context.VeaEvents.Include(ev => ev.IntendedParticipants)
             .Single(x => x.Id.Equals(veaEvent1.Id));
 
         Assert.NotEmpty(retrieved.IntendedParticipants);
@@ -88,7 +88,7 @@ public class VeaEventDatabaseSetupTests : DatabaseSetupTestHelper {
 
         await SaveAndClearAsync(veaEvent, context);
 
-        VeaEvent retrieved = context.Events.Single(x => x.Id.Equals(veaEvent.Id));
+        VeaEvent retrieved = context.VeaEvents.Single(x => x.Id.Equals(veaEvent.Id));
 
         Assert.Equal(EventStatus.Draft, retrieved.Status);
     }
@@ -108,10 +108,10 @@ public class VeaEventDatabaseSetupTests : DatabaseSetupTestHelper {
         EventInvitation invitation2 = EventInvitation.Create(guest2.Id);
 
         await context.Guests.AddRangeAsync(guest1, guest2);
-        await context.Events.AddAsync(veaEvent);
+        await context.VeaEvents.AddAsync(veaEvent);
         await context.SaveChangesAsync();
 
-        VeaEvent retrieved = context.Events.Include(ev => ev.EventInvitations).Single(x => x.Id.Equals(veaEvent.Id));
+        VeaEvent retrieved = context.VeaEvents.Include(ev => ev.EventInvitations).Single(x => x.Id.Equals(veaEvent.Id));
         retrieved.CurrentStatusState = ReadyStatusState.GetInstance();
         retrieved.InviteGuest(invitation1);
         retrieved.InviteGuest(invitation2);
@@ -119,7 +119,7 @@ public class VeaEventDatabaseSetupTests : DatabaseSetupTestHelper {
         await context.SaveChangesAsync();
 
         // Retrieve the event again
-        retrieved = context.Events.Include(ev => ev.EventInvitations).Single(x => x.Id.Equals(veaEvent.Id));
+        retrieved = context.VeaEvents.Include(ev => ev.EventInvitations).Single(x => x.Id.Equals(veaEvent.Id));
 
         Assert.NotEmpty(retrieved.EventInvitations);
         Assert.Contains(retrieved.EventInvitations, x => x.GuestId.Equals(guest1.Id));

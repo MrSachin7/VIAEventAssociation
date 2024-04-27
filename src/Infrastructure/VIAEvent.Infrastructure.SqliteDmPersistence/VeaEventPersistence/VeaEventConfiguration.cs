@@ -65,7 +65,8 @@ public class VeaEventConfiguration : IEntityTypeConfiguration<VeaEvent> {
         entityBuilder.Property(entity => entity.CurrentStatusState)
             .HasConversion(
                 mState => mState.CurrentStatus().DisplayName,
-                dbValue => GetEventStateFromString(dbValue));
+                dbValue => GetEventStateFromString(dbValue))
+            .HasColumnName("Status");
 
         // Event Visibility
         entityBuilder.ComplexProperty(entity => entity.Visibility,
@@ -79,10 +80,12 @@ public class VeaEventConfiguration : IEntityTypeConfiguration<VeaEvent> {
         entityBuilder.OwnsOne(entity => entity.Duration,
             builder => {
                 builder.Property(vo => vo.StartDateTime)
-                    .HasColumnName("StartDateTime");
+                    .HasColumnName("StartDateTime")
+                    .HasColumnType("DATETIME");
 
                 builder.Property(vo => vo.EndDateTime)
-                    .HasColumnName("EndDateTime");
+                    .HasColumnName("EndDateTime")
+                    .HasColumnType("DATETIME");
             });
 
         // Location

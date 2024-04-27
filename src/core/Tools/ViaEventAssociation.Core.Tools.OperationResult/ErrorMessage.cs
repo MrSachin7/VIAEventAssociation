@@ -162,8 +162,14 @@ public class ErrorMessage : Enumeration {
     public static ErrorMessage EventNotFound(Guid eventId) => new (0
         , $"Event with id {eventId.ToString()} is not found");
 
+    public static ErrorMessage EventNotFound(string eventId) => new (0
+        , $"Event with id {eventId} is not found");
+
     public static ErrorMessage GuestNotFound(Guid guestId) => new (0
         , $"Guest with id {guestId.ToString()} is not found");
+
+    public static ErrorMessage GuestNotFound(string guestId) => new (0
+        , $"Guest with id {guestId} is not found");
 
 
     private ErrorMessage() {

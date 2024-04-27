@@ -3,24 +3,24 @@ using VIAEventAssociation.Core.Domain.Common.Bases;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
 
-public class EventToGuest : ValueObject{
+public class EventParticipation : ValueObject{
 
     public EventId EventId { get; set; }
     public GuestId GuestId { get; set; }
 
-    public static implicit operator EventToGuest(GuestId guestId) {
-        return new EventToGuest (guestId);
+    public static implicit operator EventParticipation(GuestId guestId) {
+        return new EventParticipation (guestId);
     }
 
-    public static implicit operator GuestId(EventToGuest eventToGuest) {
-        return eventToGuest.GuestId;
+    public static implicit operator GuestId(EventParticipation eventParticipation) {
+        return eventParticipation.GuestId;
     }
 
-    private EventToGuest(GuestId guestId) {
+    private EventParticipation(GuestId guestId) {
         GuestId = guestId;
     }
 
-    private EventToGuest() {
+    private EventParticipation() {
         // Efc needs this
     }
 

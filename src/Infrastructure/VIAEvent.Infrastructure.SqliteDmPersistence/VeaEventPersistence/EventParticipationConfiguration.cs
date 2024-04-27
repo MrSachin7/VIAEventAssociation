@@ -5,10 +5,10 @@ using VIAEventAssociation.Core.Domain.Aggregates.Guests;
 
 namespace VIAEvent.Infrastructure.SqliteDmPersistence.VeaEventPersistence;
 
-public class EventToGuestConfiguration : IEntityTypeConfiguration<EventToGuest> {
+public class EventParticipationConfiguration : IEntityTypeConfiguration<EventParticipation> {
 
 
-    public void Configure(EntityTypeBuilder<EventToGuest> builder) {
+    public void Configure(EntityTypeBuilder<EventParticipation> builder) {
         builder.HasKey(o => new{o.EventId, o.GuestId});
         builder.HasOne<VeaEvent>()
             .WithMany(o => o.IntendedParticipants)

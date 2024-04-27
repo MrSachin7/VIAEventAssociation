@@ -23,8 +23,8 @@ public class ParticipateGuestAggregateTests {
 
         // Assert
         Assert.True(result.IsSuccess);
-        EventToGuest eventToGuest = guest.Id;
-        Assert.Contains(eventToGuest, veaEvent.IntendedParticipants);
+        EventParticipation eventParticipation = guest.Id;
+        Assert.Contains(eventParticipation, veaEvent.IntendedParticipants);
     }
 
     [Fact]
@@ -41,9 +41,9 @@ public class ParticipateGuestAggregateTests {
 
         // Assert
         Assert.True(result.IsFailure);
-        EventToGuest eventToGuest = guest.Id;
+        EventParticipation eventParticipation = guest.Id;
 
-        Assert.DoesNotContain(eventToGuest, veaEvent.IntendedParticipants);
+        Assert.DoesNotContain(eventParticipation, veaEvent.IntendedParticipants);
         Assert.Contains(ErrorMessage.PrivateEventCannotBeParticipatedUnlessInvited, result.Error!.Messages);
     }
 
@@ -65,9 +65,9 @@ public class ParticipateGuestAggregateTests {
 
         // Assert
         Assert.True(result.IsFailure);
-        EventToGuest eventToGuest = guest.Id;
+        EventParticipation eventParticipation = guest.Id;
 
-        Assert.DoesNotContain(eventToGuest, veaEvent.IntendedParticipants);
+        Assert.DoesNotContain(eventParticipation, veaEvent.IntendedParticipants);
         Assert.Contains(ErrorMessage.MaximumNumberOfGuestsReached, result.Error!.Messages);
     }
 
@@ -91,22 +91,22 @@ public class ParticipateGuestAggregateTests {
     [Fact]
     public  async Task
         GivenEventInInStatusActive_AndTheGuestParticipationExists_WhenGuestCancelsParticipation_ReturnsSuccessResult_AndTheParticipationIsDeleted() {
-        // Arrange with an event that has a guest participation
+        // Arrange with an event that has a guest eventParticipation
         VeaEvent veaEvent = EventFactory.GetActiveEvent();
         veaEvent.MakePublic();
         Guest guest = await GuestFactory.GetValidGuest();
         veaEvent.ParticipateGuest(guest, _systemTime);
         // Make sure that the guest is participating before continuing
-        EventToGuest eventToGuest = guest.Id;
+        EventParticipation eventParticipation = guest.Id;
 
-        Assert.Contains(eventToGuest, veaEvent.IntendedParticipants);
+        Assert.Contains(eventParticipation, veaEvent.IntendedParticipants);
 
         // Act
         Result result = veaEvent.CancelGuestParticipation(guest, _systemTime);
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.DoesNotContain(eventToGuest, veaEvent.IntendedParticipants);
+        Assert.DoesNotContain(eventParticipation, veaEvent.IntendedParticipants);
     }
 
 

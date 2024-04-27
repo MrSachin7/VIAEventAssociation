@@ -5,7 +5,7 @@ using VIAEventAssociation.Core.AppEntry;
 namespace VIAEventAssociation.Core.Application;
 
 
-public static class ServiceCollectionExtension {
+public static class CommandCollectionExtension {
 
     public static IServiceCollection RegisterCommandHandlers(this IServiceCollection services) {
         Type handlerType = typeof(ICommandHandler<>);
