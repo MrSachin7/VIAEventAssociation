@@ -6,7 +6,7 @@ using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 
 namespace IntegrationTests.Repositories;
 
-public class LocationRepositoryTests : DatabaseSetupTestHelper {
+public class LocationRepositoryTests : WriteContextTestBase {
     
     private readonly ILocationRepository _locationRepository;
     private readonly IUnitOfWork _unitOfWork;

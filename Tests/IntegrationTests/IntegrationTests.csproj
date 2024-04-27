@@ -27,7 +27,9 @@
       <ProjectReference Include="..\..\src\core\VIAEventAssociation.Core.AppEntry\VIAEventAssociation.Core.AppEntry.csproj" />
       <ProjectReference Include="..\..\src\core\VIAEventAssociation.Core.Application\VIAEventAssociation.Core.Application.csproj" />
       <ProjectReference Include="..\..\src\Core\VIAEventAssociation.Core.Domain\VIAEventAssociation.Core.Domain.csproj" />
+      <ProjectReference Include="..\..\src\core\VIAEventAssociation.Core.QueryContracts\VIAEventAssociation.Core.QueryContracts.csproj" />
       <ProjectReference Include="..\..\src\Infrastructure\VIAEvent.Infrastructure.SqliteDmPersistence\VIAEvent.Infrastructure.SqliteDmPersistence.csproj" />
+      <ProjectReference Include="..\..\src\Infrastructure\VIAEventAssociation.Infrastructure.EfcQueries\VIAEventAssociation.Infrastructure.EfcQueries.csproj" />
     </ItemGroup>
 
 </Project>

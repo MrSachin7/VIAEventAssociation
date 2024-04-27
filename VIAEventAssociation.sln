@@ -28,6 +28,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VIAEvent.Infrastructure.Sql
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "Tests\IntegrationTests\IntegrationTests.csproj", "{7DB89A3A-35C6-49A5-9C8E-6709D7753A8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VIAEventAssociation.Infrastructure.EfcQueries", "src\Infrastructure\VIAEventAssociation.Infrastructure.EfcQueries\VIAEventAssociation.Infrastructure.EfcQueries.csproj", "{2242A517-015A-4EB0-95D9-F153A4472164}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VIAEventAssociation.Core.QueryContracts", "src\core\VIAEventAssociation.Core.QueryContracts\VIAEventAssociation.Core.QueryContracts.csproj", "{8507CCF8-E592-4B96-8070-DB5EEB1B4899}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +70,14 @@ Global
 		{7DB89A3A-35C6-49A5-9C8E-6709D7753A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DB89A3A-35C6-49A5-9C8E-6709D7753A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DB89A3A-35C6-49A5-9C8E-6709D7753A8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2242A517-015A-4EB0-95D9-F153A4472164}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2242A517-015A-4EB0-95D9-F153A4472164}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2242A517-015A-4EB0-95D9-F153A4472164}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2242A517-015A-4EB0-95D9-F153A4472164}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8507CCF8-E592-4B96-8070-DB5EEB1B4899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8507CCF8-E592-4B96-8070-DB5EEB1B4899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8507CCF8-E592-4B96-8070-DB5EEB1B4899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8507CCF8-E592-4B96-8070-DB5EEB1B4899}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{071768FC-8A21-468F-9F0B-B522B72559D3} = {223539CA-12C2-4EA3-B2AE-96C365001D8A}
@@ -79,5 +91,7 @@ Global
 		{4104A96E-4E7C-4025-9733-0F67085857D6} = {223539CA-12C2-4EA3-B2AE-96C365001D8A}
 		{9054D9F0-D3DB-42DF-94D9-C2C845F8B0BE} = {4104A96E-4E7C-4025-9733-0F67085857D6}
 		{7DB89A3A-35C6-49A5-9C8E-6709D7753A8F} = {4A077ECE-0CF1-40A7-81E2-FBE0E3728E19}
+		{2242A517-015A-4EB0-95D9-F153A4472164} = {4104A96E-4E7C-4025-9733-0F67085857D6}
+		{8507CCF8-E592-4B96-8070-DB5EEB1B4899} = {071768FC-8A21-468F-9F0B-B522B72559D3}
 	EndGlobalSection
 EndGlobal

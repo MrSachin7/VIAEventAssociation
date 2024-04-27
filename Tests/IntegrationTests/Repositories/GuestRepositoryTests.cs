@@ -8,7 +8,7 @@ using VIAEventAssociation.Core.Domain.Contracts;
 
 namespace IntegrationTests.Repositories;
 
-public class GuestRepositoryTests : DatabaseSetupTestHelper {
+public class GuestRepositoryTests : WriteContextTestBase {
     private readonly IGuestRepository _guestRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUniqueEmailChecker _uniqueEmailChecker;

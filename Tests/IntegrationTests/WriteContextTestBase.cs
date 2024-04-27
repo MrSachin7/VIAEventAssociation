@@ -3,7 +3,7 @@ using VIAEvent.Infrastructure.SqliteDmPersistence;
 
 namespace IntegrationTests;
 
-public abstract class DatabaseSetupTestHelper {
+public abstract class WriteContextTestBase {
     protected SqliteWriteDbContext SetupContext() {
         DbContextOptionsBuilder<SqliteWriteDbContext> optionsBuilder = new();
         string testDbName = "Test " + Guid.NewGuid() + " db";
