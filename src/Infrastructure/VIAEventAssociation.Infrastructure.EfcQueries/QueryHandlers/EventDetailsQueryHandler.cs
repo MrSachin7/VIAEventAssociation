@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
+using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities;
 using VIAEventAssociation.Core.QueryContracts.Contracts;
 using VIAEventAssociation.Core.QueryContracts.Queries;
 using ViaEventAssociation.Core.Tools.OperationResult;
@@ -13,49 +14,57 @@ public class EventDetailsQueryHandler : IQueryHandler<EventDetailsQuery.Query, E
         _context = context;
     }
 
-
     public async Task<Result<EventDetailsQuery.Answer>> HandleAsync(EventDetailsQuery.Query query) {
+        int skipCount = (query.GuestPageNumber - 1) * query.GuestsPerPage;
+        int takeCount = query.GuestsPerPage;
+
+
+        // This is not the best way to get the event with guests
         VeaEvent? eventFromDb = await _context.VeaEvents
-            .Include(evt => evt.Guests.Skip((query.GuestPageNumber-1) * query.GuestsPerPage).Take(query.GuestsPerPage))
+            .Include(evt => evt.EventInvitations
+                .Where(inv => inv.Status.Equals(JoinStatus.Accepted.DisplayName)))
+            .ThenInclude(inv => inv.Guest)
+            .Include(evt => evt.Guests)
             .Include(evt => evt.Location)
             .FirstOrDefaultAsync(evt => evt.Id.Equals(query.EventId));
-
-        /*
-         Todo: Ask troels..
-       Here, I decided to make a separate query to get the total number of guests on the event,
-          I could instead have used the eventFromDb.Guests.Count, and instead not made the pagination query above
-          but I am genuinely not sure which is more efficient / better approach in this case.
-       **/
-        int totalGuestsOnEvent = await _context.Guests.CountAsync(guest => guest.Events.Any(evt => evt.Id.Equals(query.EventId)));
 
         if (eventFromDb is null) {
             return Error.NotFound(ErrorMessage.EventNotFound(query.EventId));
         }
 
-        return ToAnswer(eventFromDb,query.GuestPageNumber, query.GuestsPerPage, totalGuestsOnEvent);
-    }
+        IEnumerable<EventDetailsQuery.Guest> acceptedInvitations = eventFromDb.EventInvitations.Select(
+            inv => new EventDetailsQuery.Guest(inv.GuestId,
+                $"{inv.Guest.FirstName} {inv.Guest.LastName}",
+                inv.Guest.ProfilePictureUrl));
 
-    private EventDetailsQuery.Answer ToAnswer(VeaEvent evt, int pageNumber, int guestsPerPage, int totalGuestsOnEvent) {
-        EventDetailsQuery.Event answerEvent = new EventDetailsQuery.Event(evt.Id,
-            evt.Title,
-            evt.Description,
-            evt.StartDateTime?.Date.ToString(DateTimeFormat.DateFormat),
-            evt.StartDateTime?.TimeOfDay.ToString(DateTimeFormat.TimeFormat),
-            evt.Visibility,
-            evt.Guests.Count,
-            evt.MaxGuests,
-            evt.Location?.LocationName);
-
-        ImmutableList<EventDetailsQuery.Guest> guests = evt.Guests.Select(guest => new EventDetailsQuery.Guest(
-                guest.Id,
+        IEnumerable<EventDetailsQuery.Guest> intendedParticipants = eventFromDb.Guests.Select(
+            guest => new EventDetailsQuery.Guest(guest.Id,
                 $"{guest.FirstName} {guest.LastName}",
-                guest.ProfilePictureUrl))
+                guest.ProfilePictureUrl));
+
+        ICollection<EventDetailsQuery.Guest> guests = acceptedInvitations
+            .Concat(intendedParticipants)
+            .Skip(skipCount)
+            .Take(takeCount)
             .ToImmutableList();
 
-        int totalGuestPages = (int) Math.Ceiling((double) totalGuestsOnEvent / guestsPerPage);
-
+        int totalGuestsOnEvent = eventFromDb.EventInvitations.Count + eventFromDb.Guests.Count;
+        int totalGuestPages = (int) Math.Ceiling((double) totalGuestsOnEvent / query.GuestsPerPage);
         EventDetailsQuery.Guests answerGuests = new EventDetailsQuery.Guests(guests, totalGuestPages);
 
+        EventDetailsQuery.Event answerEvent = new EventDetailsQuery.Event(eventFromDb.Id,
+            eventFromDb.Title,
+            eventFromDb.Description,
+            eventFromDb.StartDateTime?.Date.ToString(DateTimeFormat.DateFormat),
+            eventFromDb.StartDateTime?.TimeOfDay.ToString(DateTimeFormat.TimeFormat),
+            eventFromDb.Visibility,
+            totalGuestsOnEvent,
+            eventFromDb.MaxGuests,
+            eventFromDb.Location?.LocationName);
+
         return new EventDetailsQuery.Answer(answerEvent, answerGuests);
+
     }
+
+
 }

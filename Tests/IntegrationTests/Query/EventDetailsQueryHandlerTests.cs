@@ -21,7 +21,9 @@ public class EventDetailsQueryHandlerTests : ReadContextTestBase{
         // Arrange
         VeadatabaseProductionContext context =await SetupReadContext().SeedAllDataAsync();
         const int guestsPerPage = 3;
+        // const string eventId = "27a5bde5-3900-4c45-9358-3d186ad6b2d7";
         const string eventId = "40ed2fd9-2240-4791-895f-b9da1a1f64e4";
+
 
         EventDetailsQuery.Query query = new EventDetailsQuery.Query(eventId, 1, guestsPerPage);
         EventDetailsQueryHandler handler = new EventDetailsQueryHandler(context);
