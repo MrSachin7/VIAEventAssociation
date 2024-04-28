@@ -6,7 +6,6 @@ public static class SeedDataExtension {
         await context.Locations.AddRangeAsync(LocationSeedFactory.GetLocationsFromJson());
         await context.SaveChangesAsync();
 
-
         await context.Guests.AddRangeAsync( GuestSeedFactory.GetGuestsFromJson());
         await context.SaveChangesAsync();
 
