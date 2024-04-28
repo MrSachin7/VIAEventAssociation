@@ -19,7 +19,7 @@ public class TransactionDecoratorTests {
         TransactionDecorator sut = new TransactionDecorator(_commandDispatcherMock.Object, _unitOfWorkMock.Object);
         _commandDispatcherMock.Setup(mock => mock.DispatchAsync(It.IsAny<ICommand>()))
             .ReturnsAsync(Result.Success);
-        ICommand sampleCommand = CreateEventCommand.Create().Payload!;
+        ICommand sampleCommand = CreateEventCommand.Create();
 
         // Act
         await sut.DispatchAsync(sampleCommand);
@@ -38,7 +38,7 @@ public class TransactionDecoratorTests {
 
         _commandDispatcherMock.Setup(mock => mock.DispatchAsync(It.IsAny<ICommand>()))
             .ReturnsAsync(sampleFailureResult);
-        ICommand sampleCommand = CreateEventCommand.Create().Payload!;
+        ICommand sampleCommand = CreateEventCommand.Create();
 
         // Act
         await sut.DispatchAsync(sampleCommand);

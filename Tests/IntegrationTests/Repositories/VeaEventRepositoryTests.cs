@@ -21,7 +21,7 @@ public class VeaEventRepositoryTests : WriteContextTestBase {
     [Fact]
     public async Task AddEventAsync_AddsEventToDatabase() {
         // Arrange
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = VeaEvent.Empty(EventId.New());
         // Act
         await _eventRepository.AddAsync(veaEvent);
         await _unitOfWork.SaveChangesAsync();
@@ -42,7 +42,7 @@ public class VeaEventRepositoryTests : WriteContextTestBase {
     [Fact]
     public async Task Remove_RemovesEventFromDatabase() {
         // Arrange
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = VeaEvent.Empty(EventId.New());
         await _eventRepository.AddAsync(veaEvent);
         await _unitOfWork.SaveChangesAsync();
         // Act

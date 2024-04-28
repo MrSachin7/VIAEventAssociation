@@ -14,6 +14,10 @@ public class DeclineInvitationCommand  : ICommand{
         EventInvitationId = eventInvitationId;
     }
 
+    // Todo: Ask, well generally i should be able to do this with just the EventId and EventInvitationId, is this the limitation of clean architecture?
+    // Maybe, i should use the guestId here, but then why have invitationId, can just make the composite PK with two ids...
+
+    // After some time. maybe you want to invite the guest again when he rejects , so composite key doesnt make sense...
     public static Result<DeclineInvitationCommand> Create(string eventId, string invitationId) {
         Result<EventId> eventIdResult = EventId.Create(eventId);
         Result<EventInvitationId> guestIdResult = EventInvitationId.Create(invitationId);

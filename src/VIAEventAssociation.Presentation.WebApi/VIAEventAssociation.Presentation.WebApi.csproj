@@ -13,7 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Endpoints\" />
+      <ProjectReference Include="..\core\VIAEventAssociation.Core.Application\VIAEventAssociation.Core.Application.csproj" />
+      <ProjectReference Include="..\Infrastructure\VIAEventAssociation.Infrastructure.EfcQueries\VIAEventAssociation.Infrastructure.EfcQueries.csproj" />
     </ItemGroup>
 
 </Project>

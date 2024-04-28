@@ -12,7 +12,7 @@ public class CreateEventHandlerTests {
     [Fact]
     public async Task CreateEventHandler_CreatesAnEmptyEvent() {
         // Arrange
-        CreateEventCommand createEventCommand = CreateEventCommand.Create().Payload!;
+        CreateEventCommand createEventCommand = CreateEventCommand.Create();
         CreateEventCommandHandler handler = new CreateEventCommandHandler(_eventRepository);
 
         // Act

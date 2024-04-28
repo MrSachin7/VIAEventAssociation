@@ -1,3 +1,6 @@
+using VIAEventAssociation.Core.Application;
+using VIAEventAssociation.Infrastructure.EfcQueries;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +11,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+// Command Handlers
+builder.Services.RegisterCommandHandlers();
+
+// Query Handlers
+builder.Services.RegisterQueryHandlers();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {

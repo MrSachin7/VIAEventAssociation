@@ -14,7 +14,7 @@ public class CreateEventCommandHandler : ICommandHandler<CreateEventCommand> {
     }
 
     public async Task<Result> HandleAsync(CreateEventCommand command) {
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = VeaEvent.Empty(command.EventId);
         await _eventRepository.AddAsync(veaEvent);
         return Result.Success();
     }

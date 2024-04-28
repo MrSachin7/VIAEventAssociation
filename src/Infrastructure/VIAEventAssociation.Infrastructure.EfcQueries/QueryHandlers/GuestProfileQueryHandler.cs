@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using VIAEventAssociation.Core.QueryContracts.Contracts;
 using VIAEventAssociation.Core.QueryContracts.Queries;
 using ViaEventAssociation.Core.Tools.OperationResult;
+using VIAEventAssociation.Infrastructure.EfcQueries.DataSeeder;
 
 namespace VIAEventAssociation.Infrastructure.EfcQueries.QueryHandlers;
 
