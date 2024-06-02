@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace VIAEventAssociation.Presentation.WebApi.Endpoints;
+﻿
+namespace VIAEventAssociation.Presentation.WebApi.Endpoints.Query;
 
 public static class QueryEndpointBase {
 

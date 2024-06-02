@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using VIAEventAssociation.Core.AppEntry.Commands;
 using ViaEventAssociation.Core.Tools.OperationResult;
 
@@ -21,10 +21,10 @@ public class ExecutionTimerDecorator : IDispatcher{
         stopwatch.Stop();
 
         if (result.IsSuccess) {
-            _logger.Information("Command {Name} executed successfully in {StopwatchElapsedMilliseconds} ms", command.GetType().Name, stopwatch.ElapsedMilliseconds);
+            _logger.LogInformation("Command {Name} executed successfully in {StopwatchElapsedMilliseconds} ms", command.GetType().Name, stopwatch.ElapsedMilliseconds);
         }
         else {
-            _logger.Error("Command {Name} failed after {StopwatchElapsedMilliseconds} ms with reason: {Reason}", command.GetType().Name, stopwatch.ElapsedMilliseconds, result.Error);
+            _logger.LogError("Command {Name} failed after {StopwatchElapsedMilliseconds} ms with reason: {Reason}", command.GetType().Name, stopwatch.ElapsedMilliseconds, result.Error);
         }
         return result;
     }

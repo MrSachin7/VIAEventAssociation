@@ -15,6 +15,8 @@ public class UpdateDuration : CommandEndPointBase
         _systemTime = systemTime;
     }
 
+    [HttpPatch("events/{Id}/duration")]
+
     public override async Task<IResult> HandleAsync(UpdateDurationRequest request) {
         DateTime startDateTime = DateTime.ParseExact(request.RequestBody.StartDateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
         DateTime endDateTime = DateTime.ParseExact(request.RequestBody.EndDateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);

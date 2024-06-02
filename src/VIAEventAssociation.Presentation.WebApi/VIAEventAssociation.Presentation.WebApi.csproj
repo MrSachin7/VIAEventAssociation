@@ -8,12 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\core\VIAEventAssociation.Core.Application\VIAEventAssociation.Core.Application.csproj" />
+      <ProjectReference Include="..\Infrastructure\VIAEvent.Infrastructure.SqliteDmPersistence\VIAEvent.Infrastructure.SqliteDmPersistence.csproj" />
       <ProjectReference Include="..\Infrastructure\VIAEventAssociation.Infrastructure.EfcQueries\VIAEventAssociation.Infrastructure.EfcQueries.csproj" />
     </ItemGroup>
 

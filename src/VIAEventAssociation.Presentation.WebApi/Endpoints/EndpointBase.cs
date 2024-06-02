@@ -14,9 +14,9 @@ public class EndpointBase : ControllerBase {
             Title = error.ErrorCode.DisplayName,
         };
 
-        if (statusCode == StatusCodes.Status500InternalServerError) {
+        if (statusCode != StatusCodes.Status500InternalServerError) {
             problemDetails.Extensions = new Dictionary<string, object?> {
-                {"errors", new[] {error.Messages}}
+                {"errors", new[] {error.GetErrorMessages()}}
             };
         }
 

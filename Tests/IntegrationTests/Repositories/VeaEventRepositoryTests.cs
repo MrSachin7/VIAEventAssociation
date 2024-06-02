@@ -7,14 +7,14 @@ using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 namespace IntegrationTests.Repositories;
 
 
-public class VeaEventRepositoryTests : WriteContextTestBase {
+public class EventRepositoryTests : WriteContextTestBase {
 
     private readonly IEventRepository _eventRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public VeaEventRepositoryTests() {
+    public EventRepositoryTests() {
         SqliteWriteDbContext context = SetupContext();
-        _eventRepository = new VeaEventRepository(context);
+        _eventRepository = new EventRepository(context);
         _unitOfWork = new SqliteUnitOfWork(context);
     }
 

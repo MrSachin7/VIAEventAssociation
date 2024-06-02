@@ -14,6 +14,7 @@ public class Register : CommandEndPointBase
         _uniqueEmailChecker = uniqueEmailChecker;
     }
 
+    [HttpPost("guests")]
     public override async Task<IResult> HandleAsync(RegisterGuestRequest request) {
         var commandResult = await RegisterGuestCommand.Create(request.RequestBody.FirstName,
             request.RequestBody.LastName,

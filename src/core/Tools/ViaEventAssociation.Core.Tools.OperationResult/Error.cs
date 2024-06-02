@@ -46,5 +46,9 @@ public class Error {
         string joined = string.Join(Environment.NewLine, errorMessages);
         return $"ErrorCode {ErrorCode.Value} : {ErrorCode} \n {joined} ";
     }
+
+    public List<string> GetErrorMessages() {
+        return Messages.Select(message => message.ToString()).ToList();
+    }
 }
 

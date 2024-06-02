@@ -21,7 +21,9 @@ public class Create : CommandEndPointBase.WithoutRequest.WithResponse<CreateEven
         if (result.IsFailure) {
             return ConvertErrorToResult(result.Error!);
         }
-        return Results.Ok(new CreateEventResponse(command.EventId.Value.ToString()));
+
+        string createdEventId = command.EventId!.Value.ToString();
+        return Results.Created($"/api/events/{createdEventId}", new CreateEventResponse(createdEventId));
     }
 }
 
