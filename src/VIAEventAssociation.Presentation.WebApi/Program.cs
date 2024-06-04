@@ -33,6 +33,7 @@ builder.Services.AddDbContext<VeadatabaseProductionContext>(options => options.U
 
 builder.Services.AddScoped<ISystemTime, DefaultSystemTime>();
 builder.Services.AddScoped<IUnitOfWork, SqliteUnitOfWork>();
+builder.Services.AddScoped<IMapper, ObjectMapper>();
 
 // Repositories
 builder.Services.AddScoped<IEventRepository, EventRepository>();
@@ -84,3 +85,7 @@ app.UseExceptionHandler();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program {
+
+}

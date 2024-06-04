@@ -40,15 +40,14 @@ public class Error {
         Messages = new List<ErrorMessage> {message};
     }
 
-    public override string ToString() {
-        List<string> errorMessages= Messages.Select(message => message.ToString()).ToList();
-
-        string joined = string.Join(Environment.NewLine, errorMessages);
-        return $"ErrorCode {ErrorCode.Value} : {ErrorCode} \n {joined} ";
-    }
-
     public List<string> GetErrorMessages() {
         return Messages.Select(message => message.ToString()).ToList();
+    }
+
+    public override string ToString() {
+        List<string> errorMessages= Messages.Select(message => message.ToString()).ToList();
+        string joined = string.Join(Environment.NewLine, errorMessages);
+        return $"ErrorCode {ErrorCode.Value} : {ErrorCode} \n {joined} ";
     }
 }
 

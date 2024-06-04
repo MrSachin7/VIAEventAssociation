@@ -18,5 +18,6 @@
       <ProjectReference Include="..\Infrastructure\VIAEvent.Infrastructure.SqliteDmPersistence\VIAEvent.Infrastructure.SqliteDmPersistence.csproj" />
       <ProjectReference Include="..\Infrastructure\VIAEventAssociation.Infrastructure.EfcQueries\VIAEventAssociation.Infrastructure.EfcQueries.csproj" />
     </ItemGroup>
+    
 
 </Project>

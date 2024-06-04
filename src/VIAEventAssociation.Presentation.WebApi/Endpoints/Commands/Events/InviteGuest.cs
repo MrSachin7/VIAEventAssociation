@@ -21,7 +21,5 @@ public class InviteGuest : CommandEndPointBase
 public class InviteGuestRequest {
     [FromRoute] public string Id { get; set; } = null!;
     [FromBody] public Body RequestBody { get; set; } = null!;
-
-    
     public record Body(string GuestId);
 }
