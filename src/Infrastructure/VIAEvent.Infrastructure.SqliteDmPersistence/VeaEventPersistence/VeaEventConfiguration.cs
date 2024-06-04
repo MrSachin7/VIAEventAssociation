@@ -12,8 +12,10 @@ namespace VIAEvent.Infrastructure.SqliteDmPersistence.VeaEventPersistence;
 public class VeaEventConfiguration : IEntityTypeConfiguration<VeaEvent> {
 
 
-    // Todo : Ask troels if there is a better alternative that he is aware of..
+    // Todo : Ask this is very hard coupled to the enum, better alternative ??
     private IEventStatusState GetEventStateFromString(string value) {
+        // TODO Type? type = Type.GetType(value);
+        // object? instance = Activator.CreateInstance(type); -- now you have a status instance
         EventStatus status = EventStatus.FromString(value);
         if (status.Equals(EventStatus.Draft))
             return DraftStatusState.GetInstance();
@@ -67,6 +69,7 @@ public class VeaEventConfiguration : IEntityTypeConfiguration<VeaEvent> {
                 mState => mState.CurrentStatus().DisplayName,
                 dbValue => GetEventStateFromString(dbValue))
             .HasColumnName("Status");
+
 
         // Event Visibility
         entityBuilder.ComplexProperty(entity => entity.Visibility,

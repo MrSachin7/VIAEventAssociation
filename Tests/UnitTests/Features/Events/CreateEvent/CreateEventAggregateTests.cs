@@ -10,7 +10,7 @@ public class CreateEventAggregateTests {
     [Fact]
     public void CreateEvent_CreatesAnEmptyEvent_WithDefaultValues() {
         // Arrange and act
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = VeaEvent.Empty(EventId.New());
 
         // Assert
         Assert.NotNull(veaEvent);

@@ -14,8 +14,7 @@ public class VeaEventWriteContextTestBaseTests : WriteContextTestBase {
     public async Task StrongIdAsPk() {
         await using SqliteWriteDbContext context = SetupContext();
 
-        // This automatically sets a new strong id as pk
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = VeaEvent.Empty(EventId.New());
 
         await SaveAndClearAsync(veaEvent, context);
 
@@ -29,7 +28,7 @@ public class VeaEventWriteContextTestBaseTests : WriteContextTestBase {
     public async Task NonNullableSinglePrimitiveValuedValueObject() {
         await using SqliteWriteDbContext context = SetupContext();
         EventTitle title = EventTitle.Create("Hello World").Payload!;
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = VeaEvent.Empty(EventId.New());
 
         veaEvent.UpdateEventTitle(title);
         await SaveAndClearAsync(veaEvent, context);
@@ -43,7 +42,7 @@ public class VeaEventWriteContextTestBaseTests : WriteContextTestBase {
     [Fact]
     public async Task NullableSinglePrimitiveValuedValueObject() {
         await using SqliteWriteDbContext context = SetupContext();
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = VeaEvent.Empty(EventId.New());
 
         await SaveAndClearAsync(veaEvent, context);
 
@@ -66,7 +65,7 @@ public class VeaEventWriteContextTestBaseTests : WriteContextTestBase {
         await context.SaveChangesAsync();
         context.ChangeTracker.Clear();
 
-        VeaEvent veaEvent1 = VeaEvent.Empty();
+        VeaEvent veaEvent1 = VeaEvent.Empty(EventId.New());
         veaEvent1.IntendedParticipants.Add(guest1.Id);
         veaEvent1.IntendedParticipants.Add(guest2.Id);
 
@@ -84,7 +83,7 @@ public class VeaEventWriteContextTestBaseTests : WriteContextTestBase {
     [Fact]
     public async Task ClassAsEnum() {
         await using SqliteWriteDbContext context = SetupContext();
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = VeaEvent.Empty(EventId.New());
 
         await SaveAndClearAsync(veaEvent, context);
 
@@ -96,7 +95,7 @@ public class VeaEventWriteContextTestBaseTests : WriteContextTestBase {
     [Fact]
     public async Task ListOfEntities() {
         await using SqliteWriteDbContext context = SetupContext();
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = VeaEvent.Empty(EventId.New());
 
         Guest guest1 = Guest.Create(GuestFirstName.Create("Sachin").Payload!, GuestLastName.Create("Baral").Payload!,
             (await ViaEmail.Create("310628@via.dk", new UniqueEmailChecker())).Payload!).Payload!;

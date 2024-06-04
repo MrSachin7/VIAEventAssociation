@@ -21,7 +21,6 @@ public abstract class ReadContextTestBase {
 
     protected void PrintPayload<T>(T payload, ITestOutputHelper testOutputHelper) {
         testOutputHelper.WriteLine(JsonSerializer.Serialize(payload, new JsonSerializerOptions {WriteIndented = true}));
-
     }
 
     

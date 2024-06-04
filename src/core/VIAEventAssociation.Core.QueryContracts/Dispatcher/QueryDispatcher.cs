@@ -1,4 +1,5 @@
 ﻿using VIAEventAssociation.Core.QueryContracts.Contracts;
+using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.QueryContracts.Dispatcher;
 
@@ -10,7 +11,7 @@ public class QueryDispatcher : IQueryDispatcher {
         _serviceProvider = serviceProvider;
     }
 
-    public async Task<TAnswer> DispatchAsync<TAnswer>(IQuery<TAnswer> query) {
+    public async Task<Result<TAnswer>> DispatchAsync<TAnswer>(IQuery<TAnswer> query) {
         Type queryType =query.GetType();
         Type answerType = typeof(TAnswer);
         Type handlerType = typeof(IQueryHandler<,>);

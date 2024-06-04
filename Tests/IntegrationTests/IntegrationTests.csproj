@@ -11,6 +11,7 @@
 
     <ItemGroup>
         <PackageReference Include="Meziantou.Extensions.Logging.Xunit" Version="1.0.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.6" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
         <PackageReference Include="xunit" Version="2.4.2"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
@@ -31,6 +32,7 @@
       <ProjectReference Include="..\..\src\core\VIAEventAssociation.Core.QueryContracts\VIAEventAssociation.Core.QueryContracts.csproj" />
       <ProjectReference Include="..\..\src\Infrastructure\VIAEvent.Infrastructure.SqliteDmPersistence\VIAEvent.Infrastructure.SqliteDmPersistence.csproj" />
       <ProjectReference Include="..\..\src\Infrastructure\VIAEventAssociation.Infrastructure.EfcQueries\VIAEventAssociation.Infrastructure.EfcQueries.csproj" />
+      <ProjectReference Include="..\..\src\VIAEventAssociation.Presentation.WebApi\VIAEventAssociation.Presentation.WebApi.csproj" />
     </ItemGroup>
 
 </Project>

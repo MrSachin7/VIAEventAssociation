@@ -4,6 +4,7 @@ using VIAEventAssociation.Core.Domain.Aggregates.Events.Entities;
 using VIAEventAssociation.Core.QueryContracts.Contracts;
 using VIAEventAssociation.Core.QueryContracts.Queries;
 using ViaEventAssociation.Core.Tools.OperationResult;
+using VIAEventAssociation.Infrastructure.EfcQueries.DataSeeder;
 
 namespace VIAEventAssociation.Infrastructure.EfcQueries.QueryHandlers;
 
@@ -20,6 +21,7 @@ public class EventDetailsQueryHandler : IQueryHandler<EventDetailsQuery.Query, E
 
 
         // This is not the best way to get the event with guests
+        // Todo: I might come back to this for a more elegant solution later....
         VeaEvent? eventFromDb = await _context.VeaEvents
             .Include(evt => evt.EventInvitations
                 .Where(inv => inv.Status.Equals(JoinStatus.Accepted.DisplayName)))

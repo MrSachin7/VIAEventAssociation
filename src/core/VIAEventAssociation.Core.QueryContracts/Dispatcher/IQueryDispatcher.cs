@@ -1,7 +1,8 @@
 ﻿using VIAEventAssociation.Core.QueryContracts.Contracts;
+using ViaEventAssociation.Core.Tools.OperationResult;
 
 namespace VIAEventAssociation.Core.QueryContracts.Dispatcher;
 
 public interface IQueryDispatcher {
-    Task<TAnswer> DispatchAsync<TAnswer>(IQuery<TAnswer> query);
+    Task<Result<TAnswer>> DispatchAsync<TAnswer>(IQuery<TAnswer> query);
 }

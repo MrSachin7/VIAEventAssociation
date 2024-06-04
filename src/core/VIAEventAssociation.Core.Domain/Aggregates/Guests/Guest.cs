@@ -36,7 +36,7 @@ public class Guest : Aggregate<GuestId> {
     }
 
     public static Result<Guest> Create(GuestFirstName firstName, GuestLastName lastName, ViaEmail email,
-        ProfilePictureUrl profilePictureUrl) {
+        ProfilePictureUrl? profilePictureUrl) {
         Result<Guest> guestResult = Create(firstName, lastName, email);
         if (guestResult.IsFailure) {
             return guestResult;

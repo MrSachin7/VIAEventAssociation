@@ -7,21 +7,21 @@ using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
 namespace IntegrationTests.Repositories;
 
 
-public class VeaEventRepositoryTests : WriteContextTestBase {
+public class EventRepositoryTests : WriteContextTestBase {
 
     private readonly IEventRepository _eventRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public VeaEventRepositoryTests() {
+    public EventRepositoryTests() {
         SqliteWriteDbContext context = SetupContext();
-        _eventRepository = new VeaEventRepository(context);
+        _eventRepository = new EventRepository(context);
         _unitOfWork = new SqliteUnitOfWork(context);
     }
 
     [Fact]
     public async Task AddEventAsync_AddsEventToDatabase() {
         // Arrange
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = VeaEvent.Empty(EventId.New());
         // Act
         await _eventRepository.AddAsync(veaEvent);
         await _unitOfWork.SaveChangesAsync();
@@ -42,7 +42,7 @@ public class VeaEventRepositoryTests : WriteContextTestBase {
     [Fact]
     public async Task Remove_RemovesEventFromDatabase() {
         // Arrange
-        VeaEvent veaEvent = VeaEvent.Empty();
+        VeaEvent veaEvent = VeaEvent.Empty(EventId.New());
         await _eventRepository.AddAsync(veaEvent);
         await _unitOfWork.SaveChangesAsync();
         // Act

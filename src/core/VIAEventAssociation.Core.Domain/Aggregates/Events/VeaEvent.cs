@@ -45,8 +45,7 @@ public class VeaEvent : Aggregate<EventId> {
         IntendedParticipants = new List<EventParticipation>();
     }
 
-    public static VeaEvent Empty() {
-        EventId id = EventId.New();
+    public static VeaEvent Empty(EventId id) {
         IEventStatusState draftStatus = DraftStatusState.GetInstance();
         EventMaxGuests maxGuests = EventMaxGuests.Default();
         EventDescription description = EventDescription.Default();

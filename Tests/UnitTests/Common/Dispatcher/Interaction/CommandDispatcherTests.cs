@@ -16,7 +16,7 @@ public class CommandDispatcherTests {
         ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
         IDispatcher commandDispatcher = new CommandDispatcher(serviceProvider);
-        CreateEventCommand sampleCommand = CreateEventCommand.Create().Payload!;
+        CreateEventCommand sampleCommand = CreateEventCommand.Create();
 
         // Act
         Result result = await commandDispatcher.DispatchAsync(sampleCommand);
@@ -40,7 +40,7 @@ public class CommandDispatcherTests {
         ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
         IDispatcher commandDispatcher = new CommandDispatcher(serviceProvider);
-        CreateEventCommand sampleCommand = CreateEventCommand.Create().Payload!;
+        CreateEventCommand sampleCommand = CreateEventCommand.Create();
 
         // Act
         Result result = await commandDispatcher.DispatchAsync(sampleCommand);
@@ -70,7 +70,7 @@ public class CommandDispatcherTests {
         ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
         IDispatcher commandDispatcher = new CommandDispatcher(serviceProvider);
-        CreateEventCommand sampleCommand1 = CreateEventCommand.Create().Payload!;
+        CreateEventCommand sampleCommand1 = CreateEventCommand.Create();
         MakeEventReadyCommand sampleCommand2 = MakeEventReadyCommand.Create(Guid.NewGuid().ToString()).Payload!;
 
         // Act
@@ -102,7 +102,7 @@ public class CommandDispatcherTests {
         ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
         IDispatcher commandDispatcher = new CommandDispatcher(serviceProvider);
-        CreateEventCommand sampleCommand = CreateEventCommand.Create().Payload!;
+        CreateEventCommand sampleCommand = CreateEventCommand.Create();
 
         // Act
         async Task Act() {
@@ -122,7 +122,7 @@ public class CommandDispatcherTests {
         ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
         IDispatcher commandDispatcher = new CommandDispatcher(serviceProvider);
-        CreateEventCommand sampleCommand = CreateEventCommand.Create().Payload!;
+        CreateEventCommand sampleCommand = CreateEventCommand.Create();
 
         // Act
         async Task Act() {
