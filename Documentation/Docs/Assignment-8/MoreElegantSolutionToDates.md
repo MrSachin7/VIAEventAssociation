@@ -20,7 +20,7 @@ However, while making the configuration, we can change the data type to date.
  ```
 
 As you can see above , I have specifically mentioned that these are datetime objects.
-Well, this doesnt change the fact that the date is stored as string in the database.
+Well, this doesnt change the fact that the date is stored as string in the sqlite database.
 But it does help the entity framework to understand that these are datetime objects and not strings. 
 This will not only  help in querying the database for dates but also when scaffolding the database, the date fields will be generated as datetime fields.
 

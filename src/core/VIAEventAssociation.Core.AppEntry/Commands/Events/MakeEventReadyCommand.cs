@@ -13,6 +13,6 @@ public class MakeEventReadyCommand  : ICommand{
 
     public static Result<MakeEventReadyCommand> Create(string eventId) {
         Result<EventId> idResult = EventId.Create(eventId);
-        return idResult.WithPayload(() => new MakeEventReadyCommand(idResult.Payload!));
+        return idResult.WithPayloadIfSuccess(() => new MakeEventReadyCommand(idResult.Payload!));
     }
 }

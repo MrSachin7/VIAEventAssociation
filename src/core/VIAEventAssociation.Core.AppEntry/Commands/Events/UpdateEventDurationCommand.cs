@@ -17,6 +17,6 @@ public class UpdateEventDurationCommand  : ICommand{
         Result<EventDuration> durationResult = EventDuration.Create(startDateTime, endDateTime, systemTime);
 
         return idResult.Combine(durationResult)
-            .WithPayload(() => new UpdateEventDurationCommand(idResult.Payload!, durationResult.Payload!));
+            .WithPayloadIfSuccess(() => new UpdateEventDurationCommand(idResult.Payload!, durationResult.Payload!));
     }
 }

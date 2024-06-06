@@ -17,6 +17,6 @@ public class UpdateEventDescriptionCommand  : ICommand{
         Result<EventDescription> descriptionResult = EventDescription.Create(eventDescription);
 
         return idResult.Combine(descriptionResult)
-            .WithPayload(() => new UpdateEventDescriptionCommand(idResult.Payload!, descriptionResult.Payload!));
+            .WithPayloadIfSuccess(() => new UpdateEventDescriptionCommand(idResult.Payload!, descriptionResult.Payload!));
     }
 }

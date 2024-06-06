@@ -129,8 +129,22 @@ public class VeaEvent : Aggregate<EventId> {
     }
 
     public Result UpdateLocation(Location location) {
+        // When implemented, it needs to also check if location is already booked here....
         return CurrentStatusState.UpdateLocation(this, location);
     }
+
+    // public async Task<Result> UpdateLocation(Location location, ILocationAlreadyInUseChecker checker,
+    //     ISystemTime systemTime) {
+    //     bool isLocationInUse = await checker.IsLocationInUse(location.LocationName,
+    //         Duration?.StartDateTime,
+    //         Duration?.EndDateTime,
+    //         systemTime.CurrentTime());
+    //     if (isLocationInUse) {
+    //         return Error.Conflict(ErrorMessage.LocationIsAlreadyInUse);
+    //     }
+    //
+    //     return CurrentStatusState.UpdateLocation(this, location);
+    // }
 
     public Result ParticipateGuest(Guest guest, ISystemTime systemTime) {
         // If not public, fail
@@ -265,7 +279,7 @@ public class VeaEvent : Aggregate<EventId> {
     }
 
     internal void SetEventDuration(EventDuration eventDuration) {
-        Duration = eventDuration;
+        Duration = eventDuration;                                                                   
     }
 
     internal bool IsFull() {
@@ -285,11 +299,11 @@ public class VeaEvent : Aggregate<EventId> {
     }
 
     public override bool Equals(object? obj) {
-        VeaEvent? other = obj as VeaEvent;
-        if (other is null) {
+        if (obj is null or not VeaEvent) {
             return false;
         }
 
+        VeaEvent other = (VeaEvent) obj;
         return Id.Equals(other.Id);
     }
 

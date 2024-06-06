@@ -17,7 +17,7 @@ public class AcceptInvitationCommand  : ICommand{
         Result<EventId> eventIdResult = EventId.Create(eventId);
         Result<EventInvitationId> invitationIdResult = EventInvitationId.Create(invitationId);
 
-        return eventIdResult.Combine(invitationIdResult).WithPayload(() =>
+        return eventIdResult.Combine(invitationIdResult).WithPayloadIfSuccess(() =>
             new AcceptInvitationCommand(eventIdResult.Payload!, invitationIdResult.Payload!));
     }
 }

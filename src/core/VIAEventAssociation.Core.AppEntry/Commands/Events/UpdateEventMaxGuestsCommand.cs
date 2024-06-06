@@ -20,7 +20,7 @@ public class UpdateEventMaxGuestsCommand  : ICommand{
         Result<EventMaxGuests> maxGuestsResult = EventMaxGuests.Create(maxNumberOfGuests);
 
         return idResult.Combine(maxGuestsResult)
-            .WithPayload(() =>
+            .WithPayloadIfSuccess(() =>
                 new UpdateEventMaxGuestsCommand(idResult.Payload!, maxGuestsResult.Payload!));
     }
 }

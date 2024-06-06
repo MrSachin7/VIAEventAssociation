@@ -17,7 +17,7 @@ public class UpdateEventTitleCommand  : ICommand{
         Result<EventTitle> titleResult = EventTitle.Create(eventTitle);
 
         return idResult.Combine(titleResult)
-            .WithPayload(() => new UpdateEventTitleCommand(idResult.Payload!, titleResult.Payload!));
+            .WithPayloadIfSuccess(() => new UpdateEventTitleCommand(idResult.Payload!, titleResult.Payload!));
 
     }
 }

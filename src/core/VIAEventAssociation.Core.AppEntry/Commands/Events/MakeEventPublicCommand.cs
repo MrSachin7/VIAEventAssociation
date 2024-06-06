@@ -14,6 +14,6 @@ public class MakeEventPublicCommand  : ICommand{
 
     public static Result<MakeEventPublicCommand> Create(string eventId) {
         Result<EventId> idResult = EventId.Create(eventId);
-        return idResult.WithPayload(() => new MakeEventPublicCommand(idResult.Payload!));
+        return idResult.WithPayloadIfSuccess(() => new MakeEventPublicCommand(idResult.Payload!));
     }
 }
