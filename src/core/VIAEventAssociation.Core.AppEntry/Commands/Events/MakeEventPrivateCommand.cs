@@ -13,6 +13,6 @@ public class MakeEventPrivateCommand  : ICommand{
 
     public static Result<MakeEventPrivateCommand> Create(string eventId) {
         Result<EventId> idResult = EventId.Create(eventId);
-        return idResult.WithPayload(() => new MakeEventPrivateCommand(idResult.Payload!));
+        return idResult.WithPayloadIfSuccess(() => new MakeEventPrivateCommand(idResult.Payload!));
     }
 }

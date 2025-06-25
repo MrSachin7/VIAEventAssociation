@@ -33,7 +33,7 @@ public class Result {
         return Success();
     }
 
-    public Result<T> WithPayload<T>(Func<T> payload) {
+    public Result<T> WithPayloadIfSuccess<T>(Func<T> payload) {
         if (IsFailure) {
             return Error!;
         }

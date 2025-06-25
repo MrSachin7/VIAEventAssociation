@@ -17,7 +17,7 @@ public class InviteGuestCommand  : ICommand{
         Result<EventId> eventIdResult = EventId.Create(eventId);
         Result<GuestId> guestIdResult = GuestId.Create(guestId);
 
-        return eventIdResult.Combine(guestIdResult).WithPayload(() =>
+        return eventIdResult.Combine(guestIdResult).WithPayloadIfSuccess(() =>
             new InviteGuestCommand(eventIdResult.Payload!, guestIdResult.Payload!));
     }
 }

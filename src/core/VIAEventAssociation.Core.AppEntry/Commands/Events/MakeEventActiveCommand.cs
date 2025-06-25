@@ -12,6 +12,6 @@ public class MakeEventActiveCommand  : ICommand{
 
     public static Result<MakeEventActiveCommand> Create(string eventId) {
         Result<EventId> idResult = EventId.Create(eventId);
-        return idResult.WithPayload(() => new MakeEventActiveCommand(idResult.Payload!));
+        return idResult.WithPayloadIfSuccess(() => new MakeEventActiveCommand(idResult.Payload!));
     }
 }
